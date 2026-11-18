@@ -35,6 +35,7 @@ test("tracks lifecycle states, guidance, error, and capabilities", async () => {
   assert.equal(controller.getState().state, "idle");
   assert.equal(controller.getState().manualEntryOpen, false);
   assert.equal(controller.getState().activeFocusTarget, "scanner");
+  assert.equal(controller.getState().errorRecoverable, true);
 
   controller.handleScannerEvent({ type: "state", state: "starting" });
   assert.equal(controller.getState().state, "starting");
@@ -344,6 +345,11 @@ test("mountScannerUI binds accessible DOM controls and cleans up on destroy()", 
     min = "";
     max = "";
     step = "";
+    muted = false;
+    autoplay = false;
+    playsInline = false;
+    srcObject: unknown = null;
+    playCalls = 0;
     focusCalls = 0;
     parentNode: MockElement | null = null;
     readonly ownerDocument: { createElement(tag: string): MockElement };
@@ -354,6 +360,11 @@ test("mountScannerUI binds accessible DOM controls and cleans up on destroy()", 
     ) {
       this.tagName = tagName;
       this.ownerDocument = ownerDocument;
+    }
+
+    play(): Promise<void> {
+      this.playCalls += 1;
+      return Promise.resolve();
     }
 
     appendChild(child: MockElement): MockElement {
@@ -426,14 +437,44 @@ test("mountScannerUI binds accessible DOM controls and cleans up on destroy()", 
   const view = mountScannerUI(controller, root as unknown as HTMLElement);
   const section = root.children[0]!;
   const liveRegion = section.children[0]!;
-  const controls = section.children[3]!;
+  const videoEl = section.children[1]!;
+  const guidanceEl = section.children[2]!;
+  const errorBanner = section.children[3]!;
+  const errorText = errorBanner.children[0]!;
+  const controls = section.children[4]!;
   const manualOpenButton = controls.children[0]!;
-  const manualForm = section.children[4]!;
+  const manualForm = section.children[5]!;
+  const formatSelect = manualForm.children[0]!;
   const manualInput = manualForm.children[1]!;
+
+  // Initial mount must not steal focus.
+  assert.equal(section.focusCalls, 0);
+  assert.equal(manualInput.focusCalls, 0);
+
+  // Camera preview video element is mounted before guidance with required attributes.
+  assert.equal(videoEl.tagName, "video");
+  assert.equal(videoEl.getAttribute("data-role"), "camera-preview");
+  assert.equal(videoEl.getAttribute("playsinline"), "");
+  assert.equal(videoEl.muted, true);
+  assert.equal(videoEl.autoplay, true);
+  assert.equal(videoEl.playsInline, true);
+  assert.equal(guidanceEl.getAttribute("data-role"), "guidance");
+  assert.equal(view.getVideoElement() as unknown, videoEl);
+
+  const mockStream = { id: "stream-1" };
+  view.setStream(mockStream);
+  assert.equal(videoEl.srcObject, mockStream);
+  assert.equal(videoEl.playCalls, 1);
 
   assert.equal(liveRegion.getAttribute("aria-live"), "polite");
   assert.equal(manualForm.hidden, true);
+  assert.deepEqual(
+    formatSelect.children.map((opt) => opt.value),
+    ["auto", "ean13", "upca", "ean8"],
+  );
+  assert.equal(formatSelect.value, "auto");
 
+  // Auto format infers EAN-13 (13 digits), UPC-A (12 digits), and EAN-8 (8 digits).
   manualOpenButton.dispatch("click");
   assert.equal(manualForm.hidden, false);
   assert.equal(manualInput.focusCalls, 1);
@@ -442,7 +483,58 @@ test("mountScannerUI binds accessible DOM controls and cleans up on destroy()", 
   manualInput.dispatch("input");
   manualForm.dispatch("submit", { preventDefault() {} });
   assert.equal(results.length, 1);
+  assert.equal(results[0]!.format, "ean13");
+  assert.equal(results[0]!.canonicalValue, "4006381333931");
   assert.equal(manualForm.hidden, true);
+  assert.equal(formatSelect.value, "auto");
+
+  manualOpenButton.dispatch("click");
+  manualInput.value = "036000291452";
+  manualInput.dispatch("input");
+  manualForm.dispatch("submit", { preventDefault() {} });
+  assert.equal(results.length, 2);
+  assert.equal(results[1]!.format, "upca");
+  assert.equal(results[1]!.canonicalValue, "0036000291452");
+  assert.equal(formatSelect.value, "auto");
+
+  manualOpenButton.dispatch("click");
+  manualInput.value = "96385074";
+  manualInput.dispatch("input");
+  manualForm.dispatch("submit", { preventDefault() {} });
+  assert.equal(results.length, 3);
+  assert.equal(results[2]!.format, "ean8");
+  assert.equal(results[2]!.canonicalValue, "96385074");
+  assert.equal(formatSelect.value, "auto");
+
+  // Explicit format selection is respected until switched back to auto.
+  manualOpenButton.dispatch("click");
+  formatSelect.value = "ean13";
+  formatSelect.dispatch("change");
+  assert.equal(controller.getState().manualFormat, "ean13");
+  manualInput.value = "036000291452";
+  manualInput.dispatch("input");
+  manualForm.dispatch("submit", { preventDefault() {} });
+  assert.equal(results.length, 3);
+  assert.equal(manualForm.hidden, false);
+  formatSelect.value = "auto";
+  formatSelect.dispatch("change");
+  manualForm.dispatch("submit", { preventDefault() {} });
+  assert.equal(results.length, 4);
+  assert.equal(results[3]!.format, "upca");
+
+  // Non-recoverable error passes errorRecoverable: false to getAccessibleErrorMessage.
+  controller.handleScannerEvent({
+    type: "error",
+    code: "fatal_hardware_error",
+    recoverable: false,
+  });
+  assert.equal(controller.getState().errorRecoverable, false);
+  assert.equal(errorBanner.hidden, false);
+  assert.equal(
+    errorText.textContent,
+    getAccessibleErrorMessage("fatal_hardware_error", false),
+  );
+  assert.match(errorText.textContent, /Camera scanning is unavailable/i);
 
   // Escape closes manual entry via keydown listener on container.
   manualOpenButton.dispatch("click");
@@ -451,6 +543,7 @@ test("mountScannerUI binds accessible DOM controls and cleans up on destroy()", 
   assert.equal(manualForm.hidden, true);
 
   view.destroy();
+  assert.equal(videoEl.srcObject, null);
   assert.equal(root.children.length, 0);
   assert.equal(section.listeners.get("keydown")?.size ?? 0, 0);
 });

@@ -7,10 +7,10 @@
     {"id":"D2","topic":"protocol_freeze","choice":"v1.0.0-lite","evidence":"tag:protocol-v1.0.0-lite;40_products;160_clips(80_dev+80_val);4_conditions;4_mobile_tiers;wilson95+rule_of_three"},
     {"id":"D3","topic":"canonical_format","choice":"upca_pad_leading_zero_to_ean13","evidence":"ean8_unchanged(8d);upca_0+12d->13d;rawValue+observed_format_preserved"},
     {"id":"D4","topic":"consensus_policy","choice":"2_frames_in_1500ms_cooldown_2000ms","evidence":"0/160_wrong_valid_replay;0/100000_synthetic_stress(ub95<=0.00003);conflicting_frame_resets"},
-    {"id":"D5","topic":"decoder_stack","choice":"zxing-wasm@3.1.7_reader_local+native_BarcodeDetector_fastpath","evidence":"single_thread_no_coop_coep;no_cdn;tryHarder=true,tryRotate=true,tryInvert=false(+15.0pp_vs_safeeat_baseline)"},
-    {"id":"D6","topic":"frame_scheduler","choice":"latest_frame_queue_depth_1_no_jpeg_base64","evidence":"stale_frames_dropped_and_closed;worker_transport_with_scalar_fallback;long_task_50ms_budget"},
-    {"id":"D7","topic":"camera_and_ui","choice":"rear_1080p_continuous_focus_universal_manual_fallback","evidence":"overconstrained_fallback;no_device_label_persisted;manual_entry_100pct_recoverable_errors;no_health_claims"},
+    {"id":"D5","topic":"decoder_stack","choice":"zxing-wasm@3.1.7_reader_local+native_BarcodeDetector_fastpath","evidence":"single_thread_no_coop_coep;no_cdn;tryHarder=true,tryRotate=true,tryInvert=false(+15.0pp_vs_safeeat_baseline);dynamic_activeEngineVersion_on_fallback"},
+    {"id":"D6","topic":"frame_scheduler","choice":"latest_frame_queue_depth_1_no_jpeg_base64","evidence":"stale_frames_dropped_and_closed;attachDecoderWorkerScope+createWebWorkerTransport;rVFC/rAF_live_video_pump;long_task_50ms_budget"},
+    {"id":"D7","topic":"camera_and_ui","choice":"rear_1080p_continuous_focus_universal_manual_fallback","evidence":"overconstrained_fallback;no_device_label_persisted;video_preview_mounted;auto_format_manual_entry_100pct_recoverable_errors;no_health_claims"},
     {"id":"D8","topic":"legal_scanbot_review","choice":"EXCLUDED_CLEAN_ROOM","evidence":"issue:#9;no_scanbot_binary_or_named_comparison;gate_strictly_vs_safeeat_current_reader"},
-    {"id":"D9","topic":"phase0_gate","choice":"GO","evidence":"dev_80/80(100%)vs_68/80(85%),+15.0pp;locked_val_80/80(100%)vs_68/80(85%),+15.0pp>=10pp;android_native_40/40(100%);0_wrong_valid;phase0_and_phase1_complete"}
+    {"id":"D9","topic":"phase0_and_phase1_gate","choice":"GO_AND_PHASE1_HARDENED","evidence":"dev_80/80(100%)vs_68/80(85%),+15.0pp;locked_val_80/80(100%)vs_68/80(85%),+15.0pp>=10pp;adr_0001_0002_0003_accepted;105_tests_green"}
   ]
 }

@@ -13,12 +13,15 @@ import {
   MANUAL_ENTRY_ENGINE_VERSION,
   WebBarcodeScanner,
   ZXING_ENGINE_VERSION,
+  attachDecoderWorkerScope,
   renderLinearBarcodeFrame,
   type DocumentVisibilityLike,
   type MediaDevicesLike,
   type MediaStreamLike,
   type MediaStreamTrackLike,
   type MediaTrackConstraintsLike,
+  type VideoFrameSourceLike,
+  type WorkerGlobalScopeLike,
   type WorkerTransport,
 } from "./index.ts";
 
@@ -137,10 +140,14 @@ function createMockMediaDevices(
 function createMockVisibility(): {
   readonly visibilitySource: DocumentVisibilityLike;
   getListenerCount(): number;
+  setVisibilityState(next: "visible" | "hidden" | "prerender" | string): void;
 } {
   const listeners = new Set<() => void>();
+  let visibilityState = "visible";
   const visibilitySource: DocumentVisibilityLike = {
-    visibilityState: "visible",
+    get visibilityState() {
+      return visibilityState;
+    },
     addEventListener(type: "visibilitychange", listener: () => void) {
       if (type === "visibilitychange") {
         listeners.add(listener);
@@ -156,6 +163,12 @@ function createMockVisibility(): {
   return {
     visibilitySource,
     getListenerCount: () => listeners.size,
+    setVisibilityState(next) {
+      visibilityState = next;
+      for (const listener of [...listeners]) {
+        listener();
+      }
+    },
   };
 }
 
@@ -649,4 +662,420 @@ test("Issue #18 dependency & license audit: zxing-wasm pinned, permissive prod l
   assert.ok(noticeRaw.includes("MIT License"));
   assert.ok(noticeRaw.includes("ZXing-C++"));
   assert.ok(noticeRaw.includes("Apache License, Version 2.0"));
+});
+
+test("live frame pump with attached videoElement and mount(root) emits ScanResult without manual submitFrame()", async () => {
+  const mockCam = createMockMediaDevices();
+  const events: ScannerEvent[] = [];
+  const baseFrame = renderLinearBarcodeFrame("4006381333931", "ean13");
+
+  let nextCallbackId = 1;
+  let cancelCalls = 0;
+  let playCalls = 0;
+  const activeCallbacks = new Map<number, (now: number) => void>();
+
+  const videoElement: VideoFrameSourceLike = {
+    videoWidth: baseFrame.width,
+    videoHeight: baseFrame.height,
+    srcObject: null,
+    play(): Promise<void> {
+      playCalls += 1;
+      return Promise.resolve();
+    },
+    requestVideoFrameCallback(cb: (now: number) => void): number {
+      const id = nextCallbackId++;
+      activeCallbacks.set(id, cb);
+      setTimeout(() => {
+        const fn = activeCallbacks.get(id);
+        if (fn !== undefined) {
+          activeCallbacks.delete(id);
+          fn(1000 + id * 100);
+        }
+      }, 5);
+      return id;
+    },
+    cancelVideoFrameCallback(handle: number): void {
+      if (activeCallbacks.delete(handle)) {
+        cancelCalls += 1;
+      }
+    },
+  };
+
+  let extractCount = 0;
+  const scanner = new WebBarcodeScanner({
+    mediaDevices: mockCam.mediaDevices,
+    visibilitySource: null,
+    preferNativeDetector: false,
+    videoElement,
+    frameExtractor: (_video, timestampMs) => {
+      extractCount += 1;
+      return {
+        ...baseFrame,
+        timestampMs,
+      };
+    },
+    onEvent: (event) => events.push(event),
+  });
+
+  await scanner.start();
+  assert.equal(videoElement.srcObject, scanner.getStream());
+  assert.ok(playCalls >= 1);
+
+  await waitForProcessedFrames(scanner, 2);
+
+  const results = events.filter(
+    (event): event is { readonly type: "result"; readonly result: ScanResult } =>
+      event.type === "result",
+  );
+  assert.equal(results.length, 1);
+  assert.equal(results[0]!.result.canonicalValue, "4006381333931");
+  assert.equal(results[0]!.result.evidence.confirmingFrames, 2);
+  assert.ok(extractCount >= 2);
+
+  await scanner.stop();
+  assert.equal(videoElement.srcObject, null);
+  assert.ok(cancelCalls >= 1);
+  assert.equal(activeCallbacks.size, 0);
+
+  // Also verify scanner.mount(root) attaches the DOM <video> and pumps frames automatically.
+  class MockDomNode {
+    readonly tagName: string;
+    readonly children: MockDomNode[] = [];
+    readonly attributes = new Map<string, string>();
+    readonly listeners = new Map<string, Set<(event: unknown) => void>>();
+    textContent = "";
+    hidden = false;
+    tabIndex = 0;
+    type = "";
+    value = "";
+    inputMode = "";
+    autocomplete = "";
+    min = "";
+    max = "";
+    step = "";
+    muted = false;
+    autoplay = false;
+    playsInline = false;
+    videoWidth = baseFrame.width;
+    videoHeight = baseFrame.height;
+    srcObject: unknown = null;
+    parentNode: MockDomNode | null = null;
+    readonly ownerDocument: { createElement(tag: string): MockDomNode };
+
+    constructor(
+      tagName: string,
+      ownerDocument: { createElement(tag: string): MockDomNode },
+    ) {
+      this.tagName = tagName;
+      this.ownerDocument = ownerDocument;
+    }
+
+    play(): Promise<void> {
+      return Promise.resolve();
+    }
+
+    appendChild(child: MockDomNode): MockDomNode {
+      child.parentNode = this;
+      this.children.push(child);
+      return child;
+    }
+
+    append(...nodes: MockDomNode[]): void {
+      for (const node of nodes) {
+        this.appendChild(node);
+      }
+    }
+
+    remove(): void {
+      if (this.parentNode) {
+        const idx = this.parentNode.children.indexOf(this);
+        if (idx >= 0) {
+          this.parentNode.children.splice(idx, 1);
+        }
+        this.parentNode = null;
+      }
+    }
+
+    setAttribute(name: string, val: string): void {
+      this.attributes.set(name, val);
+    }
+
+    getAttribute(name: string): string | null {
+      return this.attributes.get(name) ?? null;
+    }
+
+    addEventListener(type: string, fn: (event: unknown) => void): void {
+      let set = this.listeners.get(type);
+      if (!set) {
+        set = new Set();
+        this.listeners.set(type, set);
+      }
+      set.add(fn);
+    }
+
+    removeEventListener(type: string, fn: (event: unknown) => void): void {
+      this.listeners.get(type)?.delete(fn);
+    }
+
+    focus(): void {}
+  }
+
+  const doc = {
+    createElement(tag: string): MockDomNode {
+      return new MockDomNode(tag, doc);
+    },
+  };
+  const root = doc.createElement("div");
+
+  const mountedEvents: ScannerEvent[] = [];
+  const mountedScanner = new WebBarcodeScanner({
+    mediaDevices: mockCam.mediaDevices,
+    visibilitySource: null,
+    preferNativeDetector: false,
+    frameExtractor: (_video, timestampMs) => ({
+      ...baseFrame,
+      timestampMs,
+    }),
+    onEvent: (event) => mountedEvents.push(event),
+  });
+
+  const view = mountedScanner.mount(root as unknown as HTMLElement);
+  assert.equal(
+    mountedScanner.getUIController().getState().state,
+    mountedScanner.getState().state,
+  );
+  await mountedScanner.start();
+  assert.equal(
+    (view.getVideoElement() as unknown as MockDomNode).srcObject,
+    mountedScanner.getStream(),
+  );
+
+  await waitForProcessedFrames(mountedScanner, 2);
+  const mountedResults = mountedEvents.filter(
+    (event): event is { readonly type: "result"; readonly result: ScanResult } =>
+      event.type === "result",
+  );
+  assert.equal(mountedResults.length, 1);
+  assert.equal(mountedResults[0]!.result.canonicalValue, "4006381333931");
+
+  view.destroy();
+  assert.equal((view.getVideoElement() as unknown as MockDomNode).srcObject, null);
+  assert.equal(root.children.length, 0);
+
+  await mountedScanner.dispose();
+  await scanner.dispose();
+});
+
+test("visibility paused/resumed stops and restarts frame pump and updates video stream binding", async () => {
+  const mockCam = createMockMediaDevices();
+  const mockVis = createMockVisibility();
+  const baseFrame = renderLinearBarcodeFrame("96385074", "ean8");
+  const events: ScannerEvent[] = [];
+
+  let nextId = 1;
+  const pendingTicks = new Map<number, (now: number) => void>();
+
+  const videoElement: VideoFrameSourceLike = {
+    videoWidth: baseFrame.width,
+    videoHeight: baseFrame.height,
+    srcObject: null,
+    requestVideoFrameCallback(cb: (now: number) => void): number {
+      const id = nextId++;
+      pendingTicks.set(id, cb);
+      setTimeout(() => {
+        const fn = pendingTicks.get(id);
+        if (fn !== undefined) {
+          pendingTicks.delete(id);
+          fn(2000 + id * 100);
+        }
+      }, 5);
+      return id;
+    },
+    cancelVideoFrameCallback(handle: number): void {
+      pendingTicks.delete(handle);
+    },
+  };
+
+  let extractWhilePaused = 0;
+  let paused = false;
+  const scanner = new WebBarcodeScanner({
+    mediaDevices: mockCam.mediaDevices,
+    visibilitySource: mockVis.visibilitySource,
+    preferNativeDetector: false,
+    videoElement,
+    frameExtractor: (_video, timestampMs) => {
+      if (paused) {
+        extractWhilePaused += 1;
+      }
+      return {
+        ...baseFrame,
+        timestampMs,
+      };
+    },
+    onEvent: (event) => events.push(event),
+  });
+
+  await scanner.start();
+  const firstStream = scanner.getStream();
+  assert.ok(firstStream !== null);
+  assert.equal(videoElement.srcObject, firstStream);
+
+  paused = true;
+  mockVis.setVisibilityState("hidden");
+  assert.equal(videoElement.srcObject, null);
+  assert.equal(pendingTicks.size, 0);
+
+  await new Promise<void>((resolve) => setTimeout(resolve, 25));
+  assert.equal(extractWhilePaused, 0);
+
+  const countBeforeResume = scanner.getMetrics().processedFrames;
+  paused = false;
+  mockVis.setVisibilityState("visible");
+
+  // Wait for async resumeFromVisibility() to acquire stream and pump confirming frames.
+  await waitForProcessedFrames(scanner, countBeforeResume + 2);
+  const resumedStream = scanner.getStream();
+  assert.ok(resumedStream !== null);
+  assert.notEqual(resumedStream, firstStream);
+  assert.equal(videoElement.srcObject, resumedStream);
+
+  const results = events.filter(
+    (event): event is { readonly type: "result"; readonly result: ScanResult } =>
+      event.type === "result",
+  );
+  assert.equal(results.length, 1);
+  assert.equal(results[0]!.result.canonicalValue, "96385074");
+
+  await scanner.dispose();
+});
+
+test("runtime fallback from NativeBarcodeDetectorAdapter to ZxingWasmAdapter stamps ZXING_ENGINE_VERSION", async () => {
+  class ThrowingNativeDetector {
+    static async getSupportedFormats(): Promise<readonly string[]> {
+      return ["ean_8", "ean_13", "upc_a"];
+    }
+    async detect(): Promise<never> {
+      throw new Error("Native detector crashed at runtime");
+    }
+  }
+
+  const events: ScannerEvent[] = [];
+  const scanner = new WebBarcodeScanner({
+    mediaDevices: null,
+    visibilitySource: null,
+    preferNativeDetector: true,
+    detectorCtor: ThrowingNativeDetector,
+    onEvent: (event) => events.push(event),
+  });
+
+  await scanner.start();
+
+  const frame1 = renderLinearBarcodeFrame("4006381333931", "ean13");
+  const frame2 = renderLinearBarcodeFrame("4006381333931", "ean13");
+  scanner.submitFrame({ frame: { ...frame1, timestampMs: 100 } });
+  scanner.submitFrame({ frame: { ...frame2, timestampMs: 200 } });
+  await waitForProcessedFrames(scanner, 2);
+
+  const results = events.filter(
+    (event): event is { readonly type: "result"; readonly result: ScanResult } =>
+      event.type === "result",
+  );
+  assert.equal(results.length, 1);
+  assert.equal(results[0]!.result.canonicalValue, "4006381333931");
+  assert.equal(results[0]!.result.engineVersion, ZXING_ENGINE_VERSION);
+
+  await scanner.dispose();
+});
+
+test("restart (stop -> start) with createWorkerTransport creates fresh worker transport and re-exports worker scope helpers", async () => {
+  assert.equal(typeof attachDecoderWorkerScope, "function");
+  const dummyScopeCheck: WorkerGlobalScopeLike | null = null;
+  assert.equal(dummyScopeCheck, null);
+
+  let createdCount = 0;
+  let terminateCount = 0;
+  const mockCam = createMockMediaDevices();
+  const events: ScannerEvent[] = [];
+  const frame = renderLinearBarcodeFrame("4006381333931", "ean13");
+
+  const scanner = new WebBarcodeScanner({
+    mediaDevices: mockCam.mediaDevices,
+    visibilitySource: null,
+    preferNativeDetector: false,
+    createWorkerTransport: () => {
+      createdCount += 1;
+      return {
+        async postFrame(_f: ReplayFrame): Promise<ReplayDecodeResult | null> {
+          return { rawValue: "4006381333931", format: "ean13" };
+        },
+        terminate(): void {
+          terminateCount += 1;
+        },
+      };
+    },
+    onEvent: (event) => events.push(event),
+  });
+
+  // First start -> decode 2 frames -> stop
+  await scanner.start();
+  assert.equal(createdCount, 1);
+  scanner.submitFrame({ frame: { ...frame, timestampMs: 100 } });
+  scanner.submitFrame({ frame: { ...frame, timestampMs: 200 } });
+  await waitForProcessedFrames(scanner, 2);
+  await scanner.stop();
+  assert.equal(terminateCount, 1);
+
+  // Second start -> decode 2 frames -> dispose
+  await scanner.start();
+  assert.equal(createdCount, 2);
+  scanner.submitFrame({ frame: { ...frame, timestampMs: 3000 } });
+  scanner.submitFrame({ frame: { ...frame, timestampMs: 3100 } });
+  await waitForProcessedFrames(scanner, 4);
+
+  const results = events.filter(
+    (event): event is { readonly type: "result"; readonly result: ScanResult } =>
+      event.type === "result",
+  );
+  assert.equal(results.length, 2);
+
+  await scanner.dispose();
+  assert.equal(terminateCount, 2);
+
+  // Also verify caller-provided workerTransport survives stop() -> start() and terminates on dispose().
+  let fixedTerminateCalls = 0;
+  const fixedTransport: WorkerTransport = {
+    async postFrame(_f: ReplayFrame): Promise<ReplayDecodeResult | null> {
+      return { rawValue: "4006381333931", format: "ean13" };
+    },
+    terminate(): void {
+      fixedTerminateCalls += 1;
+    },
+  };
+  const fixedEvents: ScannerEvent[] = [];
+  const fixedScanner = new WebBarcodeScanner({
+    mediaDevices: mockCam.mediaDevices,
+    visibilitySource: null,
+    preferNativeDetector: false,
+    workerTransport: fixedTransport,
+    onEvent: (event) => fixedEvents.push(event),
+  });
+
+  await fixedScanner.start();
+  fixedScanner.submitFrame({ frame: { ...frame, timestampMs: 100 } });
+  fixedScanner.submitFrame({ frame: { ...frame, timestampMs: 200 } });
+  await waitForProcessedFrames(fixedScanner, 2);
+  await fixedScanner.stop();
+  assert.equal(fixedTerminateCalls, 0);
+
+  await fixedScanner.start();
+  fixedScanner.submitFrame({ frame: { ...frame, timestampMs: 3000 } });
+  fixedScanner.submitFrame({ frame: { ...frame, timestampMs: 3100 } });
+  await waitForProcessedFrames(fixedScanner, 4);
+  assert.equal(
+    fixedEvents.filter((event) => event.type === "result").length,
+    2,
+  );
+
+  await fixedScanner.dispose();
+  assert.equal(fixedTerminateCalls, 1);
 });

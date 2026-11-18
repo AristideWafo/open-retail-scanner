@@ -75,6 +75,7 @@ export interface ScannerUIState {
   readonly manualValidationError: string | null;
   readonly guidance: GuidanceReason | null;
   readonly errorCode: string | null;
+  readonly errorRecoverable: boolean;
   readonly torchEnabled: boolean;
   readonly torchSupported: boolean;
   readonly zoomFactor: number;
@@ -100,6 +101,8 @@ export interface ScannerUIControllerOptions {
 }
 
 export interface ScannerDomView {
+  getVideoElement(): HTMLVideoElement;
+  setStream(stream: unknown | null): void;
   destroy(): void;
 }
 
@@ -190,6 +193,7 @@ export class ScannerUIController {
       manualValidationError: null,
       guidance: null,
       errorCode: null,
+      errorRecoverable: true,
       torchEnabled: false,
       torchSupported: false,
       zoomFactor: 1,
@@ -229,6 +233,7 @@ export class ScannerUIController {
         this.updateState({
           state: event.state,
           errorCode: null,
+          errorRecoverable: true,
           guidance: event.state === "stopped" ? null : this.currentState.guidance,
           torchEnabled:
             event.state === "stopped" ? false : this.currentState.torchEnabled,
@@ -254,6 +259,7 @@ export class ScannerUIController {
         this.updateState({
           state: "error",
           errorCode: event.code,
+          errorRecoverable: event.recoverable,
           guidance: null,
           torchEnabled: false,
           ariaLiveMessage: getAccessibleErrorMessage(event.code, event.recoverable),
@@ -267,6 +273,7 @@ export class ScannerUIController {
         this.updateState({
           guidance: null,
           errorCode: null,
+          errorRecoverable: true,
           ariaLiveMessage: "Barcode scanned.",
         });
         this.onResult?.(event.result);
@@ -381,6 +388,7 @@ export class ScannerUIController {
       manualFormat: resolvedFormat,
       manualValidationError: null,
       errorCode: null,
+      errorRecoverable: true,
       guidance: null,
       activeFocusTarget: "scanner",
       ariaLiveMessage: "Manual barcode entry accepted.",
@@ -431,6 +439,7 @@ export class ScannerUIController {
     this.updateState({
       state: "starting",
       errorCode: null,
+      errorRecoverable: true,
       guidance: null,
       activeFocusTarget: "scanner",
       ariaLiveMessage: "Retrying camera.",
@@ -513,6 +522,13 @@ export function mountScannerUI(
   liveRegion.setAttribute("aria-live", "polite");
   liveRegion.setAttribute("aria-atomic", "true");
 
+  const videoEl = doc.createElement("video");
+  videoEl.setAttribute("data-role", "camera-preview");
+  videoEl.setAttribute("playsinline", "");
+  videoEl.muted = true;
+  videoEl.autoplay = true;
+  videoEl.playsInline = true;
+
   const guidanceEl = doc.createElement("p");
   guidanceEl.setAttribute("data-role", "guidance");
 
@@ -548,12 +564,17 @@ export function mountScannerUI(
 
   const formatSelect = doc.createElement("select");
   formatSelect.setAttribute("aria-label", "Barcode format");
+  const autoOption = doc.createElement("option");
+  autoOption.value = "auto";
+  autoOption.textContent = "Auto (EAN-13 / UPC-A / EAN-8)";
+  formatSelect.appendChild(autoOption);
   for (const format of ["ean13", "upca", "ean8"] as const) {
     const option = doc.createElement("option");
     option.value = format;
     option.textContent = FORMAT_LABEL[format];
     formatSelect.appendChild(option);
   }
+  formatSelect.value = "auto";
 
   const manualInput = doc.createElement("input");
   manualInput.type = "text";
@@ -581,8 +602,17 @@ export function mountScannerUI(
     submitButton,
     cancelButton,
   );
-  container.append(liveRegion, guidanceEl, errorBanner, controls, manualForm);
+  container.append(
+    liveRegion,
+    videoEl,
+    guidanceEl,
+    errorBanner,
+    controls,
+    manualForm,
+  );
   root.appendChild(container);
+
+  let userSelectedExplicitFormat = false;
 
   const onRetryClick = (): void => {
     controller.requestRetry();
@@ -601,7 +631,10 @@ export function mountScannerUI(
   };
   const onFormatChange = (): void => {
     const value = formatSelect.value;
-    if (value === "ean8" || value === "upca" || value === "ean13") {
+    if (value === "auto") {
+      userSelectedExplicitFormat = false;
+    } else if (value === "ean8" || value === "upca" || value === "ean13") {
+      userSelectedExplicitFormat = true;
       controller.setManualFormat(value);
     }
   };
@@ -610,7 +643,14 @@ export function mountScannerUI(
   };
   const onManualSubmit = (event: Event): void => {
     event.preventDefault();
-    controller.submitManualEntry(manualInput.value, formatSelect.value as BarcodeFormat);
+    if (formatSelect.value === "auto" || !userSelectedExplicitFormat) {
+      controller.submitManualEntry(manualInput.value);
+    } else {
+      controller.submitManualEntry(
+        manualInput.value,
+        formatSelect.value as BarcodeFormat,
+      );
+    }
   };
   const onCancelClick = (): void => {
     controller.closeManualEntry();
@@ -630,7 +670,7 @@ export function mountScannerUI(
   cancelButton.addEventListener("click", onCancelClick);
   container.addEventListener("keydown", onKeyDown);
 
-  let previousFocusTarget: ScannerFocusTarget | null = null;
+  let previousFocusTarget: ScannerFocusTarget = controller.getState().activeFocusTarget;
 
   const render = (state: ScannerUIState): void => {
     liveRegion.textContent = state.ariaLiveMessage;
@@ -641,7 +681,7 @@ export function mountScannerUI(
     const hasError = state.state === "error" && state.errorCode !== null;
     errorBanner.hidden = !hasError;
     errorText.textContent = hasError && state.errorCode
-      ? getAccessibleErrorMessage(state.errorCode)
+      ? getAccessibleErrorMessage(state.errorCode, state.errorRecoverable)
       : "";
 
     torchButton.hidden = !state.torchSupported;
@@ -655,7 +695,11 @@ export function mountScannerUI(
     stopButton.hidden = state.state !== "running" && state.state !== "starting";
 
     manualForm.hidden = !state.manualEntryOpen;
-    formatSelect.value = state.manualFormat;
+    if (userSelectedExplicitFormat) {
+      formatSelect.value = state.manualFormat;
+    } else {
+      formatSelect.value = "auto";
+    }
     if (manualInput.value !== state.manualInputValue) {
       manualInput.value = state.manualInputValue;
     }
@@ -678,11 +722,23 @@ export function mountScannerUI(
     }
   };
 
+  const setStream = (stream: unknown | null): void => {
+    (videoEl as unknown as { srcObject?: unknown }).srcObject = stream;
+    if (stream !== null) {
+      videoEl.play?.()?.catch?.(() => {});
+    }
+  };
+
   render(controller.getState());
   const unsubscribe = controller.subscribe(render);
 
   return {
+    getVideoElement(): HTMLVideoElement {
+      return videoEl;
+    },
+    setStream,
     destroy(): void {
+      setStream(null);
       unsubscribe();
       retryButton.removeEventListener("click", onRetryClick);
       manualOpenButton.removeEventListener("click", onManualOpenClick);

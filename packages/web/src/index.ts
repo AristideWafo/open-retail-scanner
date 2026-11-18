@@ -11,6 +11,7 @@ import {
   type FailureCategory,
   type PlatformClass,
   type ReplayEngineAdapter,
+  type ReplayFrame,
   type ScanResult,
   type ScannerEvent,
 } from "open-retail-scanner-core";
@@ -21,6 +22,7 @@ import {
   type CameraEvent,
   type DocumentVisibilityLike,
   type MediaDevicesLike,
+  type MediaStreamLike,
 } from "./camera.ts";
 import {
   NativeBarcodeDetectorAdapter,
@@ -36,7 +38,9 @@ import {
 } from "./scheduler.ts";
 import {
   ScannerUIController,
+  mountScannerUI,
   type ManualSubmitResult,
+  type ScannerDomView,
   type ScannerUIState,
 } from "./ui.ts";
 import {
@@ -69,12 +73,14 @@ export {
   LONG_TASK_THRESHOLD_MS,
   LatestFrameScheduler,
   assertNoBase64OrJpeg,
+  attachDecoderWorkerScope,
   createWebWorkerTransport,
   type FrameInput,
   type LatestFrameSchedulerOptions,
   type SchedulerMetrics,
   type WebWorkerLike,
   type WebWorkerTransportOptions,
+  type WorkerGlobalScopeLike,
   type WorkerTransport,
 } from "./scheduler.ts";
 
@@ -134,6 +140,21 @@ const DEFAULT_REQUIRED_CONFIRMING_FRAMES = 2;
 const DEFAULT_CONSENSUS_WINDOW_MS = 1500;
 const DEFAULT_DUPLICATE_COOLDOWN_MS = 2000;
 
+export interface VideoFrameSourceLike {
+  readonly videoWidth: number;
+  readonly videoHeight: number;
+  readonly readyState?: number;
+  srcObject?: unknown;
+  play?(): Promise<void>;
+  requestVideoFrameCallback?(callback: (now: number) => void): number;
+  cancelVideoFrameCallback?(handle: number): void;
+}
+
+export type FrameExtractorFn = (
+  video: VideoFrameSourceLike,
+  timestampMs: number,
+) => ReplayFrame | null;
+
 export interface ScannerOptions {
   readonly formats?: readonly BarcodeFormat[];
   readonly requiredConfirmingFrames?: number;
@@ -145,6 +166,9 @@ export interface ScannerOptions {
   readonly mediaDevices?: MediaDevicesLike | null;
   readonly visibilitySource?: DocumentVisibilityLike | null;
   readonly workerTransport?: WorkerTransport;
+  readonly createWorkerTransport?: () => WorkerTransport;
+  readonly videoElement?: VideoFrameSourceLike | null;
+  readonly frameExtractor?: FrameExtractorFn;
   readonly onEvent?: (event: ScannerEvent) => void;
 }
 
@@ -198,14 +222,23 @@ export class WebBarcodeScanner {
   private readonly consensus: ConsensusTracker;
   private readonly scheduler: LatestFrameScheduler;
   private readonly ui: ScannerUIController;
+  private readonly frameExtractor: FrameExtractorFn | undefined;
   private readonly listeners = new Set<(event: ScannerEvent) => void>();
   private readonly unsubscribeCamera: () => void;
 
+  private videoElement: VideoFrameSourceLike | null;
   private activeEngineVersion: string = ZXING_ENGINE_VERSION;
   private featureBarcodeDetector = false;
   private lastStage: DiagnosticStage = "init";
   private lastFailureCategory: FailureCategory | undefined = undefined;
   private lifecycleEpoch = 0;
+  private pumpGeneration = 0;
+  private pumpCancel: (() => void) | null = null;
+  private captureCanvas: OffscreenCanvas | HTMLCanvasElement | null = null;
+  private captureCtx:
+    | OffscreenCanvasRenderingContext2D
+    | CanvasRenderingContext2D
+    | null = null;
   private hasStartedOnce = false;
   private acceptingFrames = false;
   private acquiringCamera = false;
@@ -226,6 +259,8 @@ export class WebBarcodeScanner {
     this.preferNativeDetector = options.preferNativeDetector !== false;
     this.detectorCtor = options.detectorCtor;
     this.hasMediaDevices = hasUsableMediaDevices(options.mediaDevices);
+    this.frameExtractor = options.frameExtractor;
+    this.videoElement = options.videoElement ?? null;
 
     const zxingOptions: ZxingAdapterOptions = {
       ...(options.zxingOptions ?? {}),
@@ -279,6 +314,7 @@ export class WebBarcodeScanner {
     this.scheduler = new LatestFrameScheduler({
       decodeFrame: (frame) => this.decoder.decodeFrame(frame),
       workerTransport: options.workerTransport,
+      createWorkerTransport: options.createWorkerTransport,
       onResult: (decoded, timestampMs) => {
         this.handleDecodedFrame(decoded, timestampMs);
       },
@@ -300,6 +336,53 @@ export class WebBarcodeScanner {
     this.listeners.add(listener);
     return () => {
       this.listeners.delete(listener);
+    };
+  }
+
+  getStream(): MediaStreamLike | null {
+    return this.camera.getStream();
+  }
+
+  getUIController(): ScannerUIController {
+    return this.ui;
+  }
+
+  attachVideoElement(video: VideoFrameSourceLike | null): void {
+    if (this.videoElement !== null && this.videoElement !== video) {
+      this.videoElement.srcObject = null;
+    }
+    this.stopFramePump();
+    this.videoElement = video;
+    if (video === null) {
+      return;
+    }
+    const stream = this.camera.getStream();
+    if (stream !== null) {
+      video.srcObject = stream;
+      video.play?.()?.catch?.(() => {});
+    }
+    if (this.acceptingFrames && !this.disposed) {
+      this.startFramePump();
+    }
+  }
+
+  mount(root: HTMLElement): ScannerDomView {
+    const view = mountScannerUI(this.ui, root);
+    const videoEl = view.getVideoElement() as unknown as VideoFrameSourceLike;
+    this.attachVideoElement(videoEl);
+    return {
+      getVideoElement(): HTMLVideoElement {
+        return view.getVideoElement();
+      },
+      setStream: (stream: unknown | null): void => {
+        view.setStream(stream);
+      },
+      destroy: (): void => {
+        if (this.videoElement === videoEl) {
+          this.attachVideoElement(null);
+        }
+        view.destroy();
+      },
     };
   }
 
@@ -367,7 +450,18 @@ export class WebBarcodeScanner {
             return;
           }
           this.ui.setCapabilities(capabilities);
+          if (this.videoElement !== null) {
+            const stream = this.camera.getStream();
+            if (stream !== null) {
+              this.videoElement.srcObject = stream;
+              this.videoElement.play?.()?.catch?.(() => {});
+            }
+          }
         } catch (error) {
+          await this.decoder.dispose?.();
+          if (this.decoder !== this.zxingAdapter) {
+            await this.zxingAdapter.dispose();
+          }
           if (epoch !== this.lifecycleEpoch) {
             return;
           }
@@ -395,6 +489,7 @@ export class WebBarcodeScanner {
 
       this.scheduler.start();
       this.acceptingFrames = true;
+      this.startFramePump();
       this.emitEvent({ type: "state", state: "running" });
     };
 
@@ -485,6 +580,12 @@ export class WebBarcodeScanner {
     const runStop = async (): Promise<void> => {
       this.lifecycleEpoch += 1;
       this.acceptingFrames = false;
+      this.stopFramePump();
+      if (this.videoElement !== null) {
+        this.videoElement.srcObject = null;
+      }
+      this.captureCanvas = null;
+      this.captureCtx = null;
       const currentState = this.ui.getState().state;
       const shouldEmitStopped =
         this.hasStartedOnce &&
@@ -514,18 +615,49 @@ export class WebBarcodeScanner {
   async dispose(): Promise<void> {
     this.disposed = true;
     await this.stop();
+    await this.scheduler.dispose();
+    this.videoElement = null;
     this.unsubscribeCamera();
     this.listeners.clear();
   }
 
   private handleCameraEvent(event: CameraEvent): void {
-    if (event.type === "started" || event.type === "resumed") {
+    if (event.type === "started") {
       this.ui.setCapabilities(event.capabilities);
+      return;
+    }
+
+    if (event.type === "paused") {
+      this.acceptingFrames = false;
+      this.stopFramePump();
+      void this.scheduler.stop();
+      if (this.videoElement !== null) {
+        this.videoElement.srcObject = null;
+      }
+      return;
+    }
+
+    if (event.type === "resumed") {
+      this.ui.setCapabilities(event.capabilities);
+      if (this.videoElement !== null) {
+        const stream = this.camera.getStream();
+        this.videoElement.srcObject = stream;
+        if (stream !== null) {
+          this.videoElement.play?.()?.catch?.(() => {});
+        }
+      }
+      this.scheduler.start();
+      this.acceptingFrames = true;
+      this.startFramePump();
       return;
     }
 
     if (event.type === "error" && !this.acquiringCamera) {
       this.acceptingFrames = false;
+      this.stopFramePump();
+      if (this.videoElement !== null) {
+        this.videoElement.srcObject = null;
+      }
       this.lastStage = "camera";
       this.lastFailureCategory =
         event.error.code === "camera_permission_denied"
@@ -556,11 +688,20 @@ export class WebBarcodeScanner {
       return;
     }
 
+    const engineVersion =
+      "getActiveEngineVersion" in this.decoder &&
+      typeof (this.decoder as { getActiveEngineVersion?: () => string })
+        .getActiveEngineVersion === "function"
+        ? (
+            this.decoder as { getActiveEngineVersion: () => string }
+          ).getActiveEngineVersion()
+        : this.activeEngineVersion;
+
     const result: ScanResult | null = this.consensus.observe({
       rawValue: decoded.rawValue,
       format: decoded.format,
       timestampMs,
-      engineVersion: this.activeEngineVersion,
+      engineVersion,
       ...(decoded.bounds !== undefined ? { bounds: decoded.bounds } : {}),
     });
 
@@ -568,6 +709,166 @@ export class WebBarcodeScanner {
       this.lastStage = "consensus";
       this.emitEvent({ type: "result", result });
     }
+  }
+
+  private startFramePump(): void {
+    if (!this.acceptingFrames || this.disposed || this.videoElement === null) {
+      return;
+    }
+    if (this.pumpCancel !== null) {
+      return;
+    }
+    this.scheduleNextFrameTick(this.pumpGeneration);
+  }
+
+  private stopFramePump(): void {
+    this.pumpGeneration += 1;
+    const cancel = this.pumpCancel;
+    this.pumpCancel = null;
+    cancel?.();
+  }
+
+  private scheduleNextFrameTick(generation: number): void {
+    if (
+      generation !== this.pumpGeneration ||
+      !this.acceptingFrames ||
+      this.disposed ||
+      this.videoElement === null
+    ) {
+      this.pumpCancel = null;
+      return;
+    }
+
+    const video = this.videoElement;
+    const onTick = (nowMs: number): void => {
+      this.pumpCancel = null;
+      if (
+        generation !== this.pumpGeneration ||
+        !this.acceptingFrames ||
+        this.disposed ||
+        this.videoElement !== video
+      ) {
+        return;
+      }
+
+      if (
+        this.scheduler.queueDepth === 0 &&
+        this.scheduler.inFlightCount === 0 &&
+        video.videoWidth > 0 &&
+        video.videoHeight > 0
+      ) {
+        const timestampMs =
+          Number.isFinite(nowMs) && nowMs > 0 ? nowMs : Date.now();
+        const frame = this.extractVideoFrame(video, timestampMs);
+        if (frame !== null) {
+          try {
+            this.submitFrame({ frame });
+          } catch {
+            // Invalid or oversized frames update diagnostics via submitFrame().
+          }
+        }
+      }
+
+      this.scheduleNextFrameTick(generation);
+    };
+
+    if (typeof video.requestVideoFrameCallback === "function") {
+      let fired = false;
+      const handle = video.requestVideoFrameCallback((now) => {
+        fired = true;
+        onTick(now);
+      });
+      if (!fired && generation === this.pumpGeneration) {
+        this.pumpCancel = () => {
+          video.cancelVideoFrameCallback?.(handle);
+        };
+      }
+      return;
+    }
+
+    if (typeof globalThis.requestAnimationFrame === "function") {
+      let fired = false;
+      const handle = globalThis.requestAnimationFrame((now) => {
+        fired = true;
+        onTick(now);
+      });
+      if (!fired && generation === this.pumpGeneration) {
+        this.pumpCancel = () => {
+          globalThis.cancelAnimationFrame?.(handle);
+        };
+      }
+      return;
+    }
+
+    const handle = setTimeout(() => {
+      onTick(performance.now());
+    }, 33);
+    this.pumpCancel = () => {
+      clearTimeout(handle);
+    };
+  }
+
+  private extractVideoFrame(
+    video: VideoFrameSourceLike,
+    timestampMs: number,
+  ): ReplayFrame | null {
+    if (this.frameExtractor !== undefined) {
+      return this.frameExtractor(video, timestampMs);
+    }
+
+    const width = Math.floor(video.videoWidth);
+    const height = Math.floor(video.videoHeight);
+    if (width <= 0 || height <= 0) {
+      return null;
+    }
+
+    if (this.captureCanvas === null) {
+      if (typeof OffscreenCanvas === "function") {
+        this.captureCanvas = new OffscreenCanvas(width, height);
+      } else if (
+        typeof document !== "undefined" &&
+        typeof document.createElement === "function"
+      ) {
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        this.captureCanvas = canvas;
+      } else {
+        return null;
+      }
+      this.captureCtx = this.captureCanvas.getContext("2d", {
+        willReadFrequently: true,
+      }) as
+        | OffscreenCanvasRenderingContext2D
+        | CanvasRenderingContext2D
+        | null;
+    }
+
+    if (this.captureCtx === null) {
+      return null;
+    }
+
+    if (this.captureCanvas.width !== width) {
+      this.captureCanvas.width = width;
+    }
+    if (this.captureCanvas.height !== height) {
+      this.captureCanvas.height = height;
+    }
+
+    this.captureCtx.drawImage(
+      video as unknown as CanvasImageSource,
+      0,
+      0,
+      width,
+      height,
+    );
+    const imageData = this.captureCtx.getImageData(0, 0, width, height);
+    return {
+      timestampMs,
+      width,
+      height,
+      data: imageData.data,
+    };
   }
 
   private handleDecodeError(error: unknown): void {
