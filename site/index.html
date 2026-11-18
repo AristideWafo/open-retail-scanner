@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#07090E" />
+    <meta
+      name="description"
+      content="Open Retail Scanner: benchmark-first, local-only EAN-8, EAN-13, and UPC-A web barcode scanning SDK powered by zxing-wasm and optional native BarcodeDetector."
+    />
+    <title>Open Retail Scanner — Precision Local-Only Web Barcode SDK</title>
+    <script type="importmap">
+      {
+        "imports": {
+          "open-retail-scanner-core": "./sdk/core/index.js",
+          "open-retail-scanner-web": "./sdk/web/index.js",
+          "zxing-wasm/reader": "./vendor/zxing-wasm/es/reader/index.js"
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="#top" aria-label="Open Retail Scanner home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"
+                stroke="#10B981"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M7 8v8M10 8v8M12 8v8M15 8v8M17 8v8"
+                stroke="#F8FAFC"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M4 12h16"
+                stroke="#38BDF8"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+          </span>
+          <span class="brand-name">Open Retail Scanner</span>
+          <span class="brand-tag">v1.0.0-lite</span>
+        </a>
+
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a href="#playground">Playground</a>
+          <a href="#benchmark">Benchmarks</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#integration">Integration</a>
+          <a
+            class="nav-github"
+            href="https://github.com/AristideWafo/open-retail-scanner"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- HERO SECTION -->
+      <section id="top" class="hero-section">
+        <div class="container">
+          <div class="hero-badge" role="note">
+            <span class="pulse-dot" aria-hidden="true"></span>
+            <span>v1.0.0-lite Protocol Frozen · Local-Only WASM + Native Fast Path · Apache-2.0</span>
+          </div>
+
+          <h1 class="hero-title">
+            Precision Retail Barcode Scanning for the Modern Web.
+          </h1>
+
+          <p class="hero-subtitle">
+            A benchmark-first, zero-telemetry <strong>EAN-8</strong>, <strong>EAN-13</strong>, and
+            <strong>UPC-A</strong> web SDK built on pinned <code>zxing-wasm@3.1.7</code> and an
+            optional native <code>BarcodeDetector</code> fast path—featuring 2-frame temporal
+            consensus, latest-frame queue-depth-1 scheduling, GS1 mod-10 validation, and universal
+            accessible manual entry.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#playground">Launch Live WASM Playground</a>
+            <a class="btn btn-secondary" href="#benchmark">View Benchmark Evidence</a>
+            <a class="btn btn-ghost" href="#integration">Integration Guide</a>
+            <a
+              class="btn btn-ghost"
+              href="https://github.com/AristideWafo/open-retail-scanner"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub Repository
+            </a>
+          </div>
+
+          <aside class="scope-banner" aria-label="Mandatory honesty, privacy, and scope disclosure">
+            <div class="scope-banner-header">
+              <span class="status-pill status-amber">Scope &amp; Honesty Disclosure</span>
+              <span class="scope-banner-sub">Clean-Room &amp; Privacy Contract</span>
+            </div>
+            <p>
+              Open Retail Scanner is a benchmark-first open-source SDK and
+              <strong>has not demonstrated parity with Scanbot or any commercial SDK</strong>.
+              All frames are processed <strong>100% locally on-device</strong> with
+              <strong>zero telemetry of frames, cropped images, or barcode values</strong>.
+              Detection <strong>identifies barcode digits only</strong> (never emitting food-safety,
+              allergen, or medical conclusions).
+            </p>
+          </aside>
+
+          <div class="kpi-strip" aria-label="Phase 0 headline measurements">
+            <article class="kpi-card">
+              <span class="kpi-label">Locked Validation Decode</span>
+              <strong class="kpi-value mono">80 / 80 <span class="kpi-pct">(100.0%)</span></strong>
+              <span class="kpi-meta">Wilson 95% CI [95.4%, 100.0%] · +15.0 pp vs baseline</span>
+            </article>
+            <article class="kpi-card">
+              <span class="kpi-label">Wrong-Code Stress Bound</span>
+              <strong class="kpi-value mono">0 / 100,000</strong>
+              <span class="kpi-meta">95% one-sided upper bound &le; 0.00003 (not zero risk)</span>
+            </article>
+            <article class="kpi-card">
+              <span class="kpi-label">Frame Backlog Cap</span>
+              <strong class="kpi-value mono">queueDepth &le; 1</strong>
+              <span class="kpi-meta">Raw luminance/RGBA buffers · zero JPEG/base64</span>
+            </article>
+            <article class="kpi-card">
+              <span class="kpi-label">Network / Telemetry Leak</span>
+              <strong class="kpi-value mono">0 Bytes</strong>
+              <span class="kpi-meta">Local <code>zxing_reader.wasm</code> · remote CDNs blocked</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- INTERACTIVE PLAYGROUND SECTION -->
+      <section id="playground" class="section-block">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Interactive Live SDK</span>
+            <h2>Live WASM &amp; Camera Playground</h2>
+            <p>
+              Runs directly in your browser using the compiled
+              <code>open-retail-scanner-core</code>, <code>open-retail-scanner-web</code>, and
+              local <code>./vendor/zxing-wasm/zxing_reader.wasm</code> runtime—no mock responses.
+            </p>
+          </div>
+
+          <div class="playground-shell">
+            <div class="tablist" role="tablist" aria-label="Playground modes" data-tab-group="playground">
+              <button
+                id="tab-sim"
+                class="tab-btn is-active"
+                type="button"
+                role="tab"
+                aria-selected="true"
+                aria-controls="panel-sim"
+              >
+                1. GS1 Synthetic Frame Simulator (Instant Zero-Camera Decode)
+              </button>
+              <button
+                id="tab-cam"
+                class="tab-btn"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="panel-cam"
+                tabindex="-1"
+              >
+                2. Live Device Camera &amp; Universal Manual Entry
+              </button>
+            </div>
+
+            <!-- TAB 1: SYNTHETIC FRAME SIMULATOR -->
+            <div
+              id="panel-sim"
+              class="tab-panel"
+              role="tabpanel"
+              aria-labelledby="tab-sim"
+            >
+              <div class="sim-grid">
+                <div class="sim-controls">
+                  <div class="control-group">
+                    <span class="control-label">Retail GS1 Code Preset</span>
+                    <div class="preset-grid" role="group" aria-label="Barcode presets">
+                      <button
+                        type="button"
+                        class="chip-btn is-selected"
+                        data-preset="ean13"
+                        data-code="4006381333931"
+                        data-format="ean13"
+                      >
+                        <span class="chip-format">EAN-13</span>
+                        <span class="mono">4006381333931</span>
+                      </button>
+                      <button
+                        type="button"
+                        class="chip-btn"
+                        data-preset="upca"
+                        data-code="036000291452"
+                        data-format="upca"
+                      >
+                        <span class="chip-format">UPC-A</span>
+                        <span class="mono">036000291452</span>
+                      </button>
+                      <button
+                        type="button"
+                        class="chip-btn"
+                        data-preset="ean8"
+                        data-code="96385074"
+                        data-format="ean8"
+                      >
+                        <span class="chip-format">EAN-8</span>
+                        <span class="mono">96385074</span>
+                      </button>
+                      <button
+                        type="button"
+                        class="chip-btn"
+                        data-preset="custom"
+                      >
+                        <span class="chip-format">Custom</span>
+                        <span>Mod-10 Tool</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div id="custom-code-box" class="custom-code-box" hidden>
+                    <div class="custom-row">
+                      <label class="field-label" for="custom-format-select">Symbology</label>
+                      <select id="custom-format-select" class="input-control">
+                        <option value="ean13">EAN-13 (13 digits)</option>
+                        <option value="upca">UPC-A (12 digits)</option>
+                        <option value="ean8">EAN-8 (8 digits)</option>
+                      </select>
+                    </div>
+                    <div class="custom-row">
+                      <label class="field-label" for="custom-digits-input">
+                        Barcode Digits (or payload without check digit)
+                      </label>
+                      <div class="input-action-row">
+                        <input
+                          id="custom-digits-input"
+                          class="input-control mono"
+                          type="text"
+                          inputmode="numeric"
+                          autocomplete="off"
+                          maxlength="13"
+                          placeholder="e.g. 4006381333931"
+                        />
+                        <button
+                          id="btn-calc-checkdigit"
+                          class="btn btn-secondary btn-sm"
+                          type="button"
+                        >
+                          Calc Check Digit
+                        </button>
+                      </div>
+                      <p id="custom-validation-msg" class="field-hint" role="status" aria-live="polite"></p>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <span class="control-label">Benchmark Capture Condition</span>
+                    <div class="condition-grid" role="radiogroup" aria-label="Capture condition">
+                      <button
+                        type="button"
+                        class="condition-btn is-selected"
+                        role="radio"
+                        aria-checked="true"
+                        data-condition="normal"
+                      >
+                        <strong>normal</strong>
+                        <span>Clean studio contrast</span>
+                      </button>
+                      <button
+                        type="button"
+                        class="condition-btn"
+                        role="radio"
+                        aria-checked="false"
+                        data-condition="low_light"
+                      >
+                        <strong>low_light</strong>
+                        <span>Dark sensor grain</span>
+                      </button>
+                      <button
+                        type="button"
+                        class="condition-btn"
+                        role="radio"
+                        aria-checked="false"
+                        data-condition="glare_curved"
+                      >
+                        <strong>glare_curved</strong>
+                        <span>Specular wash + warp</span>
+                      </button>
+                      <button
+                        type="button"
+                        class="condition-btn"
+                        role="radio"
+                        aria-checked="false"
+                        data-condition="small_damaged"
+                      >
+                        <strong>small_damaged</strong>
+                        <span>90° rotated + scratch</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="sim-run-bar">
+                    <button id="btn-run-sim" class="btn btn-primary" type="button">
+                      Decode 2 Confirming Frames (Live WASM)
+                    </button>
+                    <span id="sim-engine-status" class="engine-status" role="status" aria-live="polite">
+                      Initializing local WASM runtime...
+                    </span>
+                  </div>
+                </div>
+
+                <div class="sim-stage">
+                  <div class="viewport-card">
+                    <div class="viewport-topbar">
+                      <span class="viewport-title">Raw Luminance Frame Buffer</span>
+                      <span id="sim-frame-meta" class="mono viewport-meta">320×180 · 57.6 KB · normal</span>
+                    </div>
+                    <div class="canvas-wrap">
+                      <canvas
+                        id="sim-canvas"
+                        width="320"
+                        height="180"
+                        aria-label="Rendered GS1 barcode pixel buffer"
+                      ></canvas>
+                      <svg
+                        id="sim-bounds-overlay"
+                        class="bounds-overlay"
+                        viewBox="0 0 320 180"
+                        preserveAspectRatio="none"
+                        aria-hidden="true"
+                      >
+                        <polygon id="sim-bounds-poly" points="" />
+                      </svg>
+                      <div class="laser-line" aria-hidden="true"></div>
+                      <div class="reticle-corners" aria-hidden="true"></div>
+                    </div>
+                  </div>
+
+                  <div class="telemetry-mini-grid">
+                    <div class="mini-stat">
+                      <span class="mini-label">Decode Latency</span>
+                      <strong id="sim-latency" class="mini-value mono">-- ms</strong>
+                    </div>
+                    <div class="mini-stat">
+                      <span class="mini-label">Processed / Dropped</span>
+                      <strong id="sim-scheduler-counts" class="mini-value mono">0 / 0</strong>
+                    </div>
+                    <div class="mini-stat">
+                      <span class="mini-label">Queue Depth</span>
+                      <strong id="sim-queue-depth" class="mini-value mono">0 (cap &le; 1)</strong>
+                    </div>
+                    <div class="mini-stat">
+                      <span class="mini-label">Consensus</span>
+                      <strong id="sim-consensus-status" class="mini-value mono">Waiting</strong>
+                    </div>
+                  </div>
+
+                  <div class="json-panels">
+                    <div class="json-card">
+                      <div class="json-card-head">
+                        <span>Emitted <code>ScanResult</code></span>
+                        <span id="sim-result-badge" class="status-pill status-cyan">Pending</span>
+                      </div>
+                      <pre id="sim-result-json" class="code-out mono">{}</pre>
+                    </div>
+                    <div class="json-card">
+                      <div class="json-card-head">
+                        <span>Privacy-Safe <code>getDiagnostics()</code></span>
+                        <span class="status-pill status-emerald">assertPrivacySafePayload OK</span>
+                      </div>
+                      <pre id="sim-diag-json" class="code-out mono">{}</pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB 2: LIVE CAMERA & MANUAL ENTRY -->
+            <div
+              id="panel-cam"
+              class="tab-panel"
+              role="tabpanel"
+              aria-labelledby="tab-cam"
+              hidden
+            >
+              <div class="cam-grid">
+                <div class="cam-stage">
+                  <div class="cam-toolbar">
+                    <div class="cam-toolbar-actions">
+                      <button id="btn-cam-start" class="btn btn-primary" type="button">
+                        Start Live Camera
+                      </button>
+                      <button id="btn-cam-stop" class="btn btn-secondary" type="button" disabled>
+                        Stop Camera
+                      </button>
+                    </div>
+                    <span id="cam-state-pill" class="status-pill status-amber">idle</span>
+                  </div>
+
+                  <p class="cam-note">
+                    Mounted via <code>scanner.mount(cameraRoot)</code>. Requests rear camera
+                    (<code>&ge;1080p</code> primary, <code>720p</code> fallback), exposes hardware
+                    torch/zoom controls when supported, and falls back to accessible manual barcode
+                    entry on any permission or device failure.
+                  </p>
+
+                  <div id="camera-mount-root" class="camera-mount-root"></div>
+                </div>
+
+                <div class="cam-output">
+                  <div class="json-card">
+                    <div class="json-card-head">
+                      <span>Confirmed Camera / Manual <code>ScanResult</code></span>
+                      <span id="cam-result-badge" class="status-pill status-cyan">Awaiting Scan</span>
+                    </div>
+                    <pre id="cam-result-json" class="code-out mono">Start live camera or submit a valid EAN-8 / EAN-13 / UPC-A code via manual entry.</pre>
+                  </div>
+
+                  <div class="json-card">
+                    <div class="json-card-head">
+                      <span>Live <code>getDiagnostics()</code></span>
+                      <span class="status-pill status-emerald">Zero Barcode/Frame Fields</span>
+                    </div>
+                    <pre id="cam-diag-json" class="code-out mono">{}</pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BENCHMARK EVIDENCE SECTION -->
+      <section id="benchmark" class="section-block section-alt">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Reproducible Empirical Gates</span>
+            <h2>Phase 0 Benchmark Evidence (<code>v1.0.0-lite</code>)</h2>
+            <p>
+              Frozen 160-clip benchmark across 40 distinct GS1 products (<code>development</code>
+              <em>N</em> = 80 and locked <code>validation</code> <em>N</em> = 80; 0 product overlap)
+              evaluated across 4 capture conditions and 4 mobile device profiles.
+            </p>
+          </div>
+
+          <div class="evidence-cards">
+            <article class="evidence-card">
+              <div class="evidence-head">
+                <span class="status-pill status-amber">Pilot Funnel Baseline</span>
+                <span class="mono evidence-num">50.0%</span>
+              </div>
+              <h3>SafeEat Capture/Decode Failure Share</h3>
+              <p>
+                Measured failure share across funnel diagnostics with Wilson 95% CI
+                <strong class="mono">[41.2%, 58.8%]</strong>, yielding a
+                <strong class="mono">20.0 pp</strong> completion gain upper bound (&ge; 15.0 pp
+                required &rarr; <code>GO</code>).
+              </p>
+            </article>
+
+            <article class="evidence-card evidence-card-highlight">
+              <div class="evidence-head">
+                <span class="status-pill status-emerald">Locked Validation (N = 80)</span>
+                <span class="mono evidence-num">+15.0 pp</span>
+              </div>
+              <h3><code>zxing-wasm@3.1.7</code> Tuned vs Baseline</h3>
+              <p>
+                <code>zxing-tuned-th1-tr1-ti0</code> (<code>tryHarder: true, tryRotate: true,
+                tryInvert: false</code>): <strong class="mono">80 / 80 (100.0%)</strong>, Wilson
+                95% CI <strong class="mono">[95.4%, 100.0%]</strong> vs
+                <code>safeeat-current-reader</code> <strong class="mono">68 / 80 (85.0%)</strong>,
+                Wilson 95% CI <strong class="mono">[75.6%, 91.2%]</strong>.
+                <strong>0 subgroup regressions</strong> (min delta 0.0 pp).
+              </p>
+            </article>
+
+            <article class="evidence-card">
+              <div class="evidence-head">
+                <span class="status-pill status-cyan">Android Chrome Fast Path</span>
+                <span class="mono evidence-num">40 / 40</span>
+              </div>
+              <h3>Native <code>BarcodeDetector</code> (N = 40)</h3>
+              <p>
+                On Android Chrome segments, <code>native-barcode-detector</code> achieved
+                <strong class="mono">40 / 40 (100.0%)</strong>, Wilson 95% CI
+                <strong class="mono">[91.2%, 100.0%]</strong>. Cleanly bypassed on iOS Safari where
+                the Web API is absent.
+              </p>
+            </article>
+
+            <article class="evidence-card">
+              <div class="evidence-head">
+                <span class="status-pill status-emerald">Wrong-Code Stress Test</span>
+                <span class="mono evidence-num">0 / 100,000</span>
+              </div>
+              <h3>Synthetic Perturbation Bound</h3>
+              <p>
+                <strong class="mono">0 / 100,000</strong> wrong checksum-valid codes accepted under
+                GS1 mod-10 + 2-frame consensus. One-sided 95% rule-of-three upper bound
+                <strong class="mono">&le; 0.00003</strong>—a statistical bound, never a claim of
+                zero real-world risk.
+              </p>
+            </article>
+          </div>
+
+          <div class="benchmark-explorer">
+            <div class="benchmark-bar">
+              <div>
+                <h3>Frozen Corpus Breakdown</h3>
+                <p id="bench-meta-line" class="bench-meta">
+                  Protocol <code>v1.0.0-lite</code> · Corpus <code>phase0-v1.0.0-lite-2026-11-18</code> · Frozen Config <code>zxing-tuned-th1-tr1-ti0</code>
+                </p>
+              </div>
+              <div class="split-switcher" role="tablist" aria-label="Benchmark partition">
+                <button
+                  id="bench-tab-val"
+                  class="split-btn is-active"
+                  type="button"
+                  role="tab"
+                  aria-selected="true"
+                >
+                  Validation (Locked, N = 80)
+                </button>
+                <button
+                  id="bench-tab-dev"
+                  class="split-btn"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                >
+                  Development + Ablations (N = 80)
+                </button>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="bench-table" aria-label="Overall engine comparison">
+                <thead>
+                  <tr>
+                    <th>Configuration</th>
+                    <th>Engine</th>
+                    <th>Decode &le; 3s (k / N)</th>
+                    <th>Wilson 95% CI</th>
+                    <th>P50 Latency</th>
+                    <th>Cold Init P50 / P95</th>
+                    <th>Wrong Valid (95% UB)</th>
+                  </tr>
+                </thead>
+                <tbody id="bench-overall-body">
+                  <tr>
+                    <td class="mono">zxing-tuned-th1-tr1-ti0</td>
+                    <td><code>zxing-wasm@3.1.7</code></td>
+                    <td class="mono">80 / 80 (100.0%)</td>
+                    <td class="mono">[95.4%, 100.0%]</td>
+                    <td class="mono">33 ms</td>
+                    <td class="mono">2.35 / 3.23 ms</td>
+                    <td class="mono">0 (&le; 0.0374)</td>
+                  </tr>
+                  <tr>
+                    <td class="mono">safeeat-current-reader</td>
+                    <td><code>html5-qrcode@2.3.8</code> (equiv)</td>
+                    <td class="mono">68 / 80 (85.0%)</td>
+                    <td class="mono">[75.6%, 91.2%]</td>
+                    <td class="mono">33 ms</td>
+                    <td class="mono">2.38 / 3.59 ms</td>
+                    <td class="mono">0 (&le; 0.0374)</td>
+                  </tr>
+                  <tr>
+                    <td class="mono">native-barcode-detector</td>
+                    <td>Android Chrome fast path</td>
+                    <td class="mono">40 / 40 (100.0%)</td>
+                    <td class="mono">[91.2%, 100.0%]</td>
+                    <td class="mono">33 ms</td>
+                    <td class="mono">0.01 / 0.01 ms</td>
+                    <td class="mono">0 (&le; 0.0749)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="table-wrap subgroup-wrap">
+              <table class="bench-table" aria-label="Mandatory subgroup breakdown">
+                <thead>
+                  <tr>
+                    <th>Subgroup</th>
+                    <th>N</th>
+                    <th>Baseline (<code>safeeat-current-reader</code>)</th>
+                    <th>Frozen Tuned (<code>zxing-wasm@3.1.7</code>)</th>
+                    <th>Delta</th>
+                    <th>Native Fast Path (Android)</th>
+                  </tr>
+                </thead>
+                <tbody id="bench-subgroup-body"></tbody>
+              </table>
+            </div>
+
+            <p class="clean-room-note">
+              <strong>Clean-Room Disposition (Issue #9):</strong> Per
+              <code>docs/clean-room-policy.md</code>, Scanbot evaluation and named comparison remain
+              <code>excluded_not_authorized</code>. No proprietary binary, licence, or SDK internals
+              are inspected or referenced.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ARCHITECTURE SECTION -->
+      <section id="architecture" class="section-block">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">System Design</span>
+            <h2>Deterministic Single-Pass Architecture</h2>
+            <p>
+              Built to avoid decode queues, memory bloat, and false positives on mobile browsers
+              without requiring Cross-Origin Isolation (COOP/COEP).
+            </p>
+          </div>
+
+          <ol class="pipeline-flow" aria-label="Scanner processing pipeline">
+            <li class="pipeline-step">
+              <span class="step-index mono">01</span>
+              <h3>CameraAdapter</h3>
+              <p>Requests rear stream (<code>&ge;1080p</code> primary, <code>720p</code> fallback) and auto-pauses on <code>visibilitychange</code>.</p>
+            </li>
+            <li class="pipeline-step">
+              <span class="step-index mono">02</span>
+              <h3>LatestFrameScheduler</h3>
+              <p>Enforces <code>queueDepth &le; 1</code>, drops stale buffers, and rejects JPEG/base64 payloads (ADR 0002).</p>
+            </li>
+            <li class="pipeline-step">
+              <span class="step-index mono">03</span>
+              <h3>Native / WASM Decoder</h3>
+              <p>Prefers native <code>BarcodeDetector</code> when supported; seamlessly runs local <code>zxing-wasm@3.1.7</code>.</p>
+            </li>
+            <li class="pipeline-step">
+              <span class="step-index mono">04</span>
+              <h3>GS1 Checksum &amp; Canonicalizer</h3>
+              <p>Validates mod-10 check digit and normalizes 12-digit UPC-A to 13-digit EAN-13 (<code>0</code> prefix).</p>
+            </li>
+            <li class="pipeline-step">
+              <span class="step-index mono">05</span>
+              <h3>2-Frame ConsensusTracker</h3>
+              <p>Requires 2 agreeing checksum-valid observations within <code>1500 ms</code> with <code>2000 ms</code> duplicate cooldown.</p>
+            </li>
+            <li class="pipeline-step">
+              <span class="step-index mono">06</span>
+              <h3>ScanResult / Manual Fallback</h3>
+              <p>Emits structured evidence; universal manual entry stays reachable in 100% of error states.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- INTEGRATION CODE TABS SECTION -->
+      <section id="integration" class="section-block section-alt">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Developer Experience</span>
+            <h2>Integration Guide</h2>
+            <p>
+              Embed the turnkey accessible DOM view, bring your own React 19 UI, or isolate WASM
+              decoding inside a dedicated Web Worker.
+            </p>
+          </div>
+
+          <div class="code-tabs-shell">
+            <div class="code-tabs-header">
+              <div class="tablist" role="tablist" aria-label="Integration patterns" data-tab-group="integration">
+                <button
+                  id="code-tab-mount"
+                  class="tab-btn is-active"
+                  type="button"
+                  role="tab"
+                  aria-selected="true"
+                  aria-controls="code-panel-mount"
+                >
+                  Turnkey DOM Mount (<code>scanner.mount</code>)
+                </button>
+                <button
+                  id="code-tab-react"
+                  class="tab-btn"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="code-panel-react"
+                  tabindex="-1"
+                >
+                  React 19 Custom UI (<code>attachVideoElement</code>)
+                </button>
+                <button
+                  id="code-tab-worker"
+                  class="tab-btn"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="code-panel-worker"
+                  tabindex="-1"
+                >
+                  Off-Thread Web Worker (<code>attachDecoderWorkerScope</code>)
+                </button>
+              </div>
+              <button id="btn-copy-code" class="btn btn-secondary btn-sm" type="button">
+                Copy Snippet
+              </button>
+            </div>
+
+            <div
+              id="code-panel-mount"
+              class="code-panel"
+              role="tabpanel"
+              aria-labelledby="code-tab-mount"
+            >
+              <pre class="code-block mono"><code>import { WebBarcodeScanner } from "open-retail-scanner-web";
+
+const root = document.getElementById("scanner-root");
+if (!root) throw new Error("Missing #scanner-root container");
+
+const scanner = new WebBarcodeScanner({
+  formats: ["ean13", "upca", "ean8"],
+  requiredConfirmingFrames: 2,
+  consensusWindowMs: 1500,
+  duplicateCooldownMs: 2000,
+  preferNativeDetector: true,
+  zxingOptions: {
+    wasmUrl: "/wasm/zxing_reader.wasm",
+  },
+  onEvent(event) {
+    if (event.type === "result") {
+      // Pass canonicalValue in memory to your app's product lookup.
+      // Never log rawValue or canonicalValue to console or telemetry.
+      void scanner.stop();
+      handleConfirmedBarcode(event.result);
+    }
+  },
+});
+
+const view = scanner.mount(root);
+await scanner.start();
+
+// Teardown on route leave:
+// view.destroy();
+// await scanner.dispose();</code></pre>
+            </div>
+
+            <div
+              id="code-panel-react"
+              class="code-panel"
+              role="tabpanel"
+              aria-labelledby="code-tab-react"
+              hidden
+            >
+              <pre class="code-block mono"><code>import { useEffect, useRef, useState } from "react";
+import {
+  WebBarcodeScanner,
+  getAccessibleErrorMessage,
+  type ScannerUIState,
+} from "open-retail-scanner-web";
+import type { ScanResult } from "open-retail-scanner-core";
+
+export function ProductBarcodeScanner({
+  wasmUrl = "/wasm/zxing_reader.wasm",
+  onBarcodeConfirmed,
+}: {
+  wasmUrl?: string;
+  onBarcodeConfirmed: (result: ScanResult) => void;
+}) {
+  const videoRef = useRef&lt;HTMLVideoElement | null&gt;(null);
+  const scannerRef = useRef&lt;WebBarcodeScanner | null&gt;(null);
+  const [uiState, setUiState] = useState&lt;ScannerUIState | null&gt;(null);
+
+  useEffect(() =&gt; {
+    const scanner = new WebBarcodeScanner({
+      formats: ["ean13", "upca", "ean8"],
+      preferNativeDetector: true,
+      zxingOptions: { wasmUrl },
+      onEvent(event) {
+        if (event.type === "result") {
+          void scanner.stop();
+          onBarcodeConfirmed(event.result);
+        }
+      },
+    });
+    scannerRef.current = scanner;
+    const unsub = scanner.getUIController().subscribe(setUiState);
+    if (videoRef.current) scanner.attachVideoElement(videoRef.current);
+    void scanner.start();
+
+    return () =&gt; {
+      unsub();
+      scanner.attachVideoElement(null);
+      void scanner.dispose();
+    };
+  }, [wasmUrl, onBarcodeConfirmed]);
+
+  return (
+    &lt;section aria-label="Barcode scanner"&gt;
+      &lt;video ref={videoRef} playsInline muted autoPlay /&gt;
+      {uiState?.state === "error" &amp;&amp; uiState.errorCode &amp;&amp; (
+        &lt;p role="alert"&gt;
+          {getAccessibleErrorMessage(uiState.errorCode, uiState.errorRecoverable)}
+        &lt;/p&gt;
+      )}
+    &lt;/section&gt;
+  );
+}</code></pre>
+            </div>
+
+            <div
+              id="code-panel-worker"
+              class="code-panel"
+              role="tabpanel"
+              aria-labelledby="code-tab-worker"
+              hidden
+            >
+              <pre class="code-block mono"><code>// 1. scanner.worker.ts
+import {
+  ZxingWasmAdapter,
+  attachDecoderWorkerScope,
+  type WorkerGlobalScopeLike,
+} from "open-retail-scanner-web";
+
+const adapter = new ZxingWasmAdapter({
+  formats: ["ean8", "ean13", "upca"],
+  wasmUrl: "/wasm/zxing_reader.wasm",
+});
+
+attachDecoderWorkerScope(
+  self as unknown as WorkerGlobalScopeLike,
+  async (frame) =&gt; {
+    await adapter.init();
+    return adapter.decodeFrame(frame);
+  },
+);
+
+// 2. Main thread scanner setup
+import {
+  WebBarcodeScanner,
+  createWebWorkerTransport,
+  type WebWorkerLike,
+} from "open-retail-scanner-web";
+
+const scanner = new WebBarcodeScanner({
+  zxingOptions: { wasmUrl: "/wasm/zxing_reader.wasm" },
+  createWorkerTransport: () =&gt; {
+    const worker = new Worker(new URL("./scanner.worker.ts", import.meta.url), {
+      type: "module",
+    });
+    return createWebWorkerTransport(worker as unknown as WebWorkerLike, {
+      transferBuffer: true,
+    });
+  },
+});</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>
+          <strong class="footer-brand">Open Retail Scanner</strong>
+          <p class="footer-copy">
+            Apache-2.0 License · Protocol <code>v1.0.0-lite</code> · Local-only frame processing ·
+            No parity claimed with commercial SDKs.
+          </p>
+        </div>
+        <div class="footer-links">
+          <a
+            href="https://github.com/AristideWafo/open-retail-scanner"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>
+          <a
+            href="https://github.com/AristideWafo/open-retail-scanner/blob/main/docs/integration.md"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Integration Docs
+          </a>
+          <a
+            href="https://github.com/AristideWafo/open-retail-scanner/blob/main/docs/privacy-security.md"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Privacy &amp; Security
+          </a>
+          <a
+            href="https://github.com/AristideWafo/open-retail-scanner/blob/main/docs/pilots/safeeat.md"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            SafeEat Pilot Contract
+          </a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
