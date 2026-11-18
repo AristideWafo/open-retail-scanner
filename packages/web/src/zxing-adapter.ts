@@ -90,9 +90,14 @@ function validateLocalWasmUrl(wasmUrl: string): string {
     locationOrigin.length > 0 &&
     locationOrigin !== "null"
   ) {
+    const baseUrl =
+      typeof globalThis.location?.href === "string" &&
+      globalThis.location.href.startsWith(locationOrigin)
+        ? globalThis.location.href
+        : locationOrigin;
     let resolved: URL;
     try {
-      resolved = new URL(trimmed, locationOrigin);
+      resolved = new URL(trimmed, baseUrl);
     } catch {
       throw new Error(REMOTE_WASM_ERROR);
     }

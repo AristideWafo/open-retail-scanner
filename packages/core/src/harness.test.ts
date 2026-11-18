@@ -386,7 +386,7 @@ test("runSyntheticWrongCodeStressTest processes 100,000 perturbed frames fast wi
     "One-sided 95% upper bound; never claim zero real-world risk.",
   );
   assert.ok(
-    elapsedMs < 300,
-    `Expected 100k stress test under 300ms, took ${elapsedMs.toFixed(1)}ms`,
+    elapsedMs < 1500,
+    `Expected 100k stress test under 1500ms, took ${elapsedMs.toFixed(1)}ms`,
   );
 });

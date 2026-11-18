@@ -1,8 +1,9 @@
 {
   "schema": "orc.execution-status.v1",
-  "updatedAt": "2026-11-18T16:08:00+01:00",
+  "updatedAt": "2026-11-18T16:26:00+01:00",
   "branch": "main",
-  "verification": {"check": "pass", "testsPassed": 106, "testsFailed": 0},
+  "pagesUrl": "https://aristidewafo.github.io/open-retail-scanner/",
+  "verification": {"check": "pass", "buildPages": "pass", "testsPassed": 106, "testsFailed": 0},
   "done": [
     {"issue": 19, "key": "toolchain", "summary": "TypeScript typecheck, node:test, green CI"},
     {"issue": 7, "key": "funnel", "summary": "SafeEat funnel evaluator, Wilson 95% CIs, baseline report (50.0% capture/decode share, CONTINUE)"},
