@@ -114,6 +114,8 @@ async function buildPages() {
     copyFileEnsureDir("site/styles.css", "styles.css"),
     copyFileEnsureDir("site/app.js", "app.js"),
     copyFileEnsureDir("docs/benchmark/phase0-results.json", "phase0-results.json"),
+    cp(path.join(ROOT_DIR, "site", "fonts"), path.join(DIST_PAGES_DIR, "fonts"), { recursive: true }),
+    cp(path.join(ROOT_DIR, "site", "icons"), path.join(DIST_PAGES_DIR, "icons"), { recursive: true }),
   ]);
 
   await writeFile(path.join(DIST_PAGES_DIR, ".nojekyll"), "", "utf8");
