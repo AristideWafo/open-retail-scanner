@@ -1,0 +1,15 @@
+{
+  "schema": "orc.decisions.v1",
+  "date": "2026-11-18",
+  "owner": "Aristide Wafo",
+  "decisions": [
+    {"id":"D1","topic":"funnel_gate","choice":"CONTINUE","evidence":"capture_decode=60/120(50.0%,CI95:[41.2%,58.8%])>=20%;gain_ub=20.0pp>=5pp;ref:safe-foods#15"},
+    {"id":"D2","topic":"protocol_freeze","choice":"v1.0.0-lite","evidence":"tag:protocol-v1.0.0-lite;40_products;4_conditions;4_mobile_tiers+ci_replay;wilson95+rule_of_three"},
+    {"id":"D3","topic":"canonical_format","choice":"upca_pad_leading_zero_to_ean13","evidence":"ean8_unchanged(8d);upca_0+12d->13d;rawValue+observed_format_preserved"},
+    {"id":"D4","topic":"consensus_policy","choice":"2_frames_in_1500ms_cooldown_2000ms","evidence":"0/40_wrong_valid_replay;0/100000_synthetic_stress(ub95<=0.00003);conflicting_frame_resets"},
+    {"id":"D5","topic":"decoder_stack","choice":"zxing-wasm@3.1.7_reader_local+native_BarcodeDetector_fastpath","evidence":"single_thread_no_coop_coep;no_cdn;tryHarder=true,tryRotate=true,tryInvert=false(+12.5pp_vs_single_pass)"},
+    {"id":"D6","topic":"frame_scheduler","choice":"latest_frame_queue_depth_1_no_jpeg_base64","evidence":"stale_frames_dropped_and_closed;worker_transport_with_scalar_fallback;long_task_50ms_budget"},
+    {"id":"D7","topic":"camera_and_ui","choice":"rear_1080p_continuous_focus_universal_manual_fallback","evidence":"overconstrained_fallback;no_device_label_persisted;manual_entry_100pct_recoverable_errors;no_health_claims"},
+    {"id":"D8","topic":"phase0_gate","choice":"GO_BOUNDED_CI_BASELINE","evidence":"tuned_3s=100%(40/40)vs_baseline_87.5%(35/40),+12.5pp>=10pp;0_wrong_valid;phase1_unlocked;field_clips_tracked_in_#5"}
+  ]
+}
