@@ -21,6 +21,11 @@ const labels = [
   ["good first issue", "7057ff", "Suitable for a first contribution"]
 ];
 
+const milestones = [
+  ["Phase 0 — Evidence", "Establish the lawful corpus, reproducible benchmark, pilot evidence, and human GO / ITERATE / NO-GO decision."],
+  ["Phase 1 — Web vertical slice", "Build the minimal local-only EAN/UPC Web/WASM scanner after Phase 0 records GO."]
+];
+
 const issues = [
   {
     title: "[Epic] Phase 0 — establish evidence before SDK implementation",
@@ -116,6 +121,19 @@ for (const [name, color, description] of labels) {
   gh(["label", "create", name, "--repo", repo, "--color", color, "--description", description, "--force"]);
 }
 
+const existingMilestones = JSON.parse(gh([
+  "api", `repos/${repo}/milestones?state=all&per_page=100`
+], { capture: true }));
+
+for (const [title, description] of milestones) {
+  if (existingMilestones.some((milestone) => milestone.title === title)) continue;
+  gh([
+    "api", "--method", "POST", `repos/${repo}/milestones`,
+    "-f", `title=${title}`,
+    "-f", `description=${description}`
+  ]);
+}
+
 const existing = JSON.parse(gh([
   "issue", "list", "--repo", repo, "--state", "all", "--limit", "200", "--json", "title"
 ], { capture: true })).map(({ title }) => title);
@@ -131,6 +149,18 @@ for (const issue of issues) {
     "--body", issue.body,
     ...issue.labels.flatMap((label) => ["--label", label])
   ]);
+}
+
+const publishedIssues = JSON.parse(gh([
+  "issue", "list", "--repo", repo, "--state", "all", "--limit", "200", "--json", "number,labels,milestone"
+], { capture: true }));
+
+for (const issue of publishedIssues) {
+  const phase = issue.labels.map(({ name }) => name).find((name) => name === "phase:0" || name === "phase:1");
+  const milestone = phase === "phase:0" ? milestones[0][0] : phase === "phase:1" ? milestones[1][0] : undefined;
+  if (milestone && issue.milestone?.title !== milestone) {
+    gh(["issue", "edit", String(issue.number), "--repo", repo, "--milestone", milestone]);
+  }
 }
 
 console.log(`Backlog published to https://github.com/${repo}/issues`);
