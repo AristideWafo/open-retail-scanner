@@ -210,6 +210,7 @@ export class WebBarcodeScanner {
   private readonly preferNativeDetector: boolean;
   private readonly detectorCtor: NativeBarcodeDetectorConstructor | undefined;
   private readonly hasMediaDevices: boolean;
+  private readonly usesExternalWorker: boolean;
   private readonly zxingAdapter: ZxingWasmAdapter;
   private readonly decoder: ReplayEngineAdapter;
   private readonly camera: CameraAdapter;
@@ -253,6 +254,9 @@ export class WebBarcodeScanner {
     this.preferNativeDetector = options.preferNativeDetector !== false;
     this.detectorCtor = options.detectorCtor;
     this.hasMediaDevices = shouldAcquireCamera(options.mediaDevices);
+    this.usesExternalWorker =
+      options.workerTransport !== undefined ||
+      options.createWorkerTransport !== undefined;
     this.frameExtractor = options.frameExtractor;
     this.videoElement = options.videoElement ?? null;
 
@@ -411,7 +415,9 @@ export class WebBarcodeScanner {
         } else {
           this.featureBarcodeDetector = false;
         }
-        await this.decoder.init?.();
+        if (!this.usesExternalWorker) {
+          await this.decoder.init?.();
+        }
       } catch {
         if (epoch !== this.lifecycleEpoch) {
           return;

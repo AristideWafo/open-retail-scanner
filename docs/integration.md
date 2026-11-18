@@ -77,15 +77,10 @@ const scanner = new WebBarcodeScanner({
   },
   onEvent(event) {
     if (event.type === "result") {
-      console.info("Confirmed barcode:", {
-        rawValue: event.result.rawValue,           // e.g. "036000291452"
-        canonicalValue: event.result.canonicalValue, // e.g. "0036000291452" (EAN-13 normalized)
-        format: event.result.format,               // "ean8" | "ean13" | "upca"
-        engineVersion: event.result.engineVersion,
-        confirmingFrames: event.result.evidence.confirmingFrames,
-      });
-      // Stop scanner and hand off event.result.canonicalValue to your app's product lookup
+      // Stop scanner and pass result in memory to your app's product lookup.
+      // Never log rawValue or canonicalValue to console or telemetry.
       void scanner.stop();
+      handleConfirmedBarcode(event.result);
     }
   },
 });
@@ -300,7 +295,10 @@ const adapter = new ZxingWasmAdapter({
 
 attachDecoderWorkerScope(
   self as unknown as WorkerGlobalScopeLike,
-  (frame) => adapter.decodeFrame(frame),
+  async (frame) => {
+    await adapter.init();
+    return adapter.decodeFrame(frame);
+  },
 );
 ```
 
@@ -316,6 +314,9 @@ import {
 } from "open-retail-scanner-web";
 
 const scanner = new WebBarcodeScanner({
+  zxingOptions: {
+    wasmUrl: "/wasm/zxing_reader.wasm",
+  },
   createWorkerTransport: () => {
     const worker = new Worker(new URL("./scanner.worker.ts", import.meta.url), {
       type: "module",
@@ -365,6 +366,7 @@ Camera errors are **never** conflated with barcode decode timeouts, and manual e
 | `camera_track_ended` | Camera disconnected or OS interrupted the video track | Stops active pump/scheduler, offers retry + manual entry |
 | `camera_unavailable` | `navigator.mediaDevices` is missing (e.g. non-HTTPS origin) | Transitions to `error`, opens manual entry |
 | `engine_load_failed` | Local WASM binary failed to load or compile | Transitions to `error`, opens manual entry |
+| `internal_error` | Unexpected worker or runtime decode failure | Emits recoverable error; manual entry remains available |
 
 ---
 
