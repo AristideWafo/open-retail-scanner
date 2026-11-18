@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://open-retail-scanner.local/schemas/benchmark-manifest-v1.0.0-lite.json",
+  "title": "Open Retail Scanner Benchmark Corpus Manifest (v1.0.0-lite)",
+  "description": "Rights-clean benchmark corpus manifest. Prohibits raw barcode values, frames, crops, data URLs, media file paths, and product identities.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocolVersion",
+    "corpusVersion",
+    "frozenAt",
+    "entries"
+  ],
+  "properties": {
+    "protocolVersion": {
+      "type": "string",
+      "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+(-[a-z0-9.-]+)?$",
+      "description": "Frozen benchmark protocol version (e.g., v1.0.0-lite)."
+    },
+    "corpusVersion": {
+      "$ref": "#/$defs/nonSensitiveText",
+      "description": "Immutable corpus snapshot identifier."
+    },
+    "frozenAt": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}(T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,9})?(Z|[+-][0-9]{2}:[0-9]{2}))?$",
+      "description": "ISO 8601 date or timestamp when this manifest partition was frozen."
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/manifestEntry"
+      }
+    }
+  },
+  "$defs": {
+    "sha256Hex": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "nonSensitiveText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "allOf": [
+        {
+          "not": {
+            "pattern": "(^|[^0-9])([0-9]{8}|[0-9]{12}|[0-9]{13}|[0-9]{14})([^0-9]|$)"
+          }
+        },
+        {
+          "not": {
+            "pattern": "^\\s*data:|data:[a-zA-Z0-9!#$&^_.+-]+/[a-zA-Z0-9!#$&^_.+-]+"
+          }
+        },
+        {
+          "not": {
+            "pattern": "file://|blob:|[/\\\\]|\\.(png|jpe?g|webp|gif|bmp|tiff?|heic|heif|avif|raw|dng|mp4|mov|webm|mkv|avi|m4v|y4m|yuv)([?#\\s]|$)"
+          }
+        }
+      ]
+    },
+    "manifestEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sequenceId",
+        "productHash",
+        "clipSha256",
+        "partition",
+        "symbology",
+        "condition",
+        "deviceId",
+        "frameCount",
+        "durationMs",
+        "rightsAttestation",
+        "groundTruthVerifiedByTwoOnDisagreement"
+      ],
+      "properties": {
+        "sequenceId": {
+          "$ref": "#/$defs/nonSensitiveText",
+          "description": "Random opaque benchmark sequence identifier unrelated to product or barcode identity."
+        },
+        "productHash": {
+          "$ref": "#/$defs/sha256Hex",
+          "description": "SHA-256 hex digest identifying the distinct physical product for partition isolation without exposing product identity."
+        },
+        "clipSha256": {
+          "$ref": "#/$defs/sha256Hex",
+          "description": "SHA-256 hex digest of the recorded clip stored in the separately governed corpus store."
+        },
+        "partition": {
+          "type": "string",
+          "enum": ["development", "validation"]
+        },
+        "symbology": {
+          "type": "string",
+          "enum": ["ean8", "ean13", "upca"]
+        },
+        "condition": {
+          "type": "string",
+          "enum": ["normal", "low_light", "glare_curved", "small_damaged"]
+        },
+        "deviceId": {
+          "$ref": "#/$defs/nonSensitiveText",
+          "description": "Device/OS/browser tier identifier (e.g., ios_safari_low, ios_safari_mid, android_chrome_low, android_chrome_mid)."
+        },
+        "frameCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "durationMs": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "rightsAttestation": {
+          "type": "string",
+          "const": "owned_physical_product"
+        },
+        "groundTruthVerifiedByTwoOnDisagreement": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}
