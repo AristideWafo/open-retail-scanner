@@ -1,6 +1,6 @@
 # ADR 0001 — ZXing-C++ via `zxing-wasm` as decoder baseline
 
-**Status:** proposed
+**Status:** accepted
 
 ## Context
 

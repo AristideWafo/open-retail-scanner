@@ -241,6 +241,92 @@ export function createWebWorkerTransport(
   };
 }
 
+/** Minimal structural DedicatedWorkerGlobalScope interface for {@link attachDecoderWorkerScope}. */
+export interface WorkerGlobalScopeLike {
+  postMessage(message: unknown, transfer?: Transferable[]): void;
+  addEventListener(type: "message", listener: (event: unknown) => void): void;
+  removeEventListener(type: "message", listener: (event: unknown) => void): void;
+}
+
+interface WorkerDecodeRequest {
+  readonly id?: unknown;
+  readonly frame?: unknown;
+}
+
+/**
+ * Attaches a worker-side `"message"` handler for `{ id, frame }` requests sent
+ * by {@link createWebWorkerTransport}, enforcing ADR 0002 and frame bounds
+ * before invoking `decodeFrame` and posting `{ id, result }` or `{ id, error }`.
+ */
+export function attachDecoderWorkerScope(
+  scope: WorkerGlobalScopeLike,
+  decodeFrame: (
+    frame: ReplayFrame,
+  ) => Promise<ReplayDecodeResult | null> | ReplayDecodeResult | null,
+): () => void {
+  let detached = false;
+
+  const handleMessage = async (rawEvent: unknown): Promise<void> => {
+    if (detached) {
+      return;
+    }
+    const event = rawEvent as { readonly data?: unknown };
+    const payload = event?.data as WorkerDecodeRequest | undefined;
+    if (payload === null || typeof payload !== "object") {
+      return;
+    }
+
+    const id = payload.id;
+    const rawFrame = payload.frame;
+    if (
+      typeof id !== "number" ||
+      !Number.isFinite(id) ||
+      rawFrame === null ||
+      typeof rawFrame !== "object"
+    ) {
+      return;
+    }
+
+    try {
+      assertNoBase64OrJpeg(rawFrame);
+      const frame = rawFrame as ReplayFrame;
+      if (
+        frame.data === null ||
+        typeof frame.data !== "object" ||
+        typeof frame.data.byteLength !== "number"
+      ) {
+        throw new TypeError("Invalid ReplayFrame data buffer");
+      }
+      validateFrameBounds(frame.width, frame.height, frame.data.byteLength);
+      const result = await decodeFrame(frame);
+      if (!detached) {
+        scope.postMessage({ id, result: result ?? null });
+      }
+    } catch (err) {
+      if (!detached) {
+        scope.postMessage({
+          id,
+          error: err instanceof Error ? err.message : String(err),
+        });
+      }
+    }
+  };
+
+  const onMessage = (rawEvent: unknown): void => {
+    void handleMessage(rawEvent);
+  };
+
+  scope.addEventListener("message", onMessage);
+
+  return () => {
+    if (detached) {
+      return;
+    }
+    detached = true;
+    scope.removeEventListener("message", onMessage);
+  };
+}
+
 /** Monotonic and current occupancy metrics reported by {@link LatestFrameScheduler}. */
 export interface SchedulerMetrics {
   readonly processedFrames: number;
@@ -306,6 +392,7 @@ export class LatestFrameScheduler {
   private readonly now: () => number;
 
   private activeWorker: WorkerTransport | null = null;
+  private fixedWorkerTerminated = false;
   private running = false;
   private stoppedExplicitly = false;
   private generation = 0;
@@ -451,20 +538,50 @@ export class LatestFrameScheduler {
 
   /**
    * Idempotently stops the scheduler: cancels/ignores late completions,
-   * drops and closes any pending or in-flight frames, and terminates the
-   * attached worker transport.
+   * drops and closes any pending or in-flight frames, and terminates any
+   * scheduler-owned factory worker transport. A caller-provided `workerTransport`
+   * stays reusable across `stop()` / `start()` until {@link dispose}.
    */
-  async stop(): Promise<void> {
+  stop(): Promise<void> {
+    return this.stopInternal(false);
+  }
+
+  /**
+   * Stops the scheduler and terminates both any active factory worker and any
+   * caller-provided `workerTransport`.
+   */
+  dispose(): Promise<void> {
+    return this.stopInternal(true);
+  }
+
+  private async stopInternal(terminateFixed: boolean): Promise<void> {
     this.stoppedExplicitly = true;
 
-    const workerToTerminate = this.activeWorker;
+    const currentActive = this.activeWorker;
     this.activeWorker = null;
+
+    const ownedWorkerToTerminate =
+      currentActive !== null && currentActive !== this.fixedWorker
+        ? currentActive
+        : null;
+
+    const fixedWorkerToTerminate =
+      terminateFixed &&
+      this.fixedWorker !== undefined &&
+      !this.fixedWorkerTerminated
+        ? this.fixedWorker
+        : null;
+
+    if (fixedWorkerToTerminate !== null) {
+      this.fixedWorkerTerminated = true;
+    }
 
     if (
       !this.running &&
       this.inFlight === null &&
       this.pendingSlot === null &&
-      workerToTerminate === null
+      ownedWorkerToTerminate === null &&
+      fixedWorkerToTerminate === null
     ) {
       return;
     }
@@ -478,8 +595,19 @@ export class LatestFrameScheduler {
     const active = this.inFlight;
     this.inFlight = null;
 
-    const terminateResult =
-      workerToTerminate !== null ? workerToTerminate.terminate() : undefined;
+    const terminatePromises: Array<Promise<void>> = [];
+    if (ownedWorkerToTerminate !== null) {
+      const res = ownedWorkerToTerminate.terminate();
+      if (res !== undefined) {
+        terminatePromises.push(Promise.resolve(res));
+      }
+    }
+    if (fixedWorkerToTerminate !== null) {
+      const res = fixedWorkerToTerminate.terminate();
+      if (res !== undefined) {
+        terminatePromises.push(Promise.resolve(res));
+      }
+    }
 
     if (pending !== null) {
       pending.close();
@@ -492,14 +620,9 @@ export class LatestFrameScheduler {
 
     this.resolveIdleWaiters();
 
-    if (terminateResult !== undefined) {
-      await terminateResult;
+    if (terminatePromises.length > 0) {
+      await Promise.all(terminatePromises);
     }
-  }
-
-  /** Alias for {@link stop}. */
-  dispose(): Promise<void> {
-    return this.stop();
   }
 
   private async runLoop(

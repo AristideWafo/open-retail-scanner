@@ -309,6 +309,9 @@ export class ZxingWasmAdapter implements ReplayEngineAdapter {
       if (format === undefined || !this.allowedFormats.has(format)) {
         continue;
       }
+      if (!isValidCode(hit.text, format)) {
+        continue;
+      }
       const pos = hit.position;
       const bounds: readonly Point[] = [
         { x: pos.topLeft.x, y: pos.topLeft.y },

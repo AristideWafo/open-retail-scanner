@@ -1,6 +1,6 @@
 # ADR 0003 — native BarcodeDetector fast path
 
-**Status:** proposed
+**Status:** accepted
 
 ## Context
 

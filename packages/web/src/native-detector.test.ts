@@ -327,3 +327,215 @@ test("validates frame bounds and omits bounds property when cornerPoints absent"
     RangeError,
   );
 });
+
+test("transient init and fallback init failures clear cached promises so retries succeed", async () => {
+  let initAttempts = 0;
+  const fallbackResult: ReplayDecodeResult = {
+    rawValue: "4006381333931",
+    format: "ean13",
+  };
+  const flakyFallback: ReplayEngineAdapter = {
+    engineName: "flaky-wasm",
+    engineVersion: "zxing-wasm@3.1.7",
+    buildId: "flaky",
+    configurationId: "default",
+    init() {
+      initAttempts++;
+      if (initAttempts === 1) {
+        throw new Error("transient WASM fetch failure");
+      }
+    },
+    decodeFrame() {
+      return fallbackResult;
+    },
+  };
+
+  // Case 1: Native unavailable -> init() fails transiently on first call, retries and succeeds on second.
+  const UnavailableDetector = createMockDetectorCtor({
+    formats: ["qr_code"],
+    async detectImpl() {
+      return [];
+    },
+  });
+  const adapter1 = new NativeBarcodeDetectorAdapter({
+    detectorCtor: UnavailableDetector,
+    fallbackAdapter: flakyFallback,
+  });
+
+  await assert.rejects(() => adapter1.init(), /transient WASM fetch failure/);
+  await adapter1.init();
+  assert.equal(initAttempts, 2);
+  assert.deepEqual(await adapter1.decodeFrame(makeFrame()), fallbackResult);
+
+  // Case 2: Native available at init(), runtime detect() triggers fallback whose init() fails once then retries.
+  let runtimeInitAttempts = 0;
+  const runtimeFlakyFallback: ReplayEngineAdapter = {
+    engineName: "runtime-flaky-wasm",
+    engineVersion: "zxing-wasm@3.1.7",
+    buildId: "flaky",
+    configurationId: "default",
+    init() {
+      runtimeInitAttempts++;
+      if (runtimeInitAttempts === 1) {
+        throw new Error("transient fallback init error");
+      }
+    },
+    decodeFrame() {
+      return fallbackResult;
+    },
+  };
+  const FailingDetectDetector = createMockDetectorCtor({
+    formats: [...REQUIRED_NATIVE_FORMATS],
+    async detectImpl() {
+      throw new Error("GPU failure");
+    },
+  });
+
+  const adapter2 = new NativeBarcodeDetectorAdapter({
+    detectorCtor: FailingDetectDetector,
+    fallbackAdapter: runtimeFlakyFallback,
+  });
+  await adapter2.init();
+  await assert.rejects(
+    () => adapter2.decodeFrame(makeFrame()),
+    /transient fallback init error/,
+  );
+  assert.deepEqual(await adapter2.decodeFrame(makeFrame()), fallbackResult);
+  assert.equal(runtimeInitAttempts, 2);
+});
+
+test("getActiveEngineVersion() tracks native engine and switches to fallback engineVersion on runtime fallback", async () => {
+  let shouldFailDetect = false;
+  const ToggleDetector = createMockDetectorCtor({
+    formats: [...REQUIRED_NATIVE_FORMATS],
+    async detectImpl() {
+      if (shouldFailDetect) {
+        throw new Error("runtime native error");
+      }
+      return [{ rawValue: "96385074", format: "ean_8" }];
+    },
+  });
+
+  const fallback: ReplayEngineAdapter = {
+    engineName: "zxing-wasm",
+    engineVersion: "zxing-wasm@3.1.7 (zxing-cpp@test)",
+    buildId: "wasm",
+    configurationId: "default",
+    decodeFrame() {
+      return { rawValue: "4006381333931", format: "ean13" };
+    },
+  };
+
+  const adapter = new NativeBarcodeDetectorAdapter({
+    detectorCtor: ToggleDetector,
+    fallbackAdapter: fallback,
+    engineName: "native-barcodedetector",
+    engineVersion: "2.0.0",
+  });
+
+  await adapter.init();
+  assert.equal(adapter.getActiveEngineVersion(), "native-barcodedetector@2.0.0");
+
+  const nativeDecoded = await adapter.decodeFrame(makeFrame());
+  assert.equal(nativeDecoded?.rawValue, "96385074");
+  assert.equal(adapter.getActiveEngineVersion(), "native-barcodedetector@2.0.0");
+
+  shouldFailDetect = true;
+  const fallbackDecoded = await adapter.decodeFrame(makeFrame());
+  assert.equal(fallbackDecoded?.rawValue, "4006381333931");
+  assert.equal(
+    adapter.getActiveEngineVersion(),
+    "zxing-wasm@3.1.7 (zxing-cpp@test)",
+  );
+});
+
+test("zero-copy imageSource passthrough and invalid byteLength fallback when ImageData is defined", async () => {
+  const seenImages: unknown[] = [];
+  const Detector = createMockDetectorCtor({
+    formats: [...REQUIRED_NATIVE_FORMATS],
+    async detectImpl(image) {
+      seenImages.push(image);
+      return [{ rawValue: "036000291452", format: "upc_a" }];
+    },
+  });
+
+  const fallbackResult: ReplayDecodeResult = {
+    rawValue: "4006381333931",
+    format: "ean13",
+  };
+  const fallback = makeFallbackAdapter(fallbackResult);
+
+  const g = globalThis as { ImageData?: unknown };
+  const originalImageDataDesc = Object.getOwnPropertyDescriptor(g, "ImageData");
+  class MockImageData {
+    readonly data: Uint8ClampedArray;
+    readonly width: number;
+    readonly height: number;
+    constructor(data: Uint8ClampedArray, width: number, height: number) {
+      this.data = data;
+      this.width = width;
+      this.height = height;
+    }
+  }
+  Object.defineProperty(g, "ImageData", {
+    value: MockImageData,
+    configurable: true,
+    writable: true,
+  });
+
+  try {
+    const adapter = new NativeBarcodeDetectorAdapter({
+      detectorCtor: Detector,
+      fallbackAdapter: fallback,
+    });
+    await adapter.init();
+
+    // Zero-copy ImageBitmap/VideoFrame handle is passed straight through to detect().
+    const videoFrameHandle = { kind: "VideoFrame", codedWidth: 16, codedHeight: 16 };
+    const zeroCopyFrame = {
+      ...makeFrame(16, 16),
+      imageSource: videoFrameHandle,
+    } as ReplayFrame & { readonly imageSource: unknown };
+
+    const zeroCopyRes = await adapter.decodeFrame(zeroCopyFrame);
+    assert.equal(zeroCopyRes?.rawValue, "036000291452");
+    assert.equal(seenImages.length, 1);
+    assert.equal(seenImages[0], videoFrameHandle);
+    assert.equal(fallback.decodeCalls, 0);
+
+    // String/dataURL imageSource must never reach detect() and falls back cleanly.
+    const dataUrlFrame = {
+      ...makeFrame(16, 16),
+      imageSource: "data:image/jpeg;base64,/9j/4AAQ",
+    } as ReplayFrame & { readonly imageSource: unknown };
+    const dataUrlFallback = await adapter.decodeFrame(dataUrlFrame);
+    assert.deepEqual(dataUrlFallback, fallbackResult);
+    assert.equal(seenImages.length, 1);
+    assert.equal(fallback.decodeCalls, 1);
+
+    // Valid grayscale frame converts to MockImageData for native detect().
+    const grayRes = await adapter.decodeFrame(makeFrame(16, 16));
+    assert.equal(grayRes?.rawValue, "036000291452");
+    assert.equal(seenImages.length, 2);
+    assert.ok(seenImages[1] instanceof MockImageData);
+
+    // Unsupported byteLength throws RangeError in toNativeImageSource and falls back cleanly.
+    const invalidBytesFrame: ReplayFrame = {
+      timestampMs: 200,
+      width: 16,
+      height: 16,
+      data: new Uint8Array(10),
+    };
+    const invalidBytesRes = await adapter.decodeFrame(invalidBytesFrame);
+    assert.deepEqual(invalidBytesRes, fallbackResult);
+    assert.equal(seenImages.length, 2);
+    assert.equal(fallback.decodeCalls, 2);
+    assert.equal(adapter.getActiveEngineVersion(), fallback.engineVersion);
+  } finally {
+    if (originalImageDataDesc !== undefined) {
+      Object.defineProperty(g, "ImageData", originalImageDataDesc);
+    } else {
+      delete g.ImageData;
+    }
+  }
+});

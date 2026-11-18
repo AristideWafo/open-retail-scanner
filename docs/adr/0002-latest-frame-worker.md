@@ -1,6 +1,6 @@
 # ADR 0002 — latest-frame worker pipeline
 
-**Status:** proposed
+**Status:** accepted
 
 ## Context
 

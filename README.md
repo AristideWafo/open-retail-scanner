@@ -32,7 +32,7 @@ camera → latest frame → zxing-wasm (or native BarcodeDetector)
 
 ## Current phase
 
-Phase 0 (evidence-lite) measures the SafeEat funnel, then replays recorded clips through the current SafeEat reader, `zxing-wasm`, native `BarcodeDetector` where available, and optionally Quagga2. Scanbot is an optional, legally gated comparison. Development of a supported SDK is conditional on the gates in [the benchmark protocol](docs/benchmark/protocol.md). SafeEat validates the first integration through the separate [pilot charter](docs/pilots/safeeat.md).
+Phase 0 (`v1.0.0-lite` benchmark, 160-clip corpus manifest across development and locked validation splits, and 100k wrong-code stress test) passed its `GO` gates in [`docs/decision-record.md`](docs/decision-record.md). Phase 1 (`open-retail-scanner-core` and `open-retail-scanner-web`) is implemented as a thin web slice with `zxing-wasm`, an optional native `BarcodeDetector` fast path, latest-frame worker scheduling, checksum validation, two-frame temporal consensus, and accessible manual entry. Scanbot evaluation and named comparison remain excluded under [`docs/clean-room-policy.md`](docs/clean-room-policy.md). SafeEat validates the first integration through the separate [pilot charter](docs/pilots/safeeat.md).
 
 ## Repository map
 
@@ -55,7 +55,7 @@ npm install
 npm run check
 ```
 
-The initial packages intentionally contain only contracts and scaffolding. See the issues labelled `phase:0` before implementing the runtime.
+The workspace contains `open-retail-scanner-core` (checksums, temporal consensus, privacy gates, and the Phase 0 replay benchmark / 100k wrong-code stress harness) and `open-retail-scanner-web` (camera adapter, latest-frame worker scheduler, `zxing-wasm` adapter, native `BarcodeDetector` fast path, and accessible UI controller). See [`ROADMAP.md`](ROADMAP.md) and [`docs/HANDOFF.md`](docs/HANDOFF.md) for current phase gates and next steps.
 
 ## License
 

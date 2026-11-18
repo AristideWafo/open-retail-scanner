@@ -94,6 +94,16 @@ export async function isNativeBarcodeDetectorSupported(
 }
 
 function toNativeImageSource(frame: ReplayFrame): unknown {
+  const imageSource = (frame as { readonly imageSource?: unknown }).imageSource;
+  if (imageSource !== undefined && imageSource !== null) {
+    if (typeof imageSource === "string" || typeof imageSource !== "object") {
+      throw new TypeError(
+        "Native imageSource must be an ImageBitmap or VideoFrame handle, not a string or data URL",
+      );
+    }
+    return imageSource;
+  }
+
   if (typeof ImageData !== "function") {
     return frame;
   }
@@ -129,7 +139,9 @@ function toNativeImageSource(frame: ReplayFrame): unknown {
     return new ImageData(rgba, frame.width, frame.height);
   }
 
-  return frame;
+  throw new RangeError(
+    "Unsupported pixel buffer byteLength for ImageData conversion",
+  );
 }
 
 function mapCornerPoints(
@@ -193,6 +205,7 @@ export class NativeBarcodeDetectorAdapter implements ReplayEngineAdapter {
 
   private detector: NativeBarcodeDetectorInstance | null = null;
   private nativeAvailable = false;
+  private usingFallback = false;
   private initPromise: Promise<void> | null = null;
   private fallbackInitPromise: Promise<void> | null = null;
 
@@ -205,28 +218,38 @@ export class NativeBarcodeDetectorAdapter implements ReplayEngineAdapter {
     this.configurationId = options.configurationId ?? "ean8-ean13-upca";
   }
 
+  getActiveEngineVersion(): string {
+    if (
+      (!this.nativeAvailable || this.usingFallback) &&
+      this.fallbackAdapter !== undefined
+    ) {
+      return this.fallbackAdapter.engineVersion;
+    }
+    return `${this.engineName}@${this.engineVersion}`;
+  }
+
   async init(): Promise<void> {
     if (this.initPromise !== null) {
       return this.initPromise;
     }
 
-    this.initPromise = this.performInit();
+    this.initPromise = this.performInit().catch((err: unknown) => {
+      this.initPromise = null;
+      throw err;
+    });
     return this.initPromise;
   }
 
   async decodeFrame(frame: ReplayFrame): Promise<ReplayDecodeResult | null> {
     validateFrameBounds(frame.width, frame.height, frame.data.byteLength);
 
-    if (this.initPromise === null) {
-      await this.init();
-    } else {
-      await this.initPromise;
-    }
+    await this.init();
 
     if (this.nativeAvailable && this.detector !== null) {
       try {
         const imageSource = toNativeImageSource(frame);
         const detections = await this.detector.detect(imageSource);
+        this.usingFallback = false;
         if (Array.isArray(detections)) {
           for (const detection of detections) {
             const result = toReplayDecodeResult(detection);
@@ -247,6 +270,7 @@ export class NativeBarcodeDetectorAdapter implements ReplayEngineAdapter {
   async dispose(): Promise<void> {
     this.detector = null;
     this.nativeAvailable = false;
+    this.usingFallback = false;
     this.initPromise = null;
 
     if (this.fallbackInitPromise !== null && this.fallbackAdapter?.dispose) {
@@ -261,7 +285,10 @@ export class NativeBarcodeDetectorAdapter implements ReplayEngineAdapter {
     readonly longTaskCount?: number;
     readonly peakMemoryClass?: PeakMemoryClass;
   } {
-    if (!this.nativeAvailable && this.fallbackAdapter?.getDiagnostics) {
+    if (
+      (!this.nativeAvailable || this.usingFallback) &&
+      this.fallbackAdapter?.getDiagnostics
+    ) {
       return this.fallbackAdapter.getDiagnostics();
     }
     return {
@@ -270,6 +297,7 @@ export class NativeBarcodeDetectorAdapter implements ReplayEngineAdapter {
   }
 
   private async performInit(): Promise<void> {
+    this.usingFallback = false;
     const supported = await isNativeBarcodeDetectorSupported(this.detectorCtor);
     if (supported) {
       const Ctor = resolveDetectorCtor(this.detectorCtor);
@@ -301,7 +329,10 @@ export class NativeBarcodeDetectorAdapter implements ReplayEngineAdapter {
     if (this.fallbackInitPromise === null) {
       this.fallbackInitPromise = Promise.resolve(
         this.fallbackAdapter.init?.(),
-      );
+      ).catch((err: unknown) => {
+        this.fallbackInitPromise = null;
+        throw err;
+      });
     }
     await this.fallbackInitPromise;
   }
@@ -313,6 +344,7 @@ export class NativeBarcodeDetectorAdapter implements ReplayEngineAdapter {
       return null;
     }
     await this.ensureFallbackInit();
+    this.usingFallback = true;
     return this.fallbackAdapter.decodeFrame(frame);
   }
 }

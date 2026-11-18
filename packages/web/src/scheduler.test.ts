@@ -8,8 +8,10 @@ import {
   LONG_TASK_THRESHOLD_MS,
   LatestFrameScheduler,
   assertNoBase64OrJpeg,
+  attachDecoderWorkerScope,
   createWebWorkerTransport,
   type WebWorkerLike,
+  type WorkerGlobalScopeLike,
   type WorkerTransport,
 } from "./scheduler.ts";
 
@@ -369,11 +371,21 @@ test("worker transport handoff, error handling, and teardown", async () => {
   assert.equal(scheduler.processedFrames, 3);
 
   await scheduler.stop();
+  // Caller-provided workerTransport stays alive across stop() -> start() until dispose().
+  assert.equal(terminated, 0);
+
+  scheduler.start();
+  scheduler.submit({ frame: makeFrame(3) });
+  await scheduler.waitForIdle();
+  assert.equal(results.length, 3);
+  assert.equal(scheduler.processedFrames, 4);
+
+  await scheduler.dispose();
   assert.equal(terminated, 1);
   assert.equal(messageListeners.size, 0);
   assert.equal(errorListeners.size, 0);
 
-  await assert.rejects(() => transport.postFrame(makeFrame(3)), /terminated/);
+  await assert.rejects(() => transport.postFrame(makeFrame(4)), /terminated/);
 });
 
 test("assertNoBase64OrJpeg rejects JPEG/base64 payloads and closes invalid submitted frames", () => {
@@ -423,4 +435,179 @@ test("assertNoBase64OrJpeg rejects JPEG/base64 payloads and closes invalid submi
     /JPEG or base64/,
   );
   assert.equal(closed, true);
+});
+
+test("attachDecoderWorkerScope paired with createWebWorkerTransport decodes end-to-end and handles errors", async () => {
+  const mainMessageListeners = new Set<(event: unknown) => void>();
+  const mainErrorListeners = new Set<(event: unknown) => void>();
+  const workerMessageListeners = new Set<(event: unknown) => void>();
+  let terminatedCount = 0;
+
+  const workerScope: WorkerGlobalScopeLike = {
+    postMessage(message: unknown) {
+      queueMicrotask(() => {
+        for (const listener of mainMessageListeners) {
+          listener({ data: message });
+        }
+      });
+    },
+    addEventListener(type, listener) {
+      if (type === "message") {
+        workerMessageListeners.add(listener);
+      }
+    },
+    removeEventListener(type, listener) {
+      if (type === "message") {
+        workerMessageListeners.delete(listener);
+      }
+    },
+  };
+
+  const workerHandle: WebWorkerLike = {
+    postMessage(message: unknown) {
+      queueMicrotask(() => {
+        for (const listener of workerMessageListeners) {
+          listener({ data: message });
+        }
+      });
+    },
+    addEventListener(type, listener) {
+      if (type === "message") mainMessageListeners.add(listener);
+      else mainErrorListeners.add(listener);
+    },
+    removeEventListener(type, listener) {
+      if (type === "message") mainMessageListeners.delete(listener);
+      else mainErrorListeners.delete(listener);
+    },
+    terminate() {
+      terminatedCount++;
+    },
+  };
+
+  const detachScope = attachDecoderWorkerScope(workerScope, async (frame) => {
+    if (frame.timestampMs === 500) {
+      throw new Error("worker decoder threw");
+    }
+    if (frame.timestampMs === 600) {
+      return null;
+    }
+    return {
+      rawValue: "4006381333931",
+      format: "ean13",
+    };
+  });
+
+  assert.equal(workerMessageListeners.size, 1);
+
+  const transport = createWebWorkerTransport(workerHandle);
+  const results: Array<ReplayDecodeResult | null> = [];
+  const errors: unknown[] = [];
+
+  const scheduler = new LatestFrameScheduler({
+    workerTransport: transport,
+    onResult(result) {
+      results.push(result);
+    },
+    onError(error) {
+      errors.push(error);
+    },
+  });
+
+  scheduler.start();
+
+  // Valid decode
+  scheduler.submit({ frame: makeFrame(100) });
+  await scheduler.waitForIdle();
+  assert.deepEqual(results, [{ rawValue: "4006381333931", format: "ean13" }]);
+
+  // Decoder error propagates cleanly back to scheduler.onError
+  scheduler.submit({ frame: makeFrame(500) });
+  await scheduler.waitForIdle();
+  assert.equal(errors.length, 1);
+  assert.match((errors[0] as Error).message, /worker decoder threw/);
+
+  // Null decode and stop/start reuse of fixed workerTransport
+  await scheduler.stop();
+  assert.equal(terminatedCount, 0);
+
+  scheduler.start();
+  scheduler.submit({ frame: makeFrame(600) });
+  await scheduler.waitForIdle();
+  assert.deepEqual(results, [
+    { rawValue: "4006381333931", format: "ean13" },
+    null,
+  ]);
+
+  // Direct malformed message to workerScope (bypassing transport) returns error response without crashing
+  const directResponses: unknown[] = [];
+  const captureDirect = (rawEvent: unknown): void => {
+    directResponses.push((rawEvent as { readonly data?: unknown }).data);
+  };
+  mainMessageListeners.add(captureDirect);
+  for (const listener of workerMessageListeners) {
+    listener({
+      data: {
+        id: 9001,
+        frame: {
+          timestampMs: 1,
+          width: 16,
+          height: 16,
+          data: "data:image/jpeg;base64,/9j/4AAQ",
+        },
+      },
+    });
+  }
+  await new Promise((resolve) => setTimeout(resolve, 10));
+  assert.equal(directResponses.length, 1);
+  assert.equal((directResponses[0] as { id: number }).id, 9001);
+  assert.match(
+    (directResponses[0] as { error: string }).error,
+    /JPEG or base64/,
+  );
+  mainMessageListeners.delete(captureDirect);
+
+  // Stop then dispose still terminates fixed workerTransport exactly once
+  await scheduler.stop();
+  assert.equal(terminatedCount, 0);
+  await scheduler.dispose();
+  await scheduler.dispose();
+  assert.equal(terminatedCount, 1);
+
+  detachScope();
+  assert.equal(workerMessageListeners.size, 0);
+});
+
+test("stop() followed by start() works with createWorkerTransport and dispose() terminates", async () => {
+  const terminatedIds: number[] = [];
+  let nextWorkerId = 1;
+
+  const scheduler = new LatestFrameScheduler({
+    createWorkerTransport(): WorkerTransport {
+      const id = nextWorkerId++;
+      return {
+        async postFrame(frame) {
+          return {
+            rawValue: frame.timestampMs === 1 ? "96385074" : "4006381333931",
+            format: frame.timestampMs === 1 ? "ean8" : "ean13",
+          };
+        },
+        terminate() {
+          terminatedIds.push(id);
+        },
+      };
+    },
+  });
+
+  scheduler.start();
+  scheduler.submit({ frame: makeFrame(1) });
+  await scheduler.waitForIdle();
+  await scheduler.stop();
+  assert.deepEqual(terminatedIds, [1]);
+
+  scheduler.start();
+  scheduler.submit({ frame: makeFrame(2) });
+  await scheduler.waitForIdle();
+  await scheduler.dispose();
+  assert.deepEqual(terminatedIds, [1, 2]);
+  assert.equal(scheduler.processedFrames, 2);
 });
