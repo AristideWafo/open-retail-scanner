@@ -202,7 +202,7 @@ async function runSimulatorDecode() {
   const kb = (baseFrame.data.byteLength / 1024).toFixed(1);
   simFrameMeta.textContent = `${baseFrame.width}×${baseFrame.height}${rotate90 ? " (90°)" : ""} · ${kb} KB · ${simCondition}`;
 
-  simResultBadge.textContent = "Decoding...";
+  simResultBadge.textContent = "Decoding…";
   simResultBadge.className = "status-pill status-amber";
   simConsensusStatusEl.textContent = "0 / 2 frames";
 
