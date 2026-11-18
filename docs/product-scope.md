@@ -2,7 +2,7 @@
 
 ## Intended purpose
 
-SafeEat Scanner SDK helps an application capture and decode one visible retail barcode from a live camera stream on a supported device.
+Open Retail Scanner helps an application capture and decode one visible retail barcode from a live camera stream on a supported device.
 
 Initial supported symbologies:
 
@@ -25,8 +25,8 @@ The SDK does not:
 
 ## Users
 
-The first consumer is SafeEat. General third-party SDK support is conditional on evidence of external demand and a funded maintenance owner.
+The project is application-independent. SafeEat is the first pilot integrator and supplies a bounded packaged-food use case. Additional integrators are welcome after the core benchmark and maintenance gates pass.
 
 ## Success definition
 
-Success means non-inferiority to the selected commercial baseline on the locked SafeEat EAN/UPC benchmark and an improvement in end-to-end SafeEat task completion. It does not mean parity on untested formats, devices, or conditions.
+Success means non-inferiority to the selected commercial baseline on the locked Open Retail Scanner EAN/UPC benchmark. The first integration must also improve end-to-end task completion in the SafeEat pilot. It does not mean parity on untested formats, devices, applications, or conditions.

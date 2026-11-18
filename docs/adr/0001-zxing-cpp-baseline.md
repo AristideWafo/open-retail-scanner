@@ -4,7 +4,7 @@
 
 ## Context
 
-SafeEat needs EAN-8, EAN-13, and UPC-A. Rewriting the decoder would consume the spike before testing the more likely performance bottlenecks: frame acquisition, localization, quality selection, preprocessing, and scheduling.
+The initial product scope needs EAN-8, EAN-13, and UPC-A. Rewriting the decoder would consume the spike before testing the more likely performance bottlenecks: frame acquisition, localization, quality selection, preprocessing, and scheduling.
 
 ## Decision
 

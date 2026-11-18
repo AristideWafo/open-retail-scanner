@@ -1,8 +1,8 @@
 {
-  "name": "@safeeat/scanner-core",
+  "name": "open-retail-scanner-core",
   "version": "0.0.0",
   "private": true,
-  "description": "Engine-independent contracts for the SafeEat Scanner SDK",
+  "description": "Engine-independent contracts for Open Retail Scanner",
   "license": "Apache-2.0",
   "type": "module",
   "exports": "./src/index.ts"

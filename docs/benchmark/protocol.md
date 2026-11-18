@@ -1,14 +1,14 @@
 # Preregistered barcode benchmark protocol
 
 **Status:** draft; lock before collecting validation results
-**Decision unlocked:** whether to invest in a supported SafeEat Web scanner SDK
-**Primary hypothesis:** an open-source pipeline can be non-inferior to the approved Scanbot baseline on the bounded SafeEat EAN/UPC use case.
+**Decision unlocked:** whether to invest in a supported Open Retail Scanner Web SDK
+**Primary hypothesis:** an open-source pipeline can be non-inferior to the approved Scanbot baseline on the bounded retail EAN/UPC use case.
 
 ## Evidence classes
 
-- `USER_OBSERVATION`: Scanbot felt more performant in historical SafeEat use.
+- `USER_OBSERVATION`: Scanbot felt more performant in historical use by the SafeEat pilot team.
 - `PRIMARY_EXTERNAL`: ZXing-C++ supports EAN/UPC and uses Apache-2.0; browser/platform constraints are documented by their maintainers.
-- `UNKNOWN`: the measured performance gap on SafeEat products and target devices.
+- `UNKNOWN`: the measured performance gap on the pilot product corpus and target devices.
 
 The unknown performance gap blocks any parity claim and is converted into this experiment.
 
@@ -46,7 +46,7 @@ The final matrix and quotas must be frozen in `manifest.json` before validation.
 
 Record exact package/SDK, engine, build flags, browser, OS, device, and configuration for:
 
-- current SafeEat reader;
+- current SafeEat pilot reader;
 - ZXing-C++/WASM candidate;
 - Quagga2 baseline;
 - native `BarcodeDetector` where available;
@@ -60,7 +60,7 @@ Do not tune one engine with privileged ROI, resolution, lighting, or time unless
 - Time to first correct detection: P50, P90, and P95.
 - Wrong but checksum-valid code accepted.
 - No-result and recoverable-failure rate.
-- End-to-end task completion and abandonment in SafeEat.
+- End-to-end task completion and abandonment in the SafeEat pilot integration.
 
 ## Secondary metrics
 
@@ -82,7 +82,7 @@ All must pass:
 - candidate P95 detection time is at most 1.2 times Scanbot P95;
 - no wrong checksum-valid code across at least 10,000 independent sequences, with the confidence bound and denominator published;
 - camera failure outside user denial is below 2% on each target platform segment;
-- candidate improves SafeEat completed-task rate by at least 5 percentage points over the current reader;
+- candidate improves the SafeEat pilot's completed-task rate by at least 5 percentage points over its current reader;
 - manual entry is reachable in 100% of recoverable failure paths;
 - privacy and teardown tests pass.
 
@@ -94,7 +94,7 @@ No wrong-code or privacy gate fails, and the candidate misses a performance gate
 
 Any applies:
 
-- fewer than 20% of observed SafeEat failures/abandons are attributable to barcode capture or decoding;
+- fewer than 20% of observed SafeEat pilot failures/abandons are attributable to barcode capture or decoding;
 - projected improvement in completed tasks is below 5 points;
 - a wrong-code, privacy, or clean-room incident is unresolved;
 - no path to `GO` exists within six engineer-weeks or four calendar weeks of spike work;

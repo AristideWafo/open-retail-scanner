@@ -1,4 +1,4 @@
-# Decision — create a benchmark-first public scanner repository
+# Decision — create an independent benchmark-first public scanner project
 
 **Status:** PROPOSED
 **Owner:** Aristide Wafo, to confirm
@@ -8,11 +8,11 @@
 
 ## Question
 
-Should SafeEat create a public open-source barcode SDK intended to approach Scanbot performance?
+Should Open Retail Scanner be created as an independent open-source barcode SDK, with SafeEat as its first pilot?
 
 ## Why now
 
-The previous SafeEat experience suggested that Scanbot outperformed other tried readers. A future implementation agent needs a bounded, evidence-based repository rather than an untestable mandate to “clone Scanbot.”
+The SafeEat team's previous experience suggested that Scanbot outperformed other tried readers. The scanner should be reusable outside SafeEat, while SafeEat provides the first real integration. A future implementation agent needs a bounded, evidence-based project rather than an untestable mandate to “clone Scanbot.”
 
 ## Evidence
 
@@ -21,14 +21,15 @@ The previous SafeEat experience suggested that Scanbot outperformed other tried 
 | Scanbot was the best reader tried in SafeEat | `USER_OBSERVATION` | Project owner report | No controlled benchmark; measure in Phase 0 |
 | ZXing-C++ supports EAN/UPC and is Apache-2.0 | `PRIMARY_EXTERNAL` | Official ZXing-C++ repository | Audit exact release and transitive notices before shipping |
 | A WASM pipeline can match Scanbot on the target matrix | `UNKNOWN` | None yet | Critical unknown converted to locked benchmark |
-| Barcode scanning is a leading SafeEat funnel problem | `UNKNOWN` | No separated funnel evidence | Instrument camera, decode, network, lookup, and data-quality failures |
+| Barcode scanning is a leading SafeEat pilot funnel problem | `UNKNOWN` | No separated funnel evidence | Pilot must separate camera, decode, network, lookup, and data-quality failures |
+| Independent governance will attract other adopters | `ASSUMPTION` | No external adopters yet | Validate with design partners after technical gates |
 | Scanbot comparison is legally publishable | `UNKNOWN` | Terms require current human review | Block named publication until counsel approves |
 
 ## Options
 
 1. **Status quo:** keep current open-source reader and do not invest.
-2. **Selected experiment:** public benchmark-first repository using ZXing-C++/WASM and a SafeEat-owned capture pipeline.
-3. Buy Scanbot for SafeEat and defer open-source development.
+2. **Selected experiment:** independent public benchmark-first repository using ZXing-C++/WASM, with SafeEat as first pilot.
+3. Buy Scanbot for SafeEat and defer the independent open-source project.
 4. Write a new decoder from scratch.
 5. Immediately build a general multi-platform, multi-format SDK business.
 
@@ -47,10 +48,11 @@ The previous SafeEat experience suggested that Scanbot outperformed other tried 
 - **Reverse engineering:** clean-room policy and legal gate.
 - **Maintenance burden:** no supported public SDK until an owner, budget, and external demand exist.
 - **Healthtech confusion:** explicit statement that a barcode only identifies a value and does not inspect food safety.
+- **Pilot capture of the roadmap:** independent governance and a written pilot boundary; SafeEat-specific logic remains in SafeEat.
 
 ## Recommendation
 
-Create the public repository and authorize Phase 0 only. Phase 1 is conditional on the benchmark and funnel gates. Do not authorize a from-scratch decoder, universal parity claim, or general SDK business.
+Create the independent public repository and authorize Phase 0 only. SafeEat is the first pilot and reference integration, not the owner of the SDK contract. Phase 1 is conditional on the benchmark and pilot gates. Do not authorize a from-scratch decoder, universal parity claim, or supported SDK business yet.
 
 ## Go/no-go
 
@@ -68,4 +70,4 @@ The decision remains `PROPOSED`; agent consensus is not human approval.
 
 ## Reversibility
 
-Archive the repository or retain it as a benchmark harness if Phase 0 returns `NO-GO`. No SafeEat production migration is required for Phase 0.
+Archive the repository or retain it as a benchmark harness if Phase 0 returns `NO-GO`. The SafeEat pilot may keep its existing reader; no production migration is required for Phase 0.

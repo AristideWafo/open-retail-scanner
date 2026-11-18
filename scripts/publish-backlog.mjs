@@ -25,7 +25,7 @@ const issues = [
   {
     title: "[Epic] Phase 0 — establish evidence before SDK implementation",
     labels: ["phase:0", "type:epic", "priority:P0"],
-    body: `## Outcome\nProduce a lawful, reproducible baseline and a human GO / ITERATE / NO-GO decision.\n\n## Tracks\n- protocol and corpus governance\n- SafeEat funnel evidence\n- open-source engine baselines\n- lawful commercial black-box baseline\n- physical-device execution\n- gate decision\n\n## Exit criteria\nAll mandatory measures and subgroups in \`docs/benchmark/protocol.md\` are reported. No public parity claim is made from development data. Phase 1 remains blocked until the decision issue records GO.`
+    body: `## Outcome\nProduce a lawful, reproducible baseline and a human GO / ITERATE / NO-GO decision.\n\n## Tracks\n- protocol and corpus governance\n- SafeEat first-pilot evidence\n- open-source engine baselines\n- lawful commercial black-box baseline\n- physical-device execution\n- gate decision\n\n## Exit criteria\nAll mandatory measures and subgroups in \`docs/benchmark/protocol.md\` are reported. No public parity claim is made from development data. Phase 1 remains blocked until the decision issue records GO.`
   },
   {
     title: "Lock protocol v1, device matrix, metric definitions, and spike budget",
@@ -43,9 +43,9 @@ const issues = [
     body: `## Deliverables\n- validated append-only run schema based on \`docs/benchmark/result-schema.md\`\n- engine adapter interface and deterministic recorded-input runner\n- P50/P90/P95, rates, subgroup tables, denominators, and confidence bounds\n- immutable aggregate output with configuration provenance\n- tests ensuring images, values, and product identities cannot enter results\n\n## Acceptance\nA synthetic fixture run produces a reproducible report in CI; validation and development partitions are distinguishable; zero events never render as zero real-world risk.`
   },
   {
-    title: "Instrument SafeEat funnel to isolate barcode-caused failures",
+    title: "Define and instrument the SafeEat first-pilot integration",
     labels: ["phase:0", "type:benchmark", "priority:P0", "status:blocked"],
-    body: `## Question\nIs scanner capture/decoding a top SafeEat friction rather than network, lookup, absent product, or incomplete data?\n\n## Required categories\ncamera permission; camera lifecycle; no decode; wrong decode; network; product not found; data insufficient; user cancellation; completed task.\n\n## Privacy\nNo frame, crop, barcode value, product identity, profile, or health data. Approve an allow-list schema before collection.\n\n## Gate\nNO-GO if barcode capture/decoding represents <20% of failures/abandonments or projected completed-task improvement is <5 percentage points.\n\nThis issue belongs in the SafeEat application repository as well; link the implementation PR here.`
+    body: `## Relationship\nOpen Retail Scanner is independent; SafeEat is its first pilot, not the owner of the SDK contract. Follow \`docs/pilots/safeeat.md\`.\n\n## Question\nIs scanner capture/decoding a top SafeEat friction rather than network, lookup, absent product, or incomplete data?\n\n## Required categories\ncamera permission; camera lifecycle; no decode; wrong decode; network; product not found; data insufficient; user cancellation; completed task.\n\n## Privacy\nNo frame, crop, barcode value, product identity, profile, or health data. Approve an allow-list schema before collection.\n\n## Gate\nNO-GO if barcode capture/decoding represents <20% of failures/abandonments or projected completed-task improvement is <5 percentage points.\n\nThe application instrumentation belongs in the SafeEat repository; link its implementation PR and report only aggregate pilot outcomes here.`
   },
   {
     title: "Benchmark ZXing-C++/WASM, Quagga2, BarcodeDetector, and current reader",
@@ -65,7 +65,7 @@ const issues = [
   {
     title: "Record Phase 0 GO / ITERATE / NO-GO decision",
     labels: ["phase:0", "type:architecture", "priority:P0", "status:blocked"],
-    body: `## Decision inputs\nLocked benchmark, SafeEat funnel attribution, maintenance estimate, privacy/security review, and legal status.\n\n## Acceptance\nA human decision-maker records evidence, failed/passed subgroups, objections, budget, owner, review date, and rollback. GO must satisfy every mandatory protocol gate. Agent agreement is not approval.\n\nIf NO-GO, archive runtime work and retain only the useful benchmark harness.`
+    body: `## Decision inputs\nLocked benchmark, SafeEat first-pilot attribution, maintenance estimate, privacy/security review, and legal status.\n\n## Acceptance\nA human decision-maker records evidence, failed/passed subgroups, objections, budget, owner, review date, and rollback. GO must satisfy every mandatory protocol gate. Agent agreement is not approval.\n\nIf NO-GO, archive runtime work and retain only the useful benchmark harness.`
   },
   {
     title: "[Epic] Phase 1 — Web/WASM vertical slice",

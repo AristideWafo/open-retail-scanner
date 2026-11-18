@@ -7,7 +7,8 @@
 3. [`docs/benchmark/protocol.md`](benchmark/protocol.md)
 4. [`docs/architecture.md`](architecture.md)
 5. [`docs/clean-room-policy.md`](clean-room-policy.md)
-6. GitHub milestone `Phase 0 — Evidence` and its issues
+6. [`docs/pilots/safeeat.md`](pilots/safeeat.md)
+7. GitHub milestone `Phase 0 — Evidence` and its issues
 
 ## First assignment
 
@@ -29,6 +30,7 @@ Expected first PR:
 - initial decoder candidate: ZXing-C++/WASM;
 - local-only processing;
 - Apache-2.0 project licence;
+- independent project governance; SafeEat is the first pilot, not the SDK owner;
 - no proprietary reverse engineering;
 - no public parity claim before passing the locked benchmark and legal review.
 

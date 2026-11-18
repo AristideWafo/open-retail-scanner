@@ -11,7 +11,8 @@ const required = [
   "docs/architecture.md",
   "docs/benchmark/protocol.md",
   "docs/clean-room-policy.md",
-  "docs/privacy-security.md"
+  "docs/privacy-security.md",
+  "docs/pilots/safeeat.md"
 ];
 
 await Promise.all(required.map((path) => access(path, constants.R_OK)));

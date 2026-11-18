@@ -5,7 +5,7 @@ The canonical initial backlog is encoded in [`scripts/publish-backlog.mjs`](../s
 After GitHub authentication and repository creation:
 
 ```bash
-node scripts/publish-backlog.mjs AristideWafo/safeeat-scanner-sdk
+node scripts/publish-backlog.mjs AristideWafo/open-retail-scanner
 ```
 
 The script creates or updates project labels and creates missing issues without duplicating matching titles.

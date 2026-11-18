@@ -1,4 +1,4 @@
-# SafeEat Scanner SDK
+# Open Retail Scanner
 
 An open-source, local-first barcode scanning SDK focused on retail food packaging.
 
@@ -7,6 +7,8 @@ An open-source, local-first barcode scanning SDK focused on retail food packagin
 ## Mission
 
 Build a small, auditable scanner for EAN-8, EAN-13, and UPC-A that can be embedded in web applications and remain reliable on the explicitly supported device matrix.
+
+The project is independent from any consuming application. **SafeEat is the first pilot integration**, providing a real packaged-food use case and end-to-end validation feedback. SafeEat-specific health logic, user profiles, product lookup, and safety-related wording remain outside this repository.
 
 The SDK identifies a barcode value. It does **not** verify a product, determine whether food is suitable for someone, inspect allergens, or guarantee that a remote product record matches the physical label.
 
@@ -30,7 +32,7 @@ camera → frame quality → ROI/localization → preprocessing → ZXing-C++/WA
 
 ## Current phase
 
-Phase 0 produces a reproducible comparison of Scanbot, ZXing-C++/WASM, Quagga2, and the native `BarcodeDetector` when available. Development of a supported SDK is conditional on the gates in [the benchmark protocol](docs/benchmark/protocol.md).
+Phase 0 produces a reproducible comparison of Scanbot, ZXing-C++/WASM, Quagga2, and the native `BarcodeDetector` when available. Development of a supported SDK is conditional on the gates in [the benchmark protocol](docs/benchmark/protocol.md). SafeEat validates the first integration through the separate [pilot charter](docs/pilots/safeeat.md).
 
 ## Repository map
 
@@ -40,6 +42,7 @@ Phase 0 produces a reproducible comparison of Scanbot, ZXing-C++/WASM, Quagga2, 
 - [`docs/decision-record.md`](docs/decision-record.md) — evidence, options, risks, and gates.
 - [`docs/clean-room-policy.md`](docs/clean-room-policy.md) — legal separation from commercial SDKs.
 - [`docs/privacy-security.md`](docs/privacy-security.md) — data and threat-model baseline.
+- [`docs/pilots/safeeat.md`](docs/pilots/safeeat.md) — first-pilot contract and separation boundary.
 - [`docs/HANDOFF.md`](docs/HANDOFF.md) — implementation-agent starting point.
 - [`ROADMAP.md`](ROADMAP.md) — gated delivery plan.
 

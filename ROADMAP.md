@@ -4,7 +4,7 @@ Dates are intentionally absent until owners and capacity are assigned.
 
 ## Phase 0 — Evidence
 
-- Instrument SafeEat's current funnel to separate camera, decode, network, lookup, and data-quality failures.
+- Use the SafeEat pilot to separate camera/decode failures from network, lookup, and application data-quality failures.
 - Establish a lawful corpus and a locked validation split.
 - Build the reproducible benchmark harness.
 - Measure current reader, ZXing-C++/WASM, Quagga2, native `BarcodeDetector`, and—only if legally approved—Scanbot as a black box.

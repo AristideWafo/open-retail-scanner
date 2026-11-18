@@ -4,6 +4,8 @@
 
 Implement a benchmark-first, local-only EAN-8/EAN-13/UPC-A scanner. Do not claim Scanbot parity until the locked benchmark passes.
 
+Open Retail Scanner is independent from consuming applications. SafeEat is the first pilot integrator. Keep SafeEat product lookup, health logic, profiles, claims, and application data outside this repository; follow `docs/pilots/safeeat.md` for the integration boundary.
+
 ## Non-negotiable constraints
 
 - Do not reverse engineer, decompile, inspect, translate, or derive implementation details from Scanbot or another proprietary SDK.
