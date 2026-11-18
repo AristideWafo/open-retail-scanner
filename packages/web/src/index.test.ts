@@ -1079,3 +1079,29 @@ test("restart (stop -> start) with createWorkerTransport creates fresh worker tr
   await fixedScanner.dispose();
   assert.equal(fixedTerminateCalls, 1);
 });
+
+test("omitted mediaDevices when navigator.mediaDevices is unavailable emits camera_unavailable and opens manual entry", async () => {
+  const events: ScannerEvent[] = [];
+  const scanner = new WebBarcodeScanner({
+    visibilitySource: null,
+    preferNativeDetector: false,
+    onEvent: (event) => events.push(event),
+  });
+
+  await scanner.start();
+
+  const errorEvents = events.filter(
+    (event): event is { readonly type: "error"; readonly code: string; readonly recoverable: boolean } =>
+      event.type === "error",
+  );
+  assert.equal(errorEvents.length, 1);
+  assert.equal(errorEvents[0]?.code, "camera_unavailable");
+  assert.equal(errorEvents[0]?.recoverable, true);
+  assert.equal(scanner.getState().state, "error");
+  assert.equal(scanner.getState().manualEntryOpen, true);
+
+  const manual = scanner.submitManualCode("4006381333931", "ean13");
+  assert.equal(manual.ok, true);
+
+  await scanner.dispose();
+});

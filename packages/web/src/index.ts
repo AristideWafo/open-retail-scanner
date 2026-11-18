@@ -196,14 +196,8 @@ function toDurationMsBand(durationMs: number): DurationMsBand {
   return "200_plus";
 }
 
-function hasUsableMediaDevices(option: MediaDevicesLike | null | undefined): boolean {
-  if (option !== undefined) {
-    return option !== null;
-  }
-  if (typeof navigator === "undefined") {
-    return false;
-  }
-  return navigator.mediaDevices !== undefined && navigator.mediaDevices !== null;
+function shouldAcquireCamera(option: MediaDevicesLike | null | undefined): boolean {
+  return option !== null;
 }
 
 /**
@@ -258,7 +252,7 @@ export class WebBarcodeScanner {
     this.allowedFormats = new Set(formats);
     this.preferNativeDetector = options.preferNativeDetector !== false;
     this.detectorCtor = options.detectorCtor;
-    this.hasMediaDevices = hasUsableMediaDevices(options.mediaDevices);
+    this.hasMediaDevices = shouldAcquireCamera(options.mediaDevices);
     this.frameExtractor = options.frameExtractor;
     this.videoElement = options.videoElement ?? null;
 
