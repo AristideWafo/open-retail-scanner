@@ -105,10 +105,11 @@ const issues = [
 ];
 
 function gh(args, { capture = false } = {}) {
-  return execFileSync("gh", args, {
+  const output = execFileSync("gh", args, {
     encoding: "utf8",
     stdio: capture ? ["ignore", "pipe", "pipe"] : "inherit"
-  }).trim();
+  });
+  return typeof output === "string" ? output.trim() : "";
 }
 
 for (const [name, color, description] of labels) {
