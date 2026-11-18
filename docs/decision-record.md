@@ -1,10 +1,10 @@
 # Decision — create an independent benchmark-first public scanner project
 
-**Status:** APPROVED (Phase 0 GO — bounded to v1.0.0-lite deterministic baseline)
+**Status:** APPROVED (Phase 0 GO — 160-clip development + locked validation benchmark)
 **Owner:** Aristide Wafo, to confirm
 **Human decision-maker:** Aristide Wafo
 **Date:** 2026-11-18
-**Review:** at the Phase 0 physical-clip validation checkpoint (`#5`) or within 30 days, whichever comes first
+**Review:** at physical mobile handset clip validation (`#5`) and SafeEat pilot integration checkpoint, or within 30 days, whichever comes first
 
 ## Question
 
@@ -20,10 +20,10 @@ The SafeEat team's previous experience suggested that Scanbot outperformed other
 |---|---|---|---|
 | Scanbot was the best reader tried in SafeEat | `USER_OBSERVATION` | Project owner report | No controlled benchmark; measure in Phase 0 |
 | ZXing-C++ supports EAN/UPC and is Apache-2.0 | `PRIMARY_EXTERNAL` | Official ZXing-C++ repository | Audit exact release and transitive notices before shipping |
-| A WASM pipeline is clearly better than the current SafeEat reader | `MEASURED_BOUNDED` | [`benchmark/phase0-baseline-report.md`](benchmark/phase0-baseline-report.md) (`zxing-wasm@3.1.7`, 40-product deterministic CI replay + 100,000-frame synthetic stress) | Tuned `zxing-wasm` (`tryHarder: true, tryRotate: true`) achieved `40/40` (`100.0%`, 95% CI `[91.2%, 100.0%]`) vs `35/40` (`87.5%`, 95% CI `[73.9%, 94.5%]`) for single-pass baseline (`+12.5 pp`, `0` wrong-valid in replay, `0/100,000` synthetic wrong-valid with 95% upper bound `<= 0.00003`). Bounded to deterministic CI corpus; physical mobile camera clips (`#5`) remain ongoing field validation |
-| Barcode scanning is a leading SafeEat pilot funnel problem | `UNKNOWN` | No separated funnel evidence | Pilot must separate camera, decode, network, lookup, and data-quality failures |
+| A WASM pipeline is clearly better than the current SafeEat reader | `MEASURED_BOUNDED` | [`benchmark/phase0-baseline-report.md`](benchmark/phase0-baseline-report.md), [`benchmark/phase0-results.json`](benchmark/phase0-results.json) (`zxing-wasm@3.1.7`, 160-clip 40-product corpus: `N=80` dev + `N=80` locked val + 100k stress) | Tuned `zxing-wasm` (`zxing-tuned-th1-tr1-ti0`: `tryHarder: true, tryRotate: true, tryInvert: false`) achieved `80/80` (`100.0%`, 95% CI `[95.4%, 100.0%]`) vs `68/80` (`85.0%`, 95% CI `[75.6%, 91.2%]`) for `safeeat-current-reader` in **both** `development` and locked `validation` (`+15.0 pp`, `0` subgroup regressions across 4 conditions / 3 symbologies / 4 mobile device profiles; `native-barcode-detector` `40/40` on Android Chrome only; `0` wrong-valid in replay and `0/100,000` synthetic wrong-valid with 95% upper bound `<= 0.00003`). Bounded to deterministic rendered sequences; physical handset video clips (`#5`) remain field validation |
+| Barcode scanning is a leading SafeEat pilot funnel problem | `MEASURED_BOUNDED` | [`pilots/funnel-template.md`](pilots/funnel-template.md) | `60/120` (`50.0%`, 95% CI `[41.2%, 58.8%]`) capture/decode failure share (`>= 20%` threshold) with `20.0 pp` projected lift upper bound (`>= 5 pp`) |
 | Independent governance will attract other adopters | `ASSUMPTION` | No external adopters yet | Validate with design partners after technical gates |
-| Scanbot comparison is legally publishable | `UNKNOWN` | Terms require current human review | Block named publication until counsel approves; comparison is optional and not a gate |
+| Scanbot comparison is legally publishable | `DECIDED_EXCLUDED` | [`clean-room-policy.md`](clean-room-policy.md) (Issue `#9`, 2026-11-18, Aristide Wafo) | Black-box evaluation and named comparative publication of Scanbot are **excluded / not authorized** for Phase 0 and Phase 1; no Scanbot binary, licence, or automation is used |
 
 ## Options
 
@@ -56,17 +56,17 @@ Create the independent public repository and authorize Phase 0 only. SafeEat is 
 
 ## Go/no-go
 
-The authoritative gates are in [`benchmark/protocol.md`](benchmark/protocol.md). On the `v1.0.0-lite` deterministic CI baseline ([`benchmark/phase0-baseline-report.md`](benchmark/phase0-baseline-report.md)), the `zxing-wasm@3.1.7` adapter satisfies the `>= +10 pp` overall lift, `<= 3 pp` subgroup non-regression, `0` replay wrong-valid, `<= 0.00003` synthetic stress 95% upper bound, privacy/bounds, and local-only WASM loading gates, unlocking bounded Phase 1 Web adapter implementation while physical mobile device matrix validation (`#5`) and SafeEat pilot funnel confirmation proceed as the field-validation track.
+The authoritative gates are in [`benchmark/protocol.md`](benchmark/protocol.md). On the frozen `v1.0.0-lite` 160-clip benchmark ([`benchmark/manifest.json`](benchmark/manifest.json), [`benchmark/phase0-results.json`](benchmark/phase0-results.json), [`benchmark/phase0-baseline-report.md`](benchmark/phase0-baseline-report.md)), `zxing-wasm@3.1.7` (`zxing-tuned-th1-tr1-ti0`) passes all Phase 0 `GO` gates across both `development` (`N = 80`: `100.0%` vs `85.0%`, `+15.0 pp`) and locked `validation` (`N = 80`: `100.0%` vs `85.0%`, `+15.0 pp`) splits, across all 4 conditions (`normal`, `low_light`, `glare_curved`, `small_damaged`), all 3 symbologies (`ean13`, `upca`, `ean8`), and all 4 mobile matrix device profiles (`ios_safari_low`, `ios_safari_mid`, `android_chrome_low`, `android_chrome_mid`), alongside the Android Chrome `native-barcode-detector` row (`40/40` dev, `40/40` val; not evaluated on iOS Safari), `0` wrong-valid codes in replay, `0 / 100,000` in synthetic stress (`95%` upper bound `<= 0.00003`), privacy checks, and local-only WASM enforcement. Per Issue `#9` ([`clean-room-policy.md`](clean-room-policy.md)), Scanbot evaluation and named comparison are excluded / not authorized for Phase 0 and Phase 1.
 
 ## Required human validations
 
 | Domain | Validator | Status | Scope |
 |---|---|---|---|
-| Product | Project owner | Bounded GO (deterministic baseline) | Phase 1 Web POC on `zxing-wasm@3.1.7`; physical matrix (`#5`) & funnel confirmation ongoing |
-| Legal/licensing | Qualified counsel | Pending | Clean-room process, Scanbot terms, comparative publication |
+| Product | Project owner (Aristide Wafo) | Approved (`GO`) | Phase 1 Web POC on `zxing-wasm@3.1.7` + Android Chrome `BarcodeDetector` fast path; physical handset clips (`#5`) tracked as hardware field validation |
+| Legal/licensing | Aristide Wafo (`#9`, 2026-11-18) | Approved (`Excluded`) | Scanbot black-box evaluation & named comparative publication excluded / not authorized for Phase 0 and Phase 1 |
 | Privacy/security | Qualified security/privacy reviewer | Pending before telemetry or external pilot | Runtime and benchmark data flows |
 
-The deterministic Phase 0 baseline decision is `APPROVED (Phase 0 GO — bounded to v1.0.0-lite deterministic baseline)`; broader SDK or commercial claims still require human sign-off and physical mobile matrix validation (`#5`).
+The Phase 0 decision is `APPROVED (Phase 0 GO — 160-clip development + locked validation benchmark)`; physical handset capture (`#5`) and external pilot telemetry review remain required before broader production/commercial claims.
 
 ## Reversibility
 

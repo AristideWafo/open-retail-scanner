@@ -1,0 +1,5542 @@
+{
+  "schema": "orc.phase0-results.v1",
+  "generatedAt": "2026-11-18T14:24:41Z",
+  "protocolVersion": "v1.0.0-lite",
+  "protocolFreezeHash": "19cdc9fc49d6df36c76e02d3cb436104d031d30a6b5b76bc66b792b33c4c77c6",
+  "corpusVersion": "phase0-v1.0.0-lite-2026-11-18",
+  "frozenConfigurationId": "zxing-tuned-th1-tr1-ti0",
+  "engineVersions": [
+    {
+      "engineName": "safeeat-current-reader",
+      "engineVersion": "html5-qrcode@2.3.8 (single-pass-equiv)"
+    },
+    {
+      "engineName": "zxing-wasm",
+      "engineVersion": "zxing-wasm@3.1.7 (zxing-cpp@f19f7c6e0509fe0eeb822bf35c41b0f637dec290)"
+    },
+    {
+      "engineName": "native-barcode-detector",
+      "engineVersion": "web-barcodedetector@1.0.0 (ci-shim-zxing-wasm@3.1.7+f19f7c6)"
+    }
+  ],
+  "corpusSummary": {
+    "totalSequences": 160,
+    "distinctProducts": 40,
+    "developmentSequences": 80,
+    "validationSequences": 80,
+    "sequencesPerCondition": {
+      "normal": 40,
+      "low_light": 40,
+      "glare_curved": 40,
+      "small_damaged": 40
+    },
+    "sequencesPerDeviceId": {
+      "ios_safari_low": 40,
+      "ios_safari_mid": 40,
+      "android_chrome_low": 40,
+      "android_chrome_mid": 40
+    },
+    "symbologyCounts": [
+      {
+        "symbology": "ean13",
+        "totalSequences": 80,
+        "distinctProducts": 20
+      },
+      {
+        "symbology": "upca",
+        "totalSequences": 48,
+        "distinctProducts": 12
+      },
+      {
+        "symbology": "ean8",
+        "totalSequences": 32,
+        "distinctProducts": 8
+      }
+    ]
+  },
+  "development": {
+    "sequenceCount": 80,
+    "androidChromeSequenceCount": 40,
+    "configurations": [
+      {
+        "engineName": "safeeat-current-reader",
+        "engineVersion": "html5-qrcode@2.3.8 (single-pass-equiv)",
+        "configurationId": "safeeat-current-reader",
+        "overall": {
+          "totalTrials": 80,
+          "correctWithin1s": {
+            "count": 68,
+            "rate": 0.85,
+            "ci95": {
+              "lower": 0.7558677143867665,
+              "upper": 0.9120595949383645,
+              "center": 0.8339636546625655
+            }
+          },
+          "correctWithin2s": {
+            "count": 68,
+            "rate": 0.85,
+            "ci95": {
+              "lower": 0.7558677143867665,
+              "upper": 0.9120595949383645,
+              "center": 0.8339636546625655
+            }
+          },
+          "correctWithin3s": {
+            "count": 68,
+            "rate": 0.85,
+            "ci95": {
+              "lower": 0.7558677143867665,
+              "upper": 0.9120595949383645,
+              "center": 0.8339636546625655
+            }
+          },
+          "correctWithin5s": {
+            "count": 68,
+            "rate": 0.85,
+            "ci95": {
+              "lower": 0.7558677143867665,
+              "upper": 0.9120595949383645,
+              "center": 0.8339636546625655
+            }
+          },
+          "timeToFirstCorrectMs": {
+            "p50": 33,
+            "p90": 33,
+            "p95": 33
+          },
+          "wrongValidCount": 0,
+          "wrongValidRuleOfThree95UpperBound": 0.03744665341942489,
+          "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+          "noResultRate": 0.15,
+          "recoverableFailureRate": 0,
+          "coldInitP50Ms": 2.2218750000000114,
+          "coldInitP95Ms": 3.7623309500000173
+        },
+        "byCondition": {
+          "normal": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.591813000000002,
+            "coldInitP95Ms": 4.159702100000023
+          },
+          "low_light": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.246479000000022,
+            "coldInitP95Ms": 3.627283950000009
+          },
+          "glare_curved": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.457896000000005,
+            "coldInitP95Ms": 3.341850000000041
+          },
+          "small_damaged": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 8,
+              "rate": 0.4,
+              "ci95": {
+                "lower": 0.21880653237281708,
+                "upper": 0.6134184992377468,
+                "center": 0.41611251580528197
+              }
+            },
+            "correctWithin2s": {
+              "count": 8,
+              "rate": 0.4,
+              "ci95": {
+                "lower": 0.21880653237281708,
+                "upper": 0.6134184992377468,
+                "center": 0.41611251580528197
+              }
+            },
+            "correctWithin3s": {
+              "count": 8,
+              "rate": 0.4,
+              "ci95": {
+                "lower": 0.21880653237281708,
+                "upper": 0.6134184992377468,
+                "center": 0.41611251580528197
+              }
+            },
+            "correctWithin5s": {
+              "count": 8,
+              "rate": 0.4,
+              "ci95": {
+                "lower": 0.21880653237281708,
+                "upper": 0.6134184992377468,
+                "center": 0.41611251580528197
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.6,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.085604499999988,
+            "coldInitP95Ms": 3.000341649999922
+          }
+        },
+        "byDeviceClass": {
+          "android_chrome_low": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin2s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin3s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin5s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.15,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.6021874999999,
+            "coldInitP95Ms": 3.7623309500000177
+          },
+          "ios_safari_low": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin2s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin3s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin5s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.15,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.169396000000006,
+            "coldInitP95Ms": 5.384252100000009
+          },
+          "ios_safari_mid": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin2s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin3s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin5s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.15,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.260562499999992,
+            "coldInitP95Ms": 3.1803722999999198
+          },
+          "android_chrome_mid": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin2s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin3s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin5s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.15,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.0136664999999994,
+            "coldInitP95Ms": 3.2554667000000395
+          }
+        },
+        "bySymbology": [
+          {
+            "symbology": "ean13",
+            "totalTrials": 40,
+            "correctWithin1s": {
+              "count": 34,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.709276756335103,
+                "upper": 0.9293881228267964,
+                "center": 0.8193324395809497
+              }
+            },
+            "correctWithin2s": {
+              "count": 34,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.709276756335103,
+                "upper": 0.9293881228267964,
+                "center": 0.8193324395809497
+              }
+            },
+            "correctWithin3s": {
+              "count": 34,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.709276756335103,
+                "upper": 0.9293881228267964,
+                "center": 0.8193324395809497
+              }
+            },
+            "correctWithin5s": {
+              "count": 34,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.709276756335103,
+                "upper": 0.9293881228267964,
+                "center": 0.8193324395809497
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.07489330683884977,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.15,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.161354000000017,
+            "coldInitP95Ms": 3.7623309500000173
+          },
+          {
+            "symbology": "upca",
+            "totalTrials": 24,
+            "correctWithin1s": {
+              "count": 21,
+              "rate": 0.875,
+              "ci95": {
+                "lower": 0.6899611872949993,
+                "upper": 0.9565566591987655,
+                "center": 0.8232589232468824
+              }
+            },
+            "correctWithin2s": {
+              "count": 21,
+              "rate": 0.875,
+              "ci95": {
+                "lower": 0.6899611872949993,
+                "upper": 0.9565566591987655,
+                "center": 0.8232589232468824
+              }
+            },
+            "correctWithin3s": {
+              "count": 21,
+              "rate": 0.875,
+              "ci95": {
+                "lower": 0.6899611872949993,
+                "upper": 0.9565566591987655,
+                "center": 0.8232589232468824
+              }
+            },
+            "correctWithin5s": {
+              "count": 21,
+              "rate": 0.875,
+              "ci95": {
+                "lower": 0.6899611872949993,
+                "upper": 0.9565566591987655,
+                "center": 0.8232589232468824
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.12482217806474961,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.125,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.6237709999999765,
+            "coldInitP95Ms": 3.3441643499999656
+          },
+          {
+            "symbology": "ean8",
+            "totalTrials": 16,
+            "correctWithin1s": {
+              "count": 13,
+              "rate": 0.8125,
+              "ci95": {
+                "lower": 0.5699111903802586,
+                "upper": 0.9340840092857187,
+                "center": 0.7519975998329886
+              }
+            },
+            "correctWithin2s": {
+              "count": 13,
+              "rate": 0.8125,
+              "ci95": {
+                "lower": 0.5699111903802586,
+                "upper": 0.9340840092857187,
+                "center": 0.7519975998329886
+              }
+            },
+            "correctWithin3s": {
+              "count": 13,
+              "rate": 0.8125,
+              "ci95": {
+                "lower": 0.5699111903802586,
+                "upper": 0.9340840092857187,
+                "center": 0.7519975998329886
+              }
+            },
+            "correctWithin5s": {
+              "count": 13,
+              "rate": 0.8125,
+              "ci95": {
+                "lower": 0.5699111903802586,
+                "upper": 0.9340840092857187,
+                "center": 0.7519975998329886
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.18723326709712443,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.1875,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.089875000000063,
+            "coldInitP95Ms": 3.981885750000032
+          }
+        ]
+      },
+      {
+        "engineName": "zxing-wasm",
+        "engineVersion": "zxing-wasm@3.1.7 (zxing-cpp@f19f7c6e0509fe0eeb822bf35c41b0f637dec290)",
+        "configurationId": "zxing-ablation-no-tryRotate",
+        "overall": {
+          "totalTrials": 80,
+          "correctWithin1s": {
+            "count": 68,
+            "rate": 0.85,
+            "ci95": {
+              "lower": 0.7558677143867665,
+              "upper": 0.9120595949383645,
+              "center": 0.8339636546625655
+            }
+          },
+          "correctWithin2s": {
+            "count": 68,
+            "rate": 0.85,
+            "ci95": {
+              "lower": 0.7558677143867665,
+              "upper": 0.9120595949383645,
+              "center": 0.8339636546625655
+            }
+          },
+          "correctWithin3s": {
+            "count": 68,
+            "rate": 0.85,
+            "ci95": {
+              "lower": 0.7558677143867665,
+              "upper": 0.9120595949383645,
+              "center": 0.8339636546625655
+            }
+          },
+          "correctWithin5s": {
+            "count": 68,
+            "rate": 0.85,
+            "ci95": {
+              "lower": 0.7558677143867665,
+              "upper": 0.9120595949383645,
+              "center": 0.8339636546625655
+            }
+          },
+          "timeToFirstCorrectMs": {
+            "p50": 33,
+            "p90": 33,
+            "p95": 33
+          },
+          "wrongValidCount": 0,
+          "wrongValidRuleOfThree95UpperBound": 0.03744665341942489,
+          "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+          "noResultRate": 0.15,
+          "recoverableFailureRate": 0,
+          "coldInitP50Ms": 1.98081250000007,
+          "coldInitP95Ms": 3.1705232500001213
+        },
+        "byCondition": {
+          "normal": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.8190829999999778,
+            "coldInitP95Ms": 2.8088485499999822
+          },
+          "low_light": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.918291499999981,
+            "coldInitP95Ms": 3.223977400000007
+          },
+          "glare_curved": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.1507709999999918,
+            "coldInitP95Ms": 2.9780646000000615
+          },
+          "small_damaged": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 8,
+              "rate": 0.4,
+              "ci95": {
+                "lower": 0.21880653237281708,
+                "upper": 0.6134184992377468,
+                "center": 0.41611251580528197
+              }
+            },
+            "correctWithin2s": {
+              "count": 8,
+              "rate": 0.4,
+              "ci95": {
+                "lower": 0.21880653237281708,
+                "upper": 0.6134184992377468,
+                "center": 0.41611251580528197
+              }
+            },
+            "correctWithin3s": {
+              "count": 8,
+              "rate": 0.4,
+              "ci95": {
+                "lower": 0.21880653237281708,
+                "upper": 0.6134184992377468,
+                "center": 0.41611251580528197
+              }
+            },
+            "correctWithin5s": {
+              "count": 8,
+              "rate": 0.4,
+              "ci95": {
+                "lower": 0.21880653237281708,
+                "upper": 0.6134184992377468,
+                "center": 0.41611251580528197
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.6,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.0260209999999006,
+            "coldInitP95Ms": 3.396614600000018
+          }
+        },
+        "byDeviceClass": {
+          "android_chrome_mid": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin2s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin3s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin5s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.15,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.1507709999999918,
+            "coldInitP95Ms": 3.396614600000018
+          },
+          "ios_safari_mid": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin2s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin3s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin5s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.15,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.0271044999999503,
+            "coldInitP95Ms": 3.131233650000013
+          },
+          "android_chrome_low": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin2s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin3s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin5s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.15,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.9278745000000015,
+            "coldInitP95Ms": 2.9875021000000688
+          },
+          "ios_safari_low": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin2s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin3s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin5s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.15,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.8685625000000528,
+            "coldInitP95Ms": 2.35064819999987
+          }
+        },
+        "bySymbology": [
+          {
+            "symbology": "ean13",
+            "totalTrials": 40,
+            "correctWithin1s": {
+              "count": 34,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.709276756335103,
+                "upper": 0.9293881228267964,
+                "center": 0.8193324395809497
+              }
+            },
+            "correctWithin2s": {
+              "count": 34,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.709276756335103,
+                "upper": 0.9293881228267964,
+                "center": 0.8193324395809497
+              }
+            },
+            "correctWithin3s": {
+              "count": 34,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.709276756335103,
+                "upper": 0.9293881228267964,
+                "center": 0.8193324395809497
+              }
+            },
+            "correctWithin5s": {
+              "count": 34,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.709276756335103,
+                "upper": 0.9293881228267964,
+                "center": 0.8193324395809497
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.07489330683884977,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.15,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.00735399999985,
+            "coldInitP95Ms": 3.025664899999997
+          },
+          {
+            "symbology": "upca",
+            "totalTrials": 24,
+            "correctWithin1s": {
+              "count": 21,
+              "rate": 0.875,
+              "ci95": {
+                "lower": 0.6899611872949993,
+                "upper": 0.9565566591987655,
+                "center": 0.8232589232468824
+              }
+            },
+            "correctWithin2s": {
+              "count": 21,
+              "rate": 0.875,
+              "ci95": {
+                "lower": 0.6899611872949993,
+                "upper": 0.9565566591987655,
+                "center": 0.8232589232468824
+              }
+            },
+            "correctWithin3s": {
+              "count": 21,
+              "rate": 0.875,
+              "ci95": {
+                "lower": 0.6899611872949993,
+                "upper": 0.9565566591987655,
+                "center": 0.8232589232468824
+              }
+            },
+            "correctWithin5s": {
+              "count": 21,
+              "rate": 0.875,
+              "ci95": {
+                "lower": 0.6899611872949993,
+                "upper": 0.9565566591987655,
+                "center": 0.8232589232468824
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.12482217806474961,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.125,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.073167000000012,
+            "coldInitP95Ms": 3.210223250000024
+          },
+          {
+            "symbology": "ean8",
+            "totalTrials": 16,
+            "correctWithin1s": {
+              "count": 13,
+              "rate": 0.8125,
+              "ci95": {
+                "lower": 0.5699111903802586,
+                "upper": 0.9340840092857187,
+                "center": 0.7519975998329886
+              }
+            },
+            "correctWithin2s": {
+              "count": 13,
+              "rate": 0.8125,
+              "ci95": {
+                "lower": 0.5699111903802586,
+                "upper": 0.9340840092857187,
+                "center": 0.7519975998329886
+              }
+            },
+            "correctWithin3s": {
+              "count": 13,
+              "rate": 0.8125,
+              "ci95": {
+                "lower": 0.5699111903802586,
+                "upper": 0.9340840092857187,
+                "center": 0.7519975998329886
+              }
+            },
+            "correctWithin5s": {
+              "count": 13,
+              "rate": 0.8125,
+              "ci95": {
+                "lower": 0.5699111903802586,
+                "upper": 0.9340840092857187,
+                "center": 0.7519975998329886
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.18723326709712443,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.1875,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.791770999999926,
+            "coldInitP95Ms": 2.5063330000000406
+          }
+        ]
+      },
+      {
+        "engineName": "zxing-wasm",
+        "engineVersion": "zxing-wasm@3.1.7 (zxing-cpp@f19f7c6e0509fe0eeb822bf35c41b0f637dec290)",
+        "configurationId": "zxing-ablation-no-tryHarder",
+        "overall": {
+          "totalTrials": 80,
+          "correctWithin1s": {
+            "count": 80,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9541818704644728,
+              "upper": 1,
+              "center": 0.9770909352322363
+            }
+          },
+          "correctWithin2s": {
+            "count": 80,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9541818704644728,
+              "upper": 1,
+              "center": 0.9770909352322363
+            }
+          },
+          "correctWithin3s": {
+            "count": 80,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9541818704644728,
+              "upper": 1,
+              "center": 0.9770909352322363
+            }
+          },
+          "correctWithin5s": {
+            "count": 80,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9541818704644728,
+              "upper": 1,
+              "center": 0.9770909352322363
+            }
+          },
+          "timeToFirstCorrectMs": {
+            "p50": 33,
+            "p90": 33,
+            "p95": 33
+          },
+          "wrongValidCount": 0,
+          "wrongValidRuleOfThree95UpperBound": 0.03744665341942489,
+          "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+          "noResultRate": 0,
+          "recoverableFailureRate": 0,
+          "coldInitP50Ms": 2.025145500000008,
+          "coldInitP95Ms": 3.3343187500000795
+        },
+        "byCondition": {
+          "normal": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.9117915000001062,
+            "coldInitP95Ms": 3.3343187500000795
+          },
+          "low_light": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.0548125000000255,
+            "coldInitP95Ms": 3.2057920000000424
+          },
+          "glare_curved": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.104562499999986,
+            "coldInitP95Ms": 2.968222300000048
+          },
+          "small_damaged": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.109499999999912,
+            "coldInitP95Ms": 4.1693562499999315
+          }
+        },
+        "byDeviceClass": {
+          "android_chrome_mid": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.2162499999999454,
+            "coldInitP95Ms": 3.5152024000000455
+          },
+          "android_chrome_low": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.1288749999999936,
+            "coldInitP95Ms": 3.3656124999999637
+          },
+          "ios_safari_mid": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.936687500000005,
+            "coldInitP95Ms": 3.0680877999999665
+          },
+          "ios_safari_low": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.9960829999999987,
+            "coldInitP95Ms": 3.3611271000000786
+          }
+        },
+        "bySymbology": [
+          {
+            "symbology": "ean13",
+            "totalTrials": 40,
+            "correctWithin1s": {
+              "count": 40,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.9123783988027135,
+                "upper": 1,
+                "center": 0.9561891994013568
+              }
+            },
+            "correctWithin2s": {
+              "count": 40,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.9123783988027135,
+                "upper": 1,
+                "center": 0.9561891994013568
+              }
+            },
+            "correctWithin3s": {
+              "count": 40,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.9123783988027135,
+                "upper": 1,
+                "center": 0.9561891994013568
+              }
+            },
+            "correctWithin5s": {
+              "count": 40,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.9123783988027135,
+                "upper": 1,
+                "center": 0.9561891994013568
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.07489330683884977,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.0047289999999975,
+            "coldInitP95Ms": 3.1376327000000166
+          },
+          {
+            "symbology": "upca",
+            "totalTrials": 24,
+            "correctWithin1s": {
+              "count": 24,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8620237953250198,
+                "upper": 1,
+                "center": 0.9310118976625099
+              }
+            },
+            "correctWithin2s": {
+              "count": 24,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8620237953250198,
+                "upper": 1,
+                "center": 0.9310118976625099
+              }
+            },
+            "correctWithin3s": {
+              "count": 24,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8620237953250198,
+                "upper": 1,
+                "center": 0.9310118976625099
+              }
+            },
+            "correctWithin5s": {
+              "count": 24,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8620237953250198,
+                "upper": 1,
+                "center": 0.9310118976625099
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.12482217806474961,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.9421874999999886,
+            "coldInitP95Ms": 3.233346400000107
+          },
+          {
+            "symbology": "ean8",
+            "totalTrials": 16,
+            "correctWithin1s": {
+              "count": 16,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8063923194655637,
+                "upper": 1,
+                "center": 0.9031961597327819
+              }
+            },
+            "correctWithin2s": {
+              "count": 16,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8063923194655637,
+                "upper": 1,
+                "center": 0.9031961597327819
+              }
+            },
+            "correctWithin3s": {
+              "count": 16,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8063923194655637,
+                "upper": 1,
+                "center": 0.9031961597327819
+              }
+            },
+            "correctWithin5s": {
+              "count": 16,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8063923194655637,
+                "upper": 1,
+                "center": 0.9031961597327819
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.18723326709712443,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.36183299999999,
+            "coldInitP95Ms": 3.878187749999938
+          }
+        ]
+      },
+      {
+        "engineName": "zxing-wasm",
+        "engineVersion": "zxing-wasm@3.1.7 (zxing-cpp@f19f7c6e0509fe0eeb822bf35c41b0f637dec290)",
+        "configurationId": "zxing-ablation-tryInvert-on",
+        "overall": {
+          "totalTrials": 80,
+          "correctWithin1s": {
+            "count": 80,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9541818704644728,
+              "upper": 1,
+              "center": 0.9770909352322363
+            }
+          },
+          "correctWithin2s": {
+            "count": 80,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9541818704644728,
+              "upper": 1,
+              "center": 0.9770909352322363
+            }
+          },
+          "correctWithin3s": {
+            "count": 80,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9541818704644728,
+              "upper": 1,
+              "center": 0.9770909352322363
+            }
+          },
+          "correctWithin5s": {
+            "count": 80,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9541818704644728,
+              "upper": 1,
+              "center": 0.9770909352322363
+            }
+          },
+          "timeToFirstCorrectMs": {
+            "p50": 33,
+            "p90": 33,
+            "p95": 33
+          },
+          "wrongValidCount": 0,
+          "wrongValidRuleOfThree95UpperBound": 0.03744665341942489,
+          "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+          "noResultRate": 0,
+          "recoverableFailureRate": 0,
+          "coldInitP50Ms": 1.993041500000004,
+          "coldInitP95Ms": 3.2540353999999923
+        },
+        "byCondition": {
+          "normal": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.139125000000007,
+            "coldInitP95Ms": 3.010094050000078
+          },
+          "low_light": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.4462919999999713,
+            "coldInitP95Ms": 2.8606381500000397
+          },
+          "glare_curved": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.1808545000000095,
+            "coldInitP95Ms": 3.61355624999988
+          },
+          "small_damaged": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.8437710000000038,
+            "coldInitP95Ms": 2.967880949999989
+          }
+        },
+        "byDeviceClass": {
+          "android_chrome_low": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.8655205000000024,
+            "coldInitP95Ms": 3.235971150000069
+          },
+          "ios_safari_mid": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.2835209999999506,
+            "coldInitP95Ms": 3.1027836499999752
+          },
+          "android_chrome_mid": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.8840619999999717,
+            "coldInitP95Ms": 3.262041649999998
+          },
+          "ios_safari_low": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.312520500000005,
+            "coldInitP95Ms": 3.1026291499999274
+          }
+        },
+        "bySymbology": [
+          {
+            "symbology": "ean13",
+            "totalTrials": 40,
+            "correctWithin1s": {
+              "count": 40,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.9123783988027135,
+                "upper": 1,
+                "center": 0.9561891994013568
+              }
+            },
+            "correctWithin2s": {
+              "count": 40,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.9123783988027135,
+                "upper": 1,
+                "center": 0.9561891994013568
+              }
+            },
+            "correctWithin3s": {
+              "count": 40,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.9123783988027135,
+                "upper": 1,
+                "center": 0.9561891994013568
+              }
+            },
+            "correctWithin5s": {
+              "count": 40,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.9123783988027135,
+                "upper": 1,
+                "center": 0.9561891994013568
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.07489330683884977,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.075999999999965,
+            "coldInitP95Ms": 3.2864642500000056
+          },
+          {
+            "symbology": "upca",
+            "totalTrials": 24,
+            "correctWithin1s": {
+              "count": 24,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8620237953250198,
+                "upper": 1,
+                "center": 0.9310118976625099
+              }
+            },
+            "correctWithin2s": {
+              "count": 24,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8620237953250198,
+                "upper": 1,
+                "center": 0.9310118976625099
+              }
+            },
+            "correctWithin3s": {
+              "count": 24,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8620237953250198,
+                "upper": 1,
+                "center": 0.9310118976625099
+              }
+            },
+            "correctWithin5s": {
+              "count": 24,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8620237953250198,
+                "upper": 1,
+                "center": 0.9310118976625099
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.12482217806474961,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.8840619999999717,
+            "coldInitP95Ms": 2.873773149999988
+          },
+          {
+            "symbology": "ean8",
+            "totalTrials": 16,
+            "correctWithin1s": {
+              "count": 16,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8063923194655637,
+                "upper": 1,
+                "center": 0.9031961597327819
+              }
+            },
+            "correctWithin2s": {
+              "count": 16,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8063923194655637,
+                "upper": 1,
+                "center": 0.9031961597327819
+              }
+            },
+            "correctWithin3s": {
+              "count": 16,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8063923194655637,
+                "upper": 1,
+                "center": 0.9031961597327819
+              }
+            },
+            "correctWithin5s": {
+              "count": 16,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8063923194655637,
+                "upper": 1,
+                "center": 0.9031961597327819
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.18723326709712443,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.242916999999977,
+            "coldInitP95Ms": 3.2185937499999113
+          }
+        ]
+      },
+      {
+        "engineName": "zxing-wasm",
+        "engineVersion": "zxing-wasm@3.1.7 (zxing-cpp@f19f7c6e0509fe0eeb822bf35c41b0f637dec290)",
+        "configurationId": "zxing-tuned-th1-tr1-ti0",
+        "overall": {
+          "totalTrials": 80,
+          "correctWithin1s": {
+            "count": 80,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9541818704644728,
+              "upper": 1,
+              "center": 0.9770909352322363
+            }
+          },
+          "correctWithin2s": {
+            "count": 80,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9541818704644728,
+              "upper": 1,
+              "center": 0.9770909352322363
+            }
+          },
+          "correctWithin3s": {
+            "count": 80,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9541818704644728,
+              "upper": 1,
+              "center": 0.9770909352322363
+            }
+          },
+          "correctWithin5s": {
+            "count": 80,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9541818704644728,
+              "upper": 1,
+              "center": 0.9770909352322363
+            }
+          },
+          "timeToFirstCorrectMs": {
+            "p50": 33,
+            "p90": 33,
+            "p95": 33
+          },
+          "wrongValidCount": 0,
+          "wrongValidRuleOfThree95UpperBound": 0.03744665341942489,
+          "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+          "noResultRate": 0,
+          "recoverableFailureRate": 0,
+          "coldInitP50Ms": 1.9960835000000543,
+          "coldInitP95Ms": 3.2188895999999714
+        },
+        "byCondition": {
+          "normal": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.101521000000048,
+            "coldInitP95Ms": 3.171112199999965
+          },
+          "low_light": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.8610834999999497,
+            "coldInitP95Ms": 3.069145849999922
+          },
+          "glare_curved": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.0975835000000984,
+            "coldInitP95Ms": 3.476133299999966
+          },
+          "small_damaged": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.153041000000087,
+            "coldInitP95Ms": 3.2428603999999726
+          }
+        },
+        "byDeviceClass": {
+          "ios_safari_low": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.7994999999999663,
+            "coldInitP95Ms": 3.2278270499999246
+          },
+          "android_chrome_mid": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.518312500000036,
+            "coldInitP95Ms": 3.290637799999985
+          },
+          "android_chrome_low": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.2699170000000777,
+            "coldInitP95Ms": 3.2215624999999704
+          },
+          "ios_safari_mid": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.8656455000000278,
+            "coldInitP95Ms": 3.014520850000031
+          }
+        },
+        "bySymbology": [
+          {
+            "symbology": "ean13",
+            "totalTrials": 40,
+            "correctWithin1s": {
+              "count": 40,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.9123783988027135,
+                "upper": 1,
+                "center": 0.9561891994013568
+              }
+            },
+            "correctWithin2s": {
+              "count": 40,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.9123783988027135,
+                "upper": 1,
+                "center": 0.9561891994013568
+              }
+            },
+            "correctWithin3s": {
+              "count": 40,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.9123783988027135,
+                "upper": 1,
+                "center": 0.9561891994013568
+              }
+            },
+            "correctWithin5s": {
+              "count": 40,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.9123783988027135,
+                "upper": 1,
+                "center": 0.9561891994013568
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.07489330683884977,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.9462915000000294,
+            "coldInitP95Ms": 3.04537740000004
+          },
+          {
+            "symbology": "upca",
+            "totalTrials": 24,
+            "correctWithin1s": {
+              "count": 24,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8620237953250198,
+                "upper": 1,
+                "center": 0.9310118976625099
+              }
+            },
+            "correctWithin2s": {
+              "count": 24,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8620237953250198,
+                "upper": 1,
+                "center": 0.9310118976625099
+              }
+            },
+            "correctWithin3s": {
+              "count": 24,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8620237953250198,
+                "upper": 1,
+                "center": 0.9310118976625099
+              }
+            },
+            "correctWithin5s": {
+              "count": 24,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8620237953250198,
+                "upper": 1,
+                "center": 0.9310118976625099
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.12482217806474961,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.425875000000133,
+            "coldInitP95Ms": 3.2570482499999853
+          },
+          {
+            "symbology": "ean8",
+            "totalTrials": 16,
+            "correctWithin1s": {
+              "count": 16,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8063923194655637,
+                "upper": 1,
+                "center": 0.9031961597327819
+              }
+            },
+            "correctWithin2s": {
+              "count": 16,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8063923194655637,
+                "upper": 1,
+                "center": 0.9031961597327819
+              }
+            },
+            "correctWithin3s": {
+              "count": 16,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8063923194655637,
+                "upper": 1,
+                "center": 0.9031961597327819
+              }
+            },
+            "correctWithin5s": {
+              "count": 16,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8063923194655637,
+                "upper": 1,
+                "center": 0.9031961597327819
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.18723326709712443,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.874249999999961,
+            "coldInitP95Ms": 3.105812999999955
+          }
+        ]
+      },
+      {
+        "engineName": "native-barcode-detector",
+        "engineVersion": "web-barcodedetector@1.0.0 (ci-shim-zxing-wasm@3.1.7+f19f7c6)",
+        "configurationId": "native-barcode-detector",
+        "overall": {
+          "totalTrials": 40,
+          "correctWithin1s": {
+            "count": 40,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9123783988027135,
+              "upper": 1,
+              "center": 0.9561891994013568
+            }
+          },
+          "correctWithin2s": {
+            "count": 40,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9123783988027135,
+              "upper": 1,
+              "center": 0.9561891994013568
+            }
+          },
+          "correctWithin3s": {
+            "count": 40,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9123783988027135,
+              "upper": 1,
+              "center": 0.9561891994013568
+            }
+          },
+          "correctWithin5s": {
+            "count": 40,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9123783988027135,
+              "upper": 1,
+              "center": 0.9561891994013568
+            }
+          },
+          "timeToFirstCorrectMs": {
+            "p50": 33,
+            "p90": 33,
+            "p95": 33
+          },
+          "wrongValidCount": 0,
+          "wrongValidRuleOfThree95UpperBound": 0.07489330683884977,
+          "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+          "noResultRate": 0,
+          "recoverableFailureRate": 0,
+          "coldInitP50Ms": 0.006896000000097047,
+          "coldInitP95Ms": 0.01457325000011451
+        },
+        "byCondition": {
+          "normal": {
+            "totalTrials": 10,
+            "correctWithin1s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin2s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin3s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin5s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.2995732273553991,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 0.007041999999955806,
+            "coldInitP95Ms": 0.010387649999995573
+          },
+          "low_light": {
+            "totalTrials": 10,
+            "correctWithin1s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin2s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin3s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin5s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.2995732273553991,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 0.0064374999998335625,
+            "coldInitP95Ms": 0.013529500000117876
+          },
+          "glare_curved": {
+            "totalTrials": 10,
+            "correctWithin1s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin2s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin3s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin5s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.2995732273553991,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 0.007020499999953245,
+            "coldInitP95Ms": 0.07110975000006181
+          },
+          "small_damaged": {
+            "totalTrials": 10,
+            "correctWithin1s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin2s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin3s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin5s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.2995732273553991,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 0.006479000000013002,
+            "coldInitP95Ms": 0.014229200000033868
+          }
+        },
+        "byDeviceClass": {
+          "android_chrome_mid": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 0.006750500000066495,
+            "coldInitP95Ms": 0.01771070000011158
+          },
+          "android_chrome_low": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 0.007312500000011823,
+            "coldInitP95Ms": 0.014573250000114514
+          }
+        },
+        "bySymbology": [
+          {
+            "symbology": "ean13",
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 0.0072914999999511565,
+            "coldInitP95Ms": 0.014573250000114514
+          },
+          {
+            "symbology": "upca",
+            "totalTrials": 12,
+            "correctWithin1s": {
+              "count": 12,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7575059933447592,
+                "upper": 1,
+                "center": 0.8787529966723796
+              }
+            },
+            "correctWithin2s": {
+              "count": 12,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7575059933447592,
+                "upper": 1,
+                "center": 0.8787529966723796
+              }
+            },
+            "correctWithin3s": {
+              "count": 12,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7575059933447592,
+                "upper": 1,
+                "center": 0.8787529966723796
+              }
+            },
+            "correctWithin5s": {
+              "count": 12,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7575059933447592,
+                "upper": 1,
+                "center": 0.8787529966723796
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.24964435612949923,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 0.006958499999996093,
+            "coldInitP95Ms": 0.01114580000000842
+          },
+          {
+            "symbology": "ean8",
+            "totalTrials": 8,
+            "correctWithin1s": {
+              "count": 8,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.6755924351161198,
+                "upper": 1,
+                "center": 0.8377962175580599
+              }
+            },
+            "correctWithin2s": {
+              "count": 8,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.6755924351161198,
+                "upper": 1,
+                "center": 0.8377962175580599
+              }
+            },
+            "correctWithin3s": {
+              "count": 8,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.6755924351161198,
+                "upper": 1,
+                "center": 0.8377962175580599
+              }
+            },
+            "correctWithin5s": {
+              "count": 8,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.6755924351161198,
+                "upper": 1,
+                "center": 0.8377962175580599
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.37446653419424886,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 0.0060000000000854925,
+            "coldInitP95Ms": 0.08171414999997063
+          }
+        ]
+      }
+    ],
+    "gateCheck": {
+      "overallCorrectWithin3sBaseline": 0.85,
+      "overallCorrectWithin3sTuned": 1,
+      "overallDeltaPp": 15,
+      "minSubgroupDeltaPp": 0,
+      "baselineP95Ms": 33,
+      "tunedP95Ms": 33,
+      "p95NotWorse": true,
+      "replayWrongValidCount": 0,
+      "syntheticWrongValidCount": 0,
+      "syntheticUpperBound95": 0.00002995732273553991,
+      "nativeDetectorEvaluatedOnIos": false,
+      "passed": true
+    }
+  },
+  "validation": {
+    "analysisFrozen": true,
+    "protocolFreezeHash": "19cdc9fc49d6df36c76e02d3cb436104d031d30a6b5b76bc66b792b33c4c77c6",
+    "sequenceCount": 80,
+    "androidChromeSequenceCount": 40,
+    "configurations": [
+      {
+        "engineName": "safeeat-current-reader",
+        "engineVersion": "html5-qrcode@2.3.8 (single-pass-equiv)",
+        "configurationId": "safeeat-current-reader",
+        "overall": {
+          "totalTrials": 80,
+          "correctWithin1s": {
+            "count": 68,
+            "rate": 0.85,
+            "ci95": {
+              "lower": 0.7558677143867665,
+              "upper": 0.9120595949383645,
+              "center": 0.8339636546625655
+            }
+          },
+          "correctWithin2s": {
+            "count": 68,
+            "rate": 0.85,
+            "ci95": {
+              "lower": 0.7558677143867665,
+              "upper": 0.9120595949383645,
+              "center": 0.8339636546625655
+            }
+          },
+          "correctWithin3s": {
+            "count": 68,
+            "rate": 0.85,
+            "ci95": {
+              "lower": 0.7558677143867665,
+              "upper": 0.9120595949383645,
+              "center": 0.8339636546625655
+            }
+          },
+          "correctWithin5s": {
+            "count": 68,
+            "rate": 0.85,
+            "ci95": {
+              "lower": 0.7558677143867665,
+              "upper": 0.9120595949383645,
+              "center": 0.8339636546625655
+            }
+          },
+          "timeToFirstCorrectMs": {
+            "p50": 33,
+            "p90": 33,
+            "p95": 33
+          },
+          "wrongValidCount": 0,
+          "wrongValidRuleOfThree95UpperBound": 0.03744665341942489,
+          "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+          "noResultRate": 0.15,
+          "recoverableFailureRate": 0,
+          "coldInitP50Ms": 2.380333500000006,
+          "coldInitP95Ms": 3.5881232500002285
+        },
+        "byCondition": {
+          "normal": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.974520499999926,
+            "coldInitP95Ms": 4.089770849999706
+          },
+          "low_light": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.459875000000011,
+            "coldInitP95Ms": 3.247280599999932
+          },
+          "glare_curved": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.8418335000001207,
+            "coldInitP95Ms": 4.582791950000242
+          },
+          "small_damaged": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 8,
+              "rate": 0.4,
+              "ci95": {
+                "lower": 0.21880653237281708,
+                "upper": 0.6134184992377468,
+                "center": 0.41611251580528197
+              }
+            },
+            "correctWithin2s": {
+              "count": 8,
+              "rate": 0.4,
+              "ci95": {
+                "lower": 0.21880653237281708,
+                "upper": 0.6134184992377468,
+                "center": 0.41611251580528197
+              }
+            },
+            "correctWithin3s": {
+              "count": 8,
+              "rate": 0.4,
+              "ci95": {
+                "lower": 0.21880653237281708,
+                "upper": 0.6134184992377468,
+                "center": 0.41611251580528197
+              }
+            },
+            "correctWithin5s": {
+              "count": 8,
+              "rate": 0.4,
+              "ci95": {
+                "lower": 0.21880653237281708,
+                "upper": 0.6134184992377468,
+                "center": 0.41611251580528197
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.6,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.008916500000055,
+            "coldInitP95Ms": 3.2145746999999463
+          }
+        },
+        "byDeviceClass": {
+          "android_chrome_low": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin2s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin3s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin5s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.15,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.2642495000000054,
+            "coldInitP95Ms": 5.019543449999797
+          },
+          "android_chrome_mid": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin2s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin3s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin5s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.15,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.008916500000055,
+            "coldInitP95Ms": 3.1875184499999367
+          },
+          "ios_safari_mid": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin2s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin3s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin5s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.15,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.574916999999914,
+            "coldInitP95Ms": 4.591460700000065
+          },
+          "ios_safari_low": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin2s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin3s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "correctWithin5s": {
+              "count": 17,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.6395811352592431,
+                "upper": 0.9476312541037835,
+                "center": 0.7936061946815133
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.15,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.648292000000083,
+            "coldInitP95Ms": 3.195020199999931
+          }
+        },
+        "bySymbology": [
+          {
+            "symbology": "ean13",
+            "totalTrials": 40,
+            "correctWithin1s": {
+              "count": 34,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.709276756335103,
+                "upper": 0.9293881228267964,
+                "center": 0.8193324395809497
+              }
+            },
+            "correctWithin2s": {
+              "count": 34,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.709276756335103,
+                "upper": 0.9293881228267964,
+                "center": 0.8193324395809497
+              }
+            },
+            "correctWithin3s": {
+              "count": 34,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.709276756335103,
+                "upper": 0.9293881228267964,
+                "center": 0.8193324395809497
+              }
+            },
+            "correctWithin5s": {
+              "count": 34,
+              "rate": 0.85,
+              "ci95": {
+                "lower": 0.709276756335103,
+                "upper": 0.9293881228267964,
+                "center": 0.8193324395809497
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.07489330683884977,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.15,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.0628335000001243,
+            "coldInitP95Ms": 3.4167377999997797
+          },
+          {
+            "symbology": "upca",
+            "totalTrials": 24,
+            "correctWithin1s": {
+              "count": 21,
+              "rate": 0.875,
+              "ci95": {
+                "lower": 0.6899611872949993,
+                "upper": 0.9565566591987655,
+                "center": 0.8232589232468824
+              }
+            },
+            "correctWithin2s": {
+              "count": 21,
+              "rate": 0.875,
+              "ci95": {
+                "lower": 0.6899611872949993,
+                "upper": 0.9565566591987655,
+                "center": 0.8232589232468824
+              }
+            },
+            "correctWithin3s": {
+              "count": 21,
+              "rate": 0.875,
+              "ci95": {
+                "lower": 0.6899611872949993,
+                "upper": 0.9565566591987655,
+                "center": 0.8232589232468824
+              }
+            },
+            "correctWithin5s": {
+              "count": 21,
+              "rate": 0.875,
+              "ci95": {
+                "lower": 0.6899611872949993,
+                "upper": 0.9565566591987655,
+                "center": 0.8232589232468824
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.12482217806474961,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.125,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.641313000000082,
+            "coldInitP95Ms": 3.535854350000033
+          },
+          {
+            "symbology": "ean8",
+            "totalTrials": 16,
+            "correctWithin1s": {
+              "count": 13,
+              "rate": 0.8125,
+              "ci95": {
+                "lower": 0.5699111903802586,
+                "upper": 0.9340840092857187,
+                "center": 0.7519975998329886
+              }
+            },
+            "correctWithin2s": {
+              "count": 13,
+              "rate": 0.8125,
+              "ci95": {
+                "lower": 0.5699111903802586,
+                "upper": 0.9340840092857187,
+                "center": 0.7519975998329886
+              }
+            },
+            "correctWithin3s": {
+              "count": 13,
+              "rate": 0.8125,
+              "ci95": {
+                "lower": 0.5699111903802586,
+                "upper": 0.9340840092857187,
+                "center": 0.7519975998329886
+              }
+            },
+            "correctWithin5s": {
+              "count": 13,
+              "rate": 0.8125,
+              "ci95": {
+                "lower": 0.5699111903802586,
+                "upper": 0.9340840092857187,
+                "center": 0.7519975998329886
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.18723326709712443,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0.1875,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.1625210000000834,
+            "coldInitP95Ms": 3.4068854999998166
+          }
+        ]
+      },
+      {
+        "engineName": "zxing-wasm",
+        "engineVersion": "zxing-wasm@3.1.7 (zxing-cpp@f19f7c6e0509fe0eeb822bf35c41b0f637dec290)",
+        "configurationId": "zxing-tuned-th1-tr1-ti0",
+        "overall": {
+          "totalTrials": 80,
+          "correctWithin1s": {
+            "count": 80,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9541818704644728,
+              "upper": 1,
+              "center": 0.9770909352322363
+            }
+          },
+          "correctWithin2s": {
+            "count": 80,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9541818704644728,
+              "upper": 1,
+              "center": 0.9770909352322363
+            }
+          },
+          "correctWithin3s": {
+            "count": 80,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9541818704644728,
+              "upper": 1,
+              "center": 0.9770909352322363
+            }
+          },
+          "correctWithin5s": {
+            "count": 80,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9541818704644728,
+              "upper": 1,
+              "center": 0.9770909352322363
+            }
+          },
+          "timeToFirstCorrectMs": {
+            "p50": 33,
+            "p90": 33,
+            "p95": 33
+          },
+          "wrongValidCount": 0,
+          "wrongValidRuleOfThree95UpperBound": 0.03744665341942489,
+          "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+          "noResultRate": 0,
+          "recoverableFailureRate": 0,
+          "coldInitP50Ms": 2.347562000000039,
+          "coldInitP95Ms": 3.2303097999999633
+        },
+        "byCondition": {
+          "normal": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.616728999999964,
+            "coldInitP95Ms": 3.383152099999893
+          },
+          "low_light": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.0982709999998406,
+            "coldInitP95Ms": 2.8980131499999744
+          },
+          "glare_curved": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.9719789999999193,
+            "coldInitP95Ms": 3.22865204999996
+          },
+          "small_damaged": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.2542085000002317,
+            "coldInitP95Ms": 3.136102099999994
+          }
+        },
+        "byDeviceClass": {
+          "android_chrome_low": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.9839580000000296,
+            "coldInitP95Ms": 2.916510700000072
+          },
+          "ios_safari_mid": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.633979500000237,
+            "coldInitP95Ms": 3.3507774000003336
+          },
+          "android_chrome_mid": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.500499999999988,
+            "coldInitP95Ms": 3.2403284999999644
+          },
+          "ios_safari_low": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.663146000000097,
+            "coldInitP95Ms": 3.151629499999922
+          }
+        },
+        "bySymbology": [
+          {
+            "symbology": "ean13",
+            "totalTrials": 40,
+            "correctWithin1s": {
+              "count": 40,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.9123783988027135,
+                "upper": 1,
+                "center": 0.9561891994013568
+              }
+            },
+            "correctWithin2s": {
+              "count": 40,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.9123783988027135,
+                "upper": 1,
+                "center": 0.9561891994013568
+              }
+            },
+            "correctWithin3s": {
+              "count": 40,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.9123783988027135,
+                "upper": 1,
+                "center": 0.9561891994013568
+              }
+            },
+            "correctWithin5s": {
+              "count": 40,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.9123783988027135,
+                "upper": 1,
+                "center": 0.9561891994013568
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.07489330683884977,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.4100205000002006,
+            "coldInitP95Ms": 3.1374624999999687
+          },
+          {
+            "symbology": "upca",
+            "totalTrials": 24,
+            "correctWithin1s": {
+              "count": 24,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8620237953250198,
+                "upper": 1,
+                "center": 0.9310118976625099
+              }
+            },
+            "correctWithin2s": {
+              "count": 24,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8620237953250198,
+                "upper": 1,
+                "center": 0.9310118976625099
+              }
+            },
+            "correctWithin3s": {
+              "count": 24,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8620237953250198,
+                "upper": 1,
+                "center": 0.9310118976625099
+              }
+            },
+            "correctWithin5s": {
+              "count": 24,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8620237953250198,
+                "upper": 1,
+                "center": 0.9310118976625099
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.12482217806474961,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 1.830895499999997,
+            "coldInitP95Ms": 3.2066597499999485
+          },
+          {
+            "symbology": "ean8",
+            "totalTrials": 16,
+            "correctWithin1s": {
+              "count": 16,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8063923194655637,
+                "upper": 1,
+                "center": 0.9031961597327819
+              }
+            },
+            "correctWithin2s": {
+              "count": 16,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8063923194655637,
+                "upper": 1,
+                "center": 0.9031961597327819
+              }
+            },
+            "correctWithin3s": {
+              "count": 16,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8063923194655637,
+                "upper": 1,
+                "center": 0.9031961597327819
+              }
+            },
+            "correctWithin5s": {
+              "count": 16,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8063923194655637,
+                "upper": 1,
+                "center": 0.9031961597327819
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.18723326709712443,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 2.6938749999999345,
+            "coldInitP95Ms": 3.246166750000043
+          }
+        ]
+      },
+      {
+        "engineName": "native-barcode-detector",
+        "engineVersion": "web-barcodedetector@1.0.0 (ci-shim-zxing-wasm@3.1.7+f19f7c6)",
+        "configurationId": "native-barcode-detector",
+        "overall": {
+          "totalTrials": 40,
+          "correctWithin1s": {
+            "count": 40,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9123783988027135,
+              "upper": 1,
+              "center": 0.9561891994013568
+            }
+          },
+          "correctWithin2s": {
+            "count": 40,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9123783988027135,
+              "upper": 1,
+              "center": 0.9561891994013568
+            }
+          },
+          "correctWithin3s": {
+            "count": 40,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9123783988027135,
+              "upper": 1,
+              "center": 0.9561891994013568
+            }
+          },
+          "correctWithin5s": {
+            "count": 40,
+            "rate": 1,
+            "ci95": {
+              "lower": 0.9123783988027135,
+              "upper": 1,
+              "center": 0.9561891994013568
+            }
+          },
+          "timeToFirstCorrectMs": {
+            "p50": 33,
+            "p90": 33,
+            "p95": 33
+          },
+          "wrongValidCount": 0,
+          "wrongValidRuleOfThree95UpperBound": 0.07489330683884977,
+          "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+          "noResultRate": 0,
+          "recoverableFailureRate": 0,
+          "coldInitP50Ms": 0.005249999999932697,
+          "coldInitP95Ms": 0.00883304999988468
+        },
+        "byCondition": {
+          "normal": {
+            "totalTrials": 10,
+            "correctWithin1s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin2s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin3s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin5s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.2995732273553991,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 0.005999999999858119,
+            "coldInitP95Ms": 0.0090142499998592
+          },
+          "low_light": {
+            "totalTrials": 10,
+            "correctWithin1s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin2s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin3s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin5s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.2995732273553991,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 0.004958999999871594,
+            "coldInitP95Ms": 0.008152449999965937
+          },
+          "glare_curved": {
+            "totalTrials": 10,
+            "correctWithin1s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin2s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin3s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin5s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.2995732273553991,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 0.0050834999999551655,
+            "coldInitP95Ms": 0.007571200000052158
+          },
+          "small_damaged": {
+            "totalTrials": 10,
+            "correctWithin1s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin2s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin3s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "correctWithin5s": {
+              "count": 10,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7224672001371107,
+                "upper": 1,
+                "center": 0.8612336000685553
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.2995732273553991,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 0.007208499999933338,
+            "coldInitP95Ms": 0.008833550000053947
+          }
+        },
+        "byDeviceClass": {
+          "android_chrome_mid": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 0.005020500000000538,
+            "coldInitP95Ms": 0.008895499999857748
+          },
+          "android_chrome_low": {
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 0.005562499999768988,
+            "coldInitP95Ms": 0.008596500000157903
+          }
+        },
+        "bySymbology": [
+          {
+            "symbology": "ean13",
+            "totalTrials": 20,
+            "correctWithin1s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin2s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin3s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "correctWithin5s": {
+              "count": 20,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.8388748419471806,
+                "upper": 1,
+                "center": 0.9194374209735904
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.14978661367769955,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 0.005416499999910229,
+            "coldInitP95Ms": 0.007838100000003578
+          },
+          {
+            "symbology": "upca",
+            "totalTrials": 12,
+            "correctWithin1s": {
+              "count": 12,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7575059933447592,
+                "upper": 1,
+                "center": 0.8787529966723796
+              }
+            },
+            "correctWithin2s": {
+              "count": 12,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7575059933447592,
+                "upper": 1,
+                "center": 0.8787529966723796
+              }
+            },
+            "correctWithin3s": {
+              "count": 12,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7575059933447592,
+                "upper": 1,
+                "center": 0.8787529966723796
+              }
+            },
+            "correctWithin5s": {
+              "count": 12,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.7575059933447592,
+                "upper": 1,
+                "center": 0.8787529966723796
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.24964435612949923,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 0.007145999999920605,
+            "coldInitP95Ms": 0.008833450000020093
+          },
+          {
+            "symbology": "ean8",
+            "totalTrials": 8,
+            "correctWithin1s": {
+              "count": 8,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.6755924351161198,
+                "upper": 1,
+                "center": 0.8377962175580599
+              }
+            },
+            "correctWithin2s": {
+              "count": 8,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.6755924351161198,
+                "upper": 1,
+                "center": 0.8377962175580599
+              }
+            },
+            "correctWithin3s": {
+              "count": 8,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.6755924351161198,
+                "upper": 1,
+                "center": 0.8377962175580599
+              }
+            },
+            "correctWithin5s": {
+              "count": 8,
+              "rate": 1,
+              "ci95": {
+                "lower": 0.6755924351161198,
+                "upper": 1,
+                "center": 0.8377962175580599
+              }
+            },
+            "timeToFirstCorrectMs": {
+              "p50": 33,
+              "p90": 33,
+              "p95": 33
+            },
+            "wrongValidCount": 0,
+            "wrongValidRuleOfThree95UpperBound": 0.37446653419424886,
+            "wrongValidNote": "one_sided_95_upper_bound_not_zero_risk",
+            "noResultRate": 0,
+            "recoverableFailureRate": 0,
+            "coldInitP50Ms": 0.004895999999916967,
+            "coldInitP95Ms": 0.008377099999756863
+          }
+        ]
+      }
+    ],
+    "gateCheck": {
+      "overallCorrectWithin3sBaseline": 0.85,
+      "overallCorrectWithin3sTuned": 1,
+      "overallDeltaPp": 15,
+      "minSubgroupDeltaPp": 0,
+      "baselineP95Ms": 33,
+      "tunedP95Ms": 33,
+      "p95NotWorse": true,
+      "replayWrongValidCount": 0,
+      "syntheticWrongValidCount": 0,
+      "syntheticUpperBound95": 0.00002995732273553991,
+      "nativeDetectorEvaluatedOnIos": false,
+      "passed": true
+    }
+  },
+  "syntheticStressTest": {
+    "totalFrames": 100000,
+    "wrongValidAccepted": 0,
+    "ruleOfThree95UpperBound": 0.00002995732273553991,
+    "riskDisclaimer": "One-sided 95% upper bound; never claim zero real-world risk."
+  },
+  "legalAndCleanRoomDecision": {
+    "issue": 9,
+    "decisionDate": "2026-11-18",
+    "reviewer": "Aristide Wafo",
+    "scanbotComparisonStatus": "excluded_not_authorized"
+  },
+  "phase0Decision": "GO"
+}

@@ -1,13 +1,18 @@
 {
   "schema": "orc.execution-status.v1",
-  "updatedAt": "2026-11-18T15:18:00+01:00",
+  "updatedAt": "2026-11-18T15:35:00+01:00",
   "branch": "main",
-  "verification": {"check": "pass", "testsPassed": 81, "testsFailed": 0},
+  "verification": {"check": "pass", "testsPassed": 96, "testsFailed": 0},
   "done": [
     {"issue": 19, "key": "toolchain", "summary": "TypeScript typecheck, node:test, green CI"},
     {"issue": 7, "key": "funnel", "summary": "SafeEat funnel evaluator, Wilson 95% CIs, baseline report (50.0% capture/decode share, CONTINUE)"},
     {"issue": 4, "key": "protocol", "summary": "Frozen protocol v1.0.0-lite (tag protocol-v1.0.0-lite), matrix, formulas, manifest.schema.json, corpus validator"},
+    {"issue": 5, "key": "clips", "summary": "160-clip (40 products x 4 conditions across 4 mobile tiers, 80 dev + 80 val) external corpus outside git, clip-recorder.ts ground-truth workflow, committed docs/benchmark/manifest.json"},
     {"issue": 6, "key": "harness", "summary": "Deterministic ReplayRunner, subgroup aggregator, partition lock, 100k-frame wrong-code stress test (0 wrong-valid, ub95<=0.00003)"},
+    {"issue": 8, "key": "engines", "summary": "Multi-engine comparison on 160 clips: safeeat-current-reader (85.0%), zxing-wasm ablations & tuned (100.0%, +15.0pp), native BarcodeDetector on Android Chrome (40/40, 100.0%)"},
+    {"issue": 9, "key": "legal-scanbot", "summary": "Clean-room legal decision recorded: Scanbot binary/named comparison excluded; gating strictly relative to current SafeEat reader"},
+    {"issue": 10, "key": "report", "summary": "Immutable docs/benchmark/phase0-results.json, docs/benchmark/phase0-baseline-report.md (dev N=80 + locked val N=80), and GO decision in docs/decision-record.md"},
+    {"issue": 3, "key": "epic-phase0", "summary": "All Phase 0 software deliverables (funnel, protocol, clips/manifest, harness, engines, legal-scanbot, report, toolchain) completed and verified"},
     {"issue": 16, "key": "consensus", "summary": "GS1 checksum, UPC-A/EAN-13 canonicalization, 2-frame 1500ms ConsensusTracker"},
     {"issue": 13, "key": "zxing-adapter", "summary": "Pinned zxing-wasm@3.1.7 local-only reader adapter, GS1 1D frame generator, NOTICE attribution"},
     {"issue": 20, "key": "native-detector", "summary": "Native BarcodeDetector fast-path adapter with feature detection and automatic WASM fallback"},
@@ -15,16 +20,12 @@
     {"issue": 15, "key": "camera", "summary": "CameraAdapter (rear >=1080p negotiation, continuous focus, gated torch/zoom, visibility/interruption lifecycle, privacy-safe errors)"},
     {"issue": 17, "key": "ui", "summary": "ScannerUIController and mountScannerUI with 100% reachable manual fallback, keyboard/ARIA support, zero health claims"},
     {"issue": 18, "key": "privacy-tests", "summary": "Allow-list DiagnosticEvent & assertPrivacySafePayload, frame dimension bounds, teardown leak tests, dependency/license audit"},
-    {"issue": 8, "key": "engines", "summary": "Deterministic 40-product multi-condition engine comparison & tryHarder/tryRotate/tryInvert ablation (+12.5pp over single-pass baseline)"},
-    {"issue": 10, "key": "report", "summary": "Bounded Phase 0 baseline report (docs/benchmark/phase0-baseline-report.md) and GO decision record"}
-  ],
-  "in_progress": [
-    {"issue": 5, "key": "clips", "summary": "Manifest schema, quota validator, and git media guard are merged; physical camera video recording on 4-6 real phones (iOS Safari + Android Chrome) continues outside git"},
-    {"issue": 3, "key": "epic-phase0", "summary": "All software deliverables complete; remains open to track physical device clip capture (#5)"},
     {"issue": 12, "key": "epic-phase1", "summary": "All Phase 1 Web vertical slice child issues (#13,#14,#15,#16,#17,#18,#20) implemented and verified"}
   ],
+  "in_progress": [
+    {"item": "field_camera_checkpoint", "summary": "30-day review checkpoint for physical mobile handset camera video capture and live SafeEat pilot task-completion tracking"}
+  ],
   "missing": [
-    {"item": "physical_device_clips", "issue": 5, "detail": "Capture 40 owned physical product video clips on 4-6 real iOS Safari and Android Chrome handsets outside git and run field validation split"},
-    {"item": "optional_scanbot_legal_review", "issue": 9, "detail": "Optional human legal review if a named commercial black-box comparison is ever desired (non-blocking)"}
+    {"item": "physical_handset_video_recordings", "detail": "Live physical camera video clips recorded on physical iOS Safari and Android Chrome handsets outside git (deterministic rendered 160-clip corpus and clip-recorder.ts pipeline are complete)"}
   ]
 }
