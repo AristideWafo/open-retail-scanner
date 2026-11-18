@@ -2,6 +2,7 @@
 
 ## Read first
 
+0. [`agent-kickoff.md`](agent-kickoff.md) (prompt to start an agent)
 1. [`AGENTS.md`](../AGENTS.md)
 2. [`docs/product-scope.md`](product-scope.md)
 3. [`docs/benchmark/protocol.md`](benchmark/protocol.md)

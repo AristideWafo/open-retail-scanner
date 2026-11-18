@@ -48,7 +48,7 @@ Phase 0 (evidence-lite) measures the SafeEat funnel, then replays recorded clips
 
 ## Development
 
-Requirements: Node.js 22+.
+Requirements: Node.js 22.18+ (24 recommended, see `.nvmrc`).
 
 ```bash
 npm install

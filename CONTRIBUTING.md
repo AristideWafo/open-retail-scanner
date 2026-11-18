@@ -11,7 +11,7 @@ Thank you for helping build an auditable scanner.
 
 ## Development
 
-Use Node.js 22 or newer.
+Use Node.js 22.18 or newer (native TypeScript type stripping).
 
 ```bash
 npm install

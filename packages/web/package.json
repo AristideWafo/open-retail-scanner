@@ -8,5 +8,8 @@
   "exports": "./src/index.ts",
   "dependencies": {
     "open-retail-scanner-core": "*"
+  },
+  "scripts": {
+    "typecheck": "tsc -p ."
   }
 }

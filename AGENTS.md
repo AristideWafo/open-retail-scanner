@@ -2,7 +2,7 @@
 
 ## Objective
 
-Implement a benchmark-first, local-only EAN-8/EAN-13/UPC-A scanner. Do not claim Scanbot parity until the locked benchmark passes.
+Implement a benchmark-first, local-only EAN-8/EAN-13/UPC-A web scanner that is measurably better than the current SafeEat reader. Do not claim parity with any commercial SDK.
 
 Open Retail Scanner is independent from consuming applications. SafeEat is the first pilot integrator. Keep SafeEat product lookup, health logic, profiles, claims, and application data outside this repository; follow `docs/pilots/safeeat.md` for the integration boundary.
 
@@ -20,16 +20,17 @@ Open Retail Scanner is independent from consuming applications. SafeEat is the f
 
 ## Work order
 
-1. Complete Phase 0 benchmark tooling and fixtures.
-2. Record the baseline before modifying the runtime.
-3. Implement the smallest Web/WASM vertical slice.
-4. Re-run development benchmarks; never tune on the locked validation set.
-5. Request legal review before publishing comparative results or adding proprietary SDK automation.
+1. Pick the lowest-numbered open issue labelled `status:ready` in the current milestone. Do not start `status:blocked` issues.
+2. Phase 0 first: funnel measurement, then the replay harness (`docs/benchmark/protocol.md`). Record the baseline before modifying any runtime.
+3. Phase 1 starts only when the "Phase 0 decision" issue records GO. Then build the smallest web slice on the `zxing-wasm` npm package plus the optional native `BarcodeDetector` fast path (ADR 0001, ADR 0003).
+4. Tune only on the development split; never on the locked validation split. A preprocessing step stays only if it shows a measured gain.
+5. Commercial SDK comparison is optional and informational; it needs a human legal review and never gates a decision.
+6. One issue per PR, small and reviewable; update the relevant doc/ADR when behaviour changes.
 
 ## Verification
 
-- Node.js 22 or newer.
-- Run `npm run check` before every handoff.
+- Node.js 22.18 or newer.
+- Run `npm run check` (repo contract, `tsc` typecheck, `node --test`) before every handoff. `packages/core/src/checksum.ts` and its test are the reference pattern for new code and tests.
 - Add deterministic unit tests for checksums, UPC-A/EAN-13 normalization, consensus, frame scheduling, error mapping, and privacy controls.
 - Record benchmark configuration, versions, device/browser, corpus version, and raw aggregate metrics.
 - For zero observed wrong-code events, publish the number of independent trials and a confidence bound; never claim zero real-world risk.

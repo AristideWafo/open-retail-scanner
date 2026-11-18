@@ -30,3 +30,5 @@ export type ScannerEvent =
   | { readonly type: "guidance"; readonly reason: GuidanceReason }
   | { readonly type: "state"; readonly state: "starting" | "running" | "stopped" }
   | { readonly type: "error"; readonly code: string; readonly recoverable: boolean };
+
+export { canonicalValue, computeCheckDigit, isValidCode } from "./checksum.ts";

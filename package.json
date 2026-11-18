@@ -5,13 +5,17 @@
   "description": "Benchmark-first open-source EAN/UPC scanner SDK",
   "license": "Apache-2.0",
   "engines": {
-    "node": ">=22"
+    "node": ">=22.18"
   },
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "check": "node scripts/check-repository.mjs && npm run typecheck --workspaces --if-present && npm test --workspaces --if-present",
-    "test": "node --test"
+    "check": "node scripts/check-repository.mjs && npm run typecheck --workspaces && npm test",
+    "test": "node --test \"packages/*/src/**/*.test.ts\""
+  },
+  "devDependencies": {
+    "@types/node": "^22.18.0",
+    "typescript": "~5.9.0"
   }
 }
