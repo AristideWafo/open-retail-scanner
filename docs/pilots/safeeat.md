@@ -65,4 +65,4 @@ Open Retail Scanner receives no SafeEat profiles, symptoms, health data, product
 
 ## Exit and portability
 
-SafeEat can replace the SDK without forking the project. Open Retail Scanner can add other pilots without access to SafeEat data. Pilot-specific adapters live in the SafeEat repository unless they are demonstrably generic.
+SafeEat can replace the SDK without forking the project. Open Retail Scanner can add other pilots without access to SafeEat data. Pilot-specific adapters live in the SafeEat repository unless they are demonstrably generic. See [`docs/integration.md`](../integration.md) for the concrete browser, React, and Web Worker integration patterns.

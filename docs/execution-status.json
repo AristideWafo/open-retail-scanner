@@ -1,6 +1,6 @@
 {
   "schema": "orc.execution-status.v1",
-  "updatedAt": "2026-11-18T15:50:00+01:00",
+  "updatedAt": "2026-11-18T16:08:00+01:00",
   "branch": "main",
   "verification": {"check": "pass", "testsPassed": 106, "testsFailed": 0},
   "done": [
@@ -20,7 +20,7 @@
     {"issue": 15, "key": "camera", "summary": "CameraAdapter (rear >=1080p negotiation, continuous focus, gated torch/zoom, visibility pause/resume & track interruption lifecycle, privacy-safe errors)"},
     {"issue": 17, "key": "ui", "summary": "ScannerUIController and mountScannerUI with <video> camera preview, auto-format 8/12/13-digit manual entry reachable in 100% of states, no initial focus steal, keyboard/ARIA support, zero health claims"},
     {"issue": 18, "key": "privacy-tests", "summary": "Allow-list DiagnosticEvent & assertPrivacySafePayload, frame dimension bounds, camera-failure WASM cleanup, teardown leak tests, dependency/license audit"},
-    {"issue": 12, "key": "epic-phase1", "summary": "WebBarcodeScanner end-to-end live video frame pump (rVFC/rAF + native-res OffscreenCanvas/Canvas getImageData), mount(root), visibility pause/resume, and all Phase 1 child issues verified (105/105 tests)"}
+    {"issue": 12, "key": "epic-phase1", "summary": "WebBarcodeScanner end-to-end live video frame pump (rVFC/rAF + native-res OffscreenCanvas/Canvas getImageData), mount(root), visibility pause/resume, docs/integration.md guide, and all Phase 1 child issues verified (106/106 tests)"}
   ],
   "in_progress": [
     {"item": "field_camera_checkpoint", "summary": "30-day review checkpoint for physical mobile handset camera video capture and live SafeEat pilot task-completion tracking"}

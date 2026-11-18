@@ -38,6 +38,7 @@ Phase 0 (`v1.0.0-lite` benchmark, 160-clip corpus manifest across development an
 
 - [`docs/product-scope.md`](docs/product-scope.md) — intended and excluded uses.
 - [`docs/architecture.md`](docs/architecture.md) — target technical architecture.
+- [`docs/integration.md`](docs/integration.md) — application integration guide (DOM UI, React/custom UI, Web Worker, CSP, error handling).
 - [`docs/benchmark/protocol.md`](docs/benchmark/protocol.md) — preregistered evaluation.
 - [`docs/decision-record.md`](docs/decision-record.md) — evidence, options, risks, and gates.
 - [`docs/clean-room-policy.md`](docs/clean-room-policy.md) — legal separation from commercial SDKs.

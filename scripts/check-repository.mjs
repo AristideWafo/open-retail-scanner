@@ -10,6 +10,7 @@ const required = [
   "CONTRIBUTING.md",
   "GOVERNANCE.md",
   "docs/architecture.md",
+  "docs/integration.md",
   "docs/benchmark/protocol.md",
   "docs/clean-room-policy.md",
   "docs/privacy-security.md",
