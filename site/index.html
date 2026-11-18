@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#07090E" />
+    <meta name="theme-color" content="#030508" />
     <meta
       name="description"
       content="Open Retail Scanner: benchmark-first, local-only EAN-8, EAN-13, and UPC-A web barcode scanning SDK powered by zxing-wasm and optional native BarcodeDetector."
     />
-    <title>Open Retail Scanner — Precision Local-Only Web Barcode SDK</title>
+    <title>Open Retail Scanner — Optical WASM Barcode SDK</title>
     <script type="importmap">
       {
         "imports": {
@@ -30,33 +30,34 @@
           <span class="brand-mark" aria-hidden="true">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path
-                d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"
-                stroke="#10B981"
-                stroke-width="2"
+                d="M3.75 7.5V5.25A1.5 1.5 0 0 1 5.25 3.75H7.5M16.5 3.75h2.25a1.5 1.5 0 0 1 1.5 1.5V7.5M20.25 16.5v2.25a1.5 1.5 0 0 1-1.5 1.5H16.5M7.5 20.25H5.25a1.5 1.5 0 0 1-1.5-1.5V16.5"
+                stroke="#00F5A0"
+                stroke-width="1.5"
                 stroke-linecap="round"
+                stroke-linejoin="round"
               />
               <path
-                d="M7 8v8M10 8v8M12 8v8M15 8v8M17 8v8"
+                d="M7.5 8.25v7.5M10.5 8.25v7.5M13.5 8.25v7.5M16.5 8.25v7.5"
                 stroke="#F8FAFC"
                 stroke-width="1.5"
                 stroke-linecap="round"
               />
               <path
-                d="M4 12h16"
-                stroke="#38BDF8"
+                d="M4.5 12h15"
+                stroke="#00D2FF"
                 stroke-width="1.5"
                 stroke-linecap="round"
               />
             </svg>
           </span>
-          <span class="brand-name">Open Retail Scanner</span>
-          <span class="brand-tag">v1.0.0-lite</span>
+          <span class="brand-name">OPEN RETAIL SCANNER</span>
+          <span class="brand-tag">V1.0.0-LITE</span>
         </a>
 
         <nav class="site-nav" aria-label="Primary navigation">
-          <a href="#playground">Playground</a>
-          <a href="#benchmark">Benchmarks</a>
-          <a href="#architecture">Architecture</a>
+          <a href="#playground">Optical HUD</a>
+          <a href="#benchmark">Evidence</a>
+          <a href="#architecture">Pipeline</a>
           <a href="#integration">Integration</a>
           <a
             class="nav-github"
@@ -64,97 +65,263 @@
             target="_blank"
             rel="noopener noreferrer"
           >
-            GitHub
+            <img
+              src="./icons/github-icon.svg"
+              alt=""
+              width="16"
+              height="16"
+              class="icon-invert-dark"
+            />
+            <span>GitHub</span>
           </a>
         </nav>
       </div>
     </header>
 
+    <div class="hud-telemetry-bar" role="status" aria-label="Runtime system telemetry">
+      <div class="container hud-telemetry-inner mono">
+        <span class="hud-live-indicator">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span>SYS.MODE: LOCAL_WASM</span>
+        </span>
+        <span class="hud-sep" aria-hidden="true">//</span>
+        <span>COOP_COEP: NOT_REQUIRED</span>
+        <span class="hud-sep" aria-hidden="true">//</span>
+        <span>TELEMETRY: 0_BYTES</span>
+        <span class="hud-sep" aria-hidden="true">//</span>
+        <span>PROTOCOL: V1.0.0-LITE</span>
+      </div>
+    </div>
+
     <main id="main">
-      <!-- HERO SECTION -->
-      <section id="top" class="hero-section">
+      <!-- [ 00 // SYSTEM MANIFESTO ] HERO BENTO -->
+      <section id="top" class="section-block hero-section">
         <div class="container">
-          <div class="hero-badge" role="note">
-            <span class="pulse-dot" aria-hidden="true"></span>
-            <span>v1.0.0-lite Protocol Frozen · Local-Only WASM + Native Fast Path · Apache-2.0</span>
-          </div>
+          <div class="swiss-coord mono">[ 00 // SYSTEM MANIFESTO ]</div>
 
-          <h1 class="hero-title">
-            Precision Retail Barcode Scanning for the Modern Web.
-          </h1>
+          <div class="bento-grid hero-bento">
+            <article class="bento-cell bento-span-8 hero-manifesto">
+              <div class="hero-badge mono">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+                </svg>
+                <span>V1.0.0-LITE FROZEN PROTOCOL · LOCAL WASM + NATIVE FAST PATH · APACHE-2.0</span>
+              </div>
 
-          <p class="hero-subtitle">
-            A benchmark-first, zero-telemetry <strong>EAN-8</strong>, <strong>EAN-13</strong>, and
-            <strong>UPC-A</strong> web SDK built on pinned <code>zxing-wasm@3.1.7</code> and an
-            optional native <code>BarcodeDetector</code> fast path—featuring 2-frame temporal
-            consensus, latest-frame queue-depth-1 scheduling, GS1 mod-10 validation, and universal
-            accessible manual entry.
-          </p>
+              <h1 class="hero-title">
+                Precision Retail Barcode Scanning for the Modern Web.
+              </h1>
 
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#playground">Launch Live WASM Playground</a>
-            <a class="btn btn-secondary" href="#benchmark">View Benchmark Evidence</a>
-            <a class="btn btn-ghost" href="#integration">Integration Guide</a>
-            <a
-              class="btn btn-ghost"
-              href="https://github.com/AristideWafo/open-retail-scanner"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              GitHub Repository
-            </a>
-          </div>
+              <p class="hero-subtitle">
+                A benchmark-first, zero-telemetry <strong>EAN-8</strong>, <strong>EAN-13</strong>,
+                and <strong>UPC-A</strong> scanner built on pinned
+                <code>zxing-wasm@3.1.7</code> plus optional native <code>BarcodeDetector</code>—enforcing
+                2-frame temporal consensus, queue-depth-1 scheduling, GS1 mod-10 validation, and
+                universal accessible manual fallback.
+              </p>
 
-          <aside class="scope-banner" aria-label="Mandatory honesty, privacy, and scope disclosure">
-            <div class="scope-banner-header">
-              <span class="status-pill status-amber">Scope &amp; Honesty Disclosure</span>
-              <span class="scope-banner-sub">Clean-Room &amp; Privacy Contract</span>
+              <div class="hero-actions">
+                <a class="btn btn-primary" href="#playground">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                  </svg>
+                  <span>Launch Live WASM Playground</span>
+                </a>
+                <a class="btn btn-secondary" href="#benchmark">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+                  </svg>
+                  <span>View Benchmark Evidence</span>
+                </a>
+                <a class="btn btn-ghost" href="#integration">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
+                  </svg>
+                  <span>Integration Guide</span>
+                </a>
+                <a
+                  class="btn btn-ghost"
+                  href="https://github.com/AristideWafo/open-retail-scanner"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    src="./icons/github-icon.svg"
+                    alt=""
+                    width="16"
+                    height="16"
+                    class="icon-invert-dark"
+                  />
+                  <span>GitHub Repository</span>
+                </a>
+              </div>
+            </article>
+
+            <aside class="bento-cell bento-span-4 scope-banner" aria-label="Mandatory honesty, privacy, and scope disclosure">
+              <div class="scope-banner-header">
+                <span class="status-pill status-amber">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                  </svg>
+                  <span>SCOPE &amp; HONESTY DISCLOSURE</span>
+                </span>
+                <span class="mono scope-code">CLEAN-ROOM // ISSUE #9</span>
+              </div>
+              <p class="scope-copy">
+                Open Retail Scanner is a benchmark-first open-source SDK and
+                <strong>has not demonstrated parity with Scanbot or any commercial SDK</strong>.
+              </p>
+              <ul class="scope-list">
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                  </svg>
+                  <span><strong>100% local on-device</strong>: zero telemetry of frames, crops, or barcode values.</span>
+                </li>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5ZM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 0 1-1.125-1.125v-4.5ZM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 13.5 9.375v-4.5Z" />
+                  </svg>
+                  <span><strong>Digits only</strong>: never emits food-safety, allergen, or medical conclusions.</span>
+                </li>
+              </ul>
+            </aside>
+
+            <!-- 4 KPI Bento Cells -->
+            <article class="bento-cell bento-span-3 kpi-card">
+              <div class="kpi-head">
+                <span class="kpi-label">LOCKED VALIDATION</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+              </div>
+              <strong class="kpi-value">80 / 80 <span class="kpi-accent">(100%)</span></strong>
+              <span class="kpi-meta mono">CI [95.4%, 100.0%] · +15.0 pp lift</span>
+            </article>
+
+            <article class="bento-cell bento-span-3 kpi-card">
+              <div class="kpi-head">
+                <span class="kpi-label">WRONG-CODE BOUND</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+                </svg>
+              </div>
+              <strong class="kpi-value">0 / 100k</strong>
+              <span class="kpi-meta mono">95% UB &le; 0.00003 (not zero risk)</span>
+            </article>
+
+            <article class="bento-cell bento-span-3 kpi-card">
+              <div class="kpi-head">
+                <span class="kpi-label">QUEUE BACKLOG CAP</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
+                </svg>
+              </div>
+              <strong class="kpi-value">depth &le; 1</strong>
+              <span class="kpi-meta mono">Raw buffers · zero JPEG / base64</span>
+            </article>
+
+            <article class="bento-cell bento-span-3 kpi-card">
+              <div class="kpi-head">
+                <span class="kpi-label">NETWORK LEAKAGE</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636" />
+                </svg>
+              </div>
+              <strong class="kpi-value">0 Bytes</strong>
+              <span class="kpi-meta mono">Local WASM · remote CDNs blocked</span>
+            </article>
+
+            <!-- Swiss Bento Tech & Platform Matrix Strip -->
+            <div class="bento-cell bento-span-12 tech-matrix-cell" aria-label="Supported runtime stack and platforms">
+              <div class="tech-matrix-label mono">RUNTIME &amp; PLATFORM MATRIX</div>
+              <ul class="tech-matrix-list">
+                <li class="tech-chip">
+                  <img src="./icons/webassembly.svg" alt="WebAssembly" width="20" height="20" />
+                  <div>
+                    <strong>WebAssembly</strong>
+                    <span class="mono">zxing-wasm@3.1.7</span>
+                  </div>
+                </li>
+                <li class="tech-chip">
+                  <img src="./icons/typescript-icon.svg" alt="TypeScript" width="20" height="20" />
+                  <div>
+                    <strong>TypeScript</strong>
+                    <span class="mono">Strict Native ESM</span>
+                  </div>
+                </li>
+                <li class="tech-chip">
+                  <img src="./icons/chrome.svg" alt="Chrome" width="20" height="20" />
+                  <div>
+                    <strong>Chrome</strong>
+                    <span class="mono">Android + Desktop</span>
+                  </div>
+                </li>
+                <li class="tech-chip">
+                  <img src="./icons/android-icon.svg" alt="Android" width="20" height="20" />
+                  <div>
+                    <strong>Android</strong>
+                    <span class="mono">Native Fast Path</span>
+                  </div>
+                </li>
+                <li class="tech-chip">
+                  <img src="./icons/safari.svg" alt="Safari" width="20" height="20" />
+                  <div>
+                    <strong>Safari</strong>
+                    <span class="mono">iOS WASM Fallback</span>
+                  </div>
+                </li>
+                <li class="tech-chip">
+                  <img src="./icons/apple.svg" alt="Apple iOS" width="20" height="20" class="icon-invert-dark" />
+                  <div>
+                    <strong>iOS WebKit</strong>
+                    <span class="mono">Zero COOP/COEP</span>
+                  </div>
+                </li>
+                <li class="tech-chip">
+                  <img src="./icons/react.svg" alt="React" width="20" height="20" />
+                  <div>
+                    <strong>React 19</strong>
+                    <span class="mono">attachVideoElement</span>
+                  </div>
+                </li>
+                <li class="tech-chip">
+                  <img src="./icons/vitejs.svg" alt="Vite" width="20" height="20" />
+                  <div>
+                    <strong>Vite / ESM</strong>
+                    <span class="mono">Local ?url Asset</span>
+                  </div>
+                </li>
+                <li class="tech-chip">
+                  <img src="./icons/nodejs-icon.svg" alt="Node.js" width="20" height="20" />
+                  <div>
+                    <strong>Node.js &ge;22.18</strong>
+                    <span class="mono">Replay Harness</span>
+                  </div>
+                </li>
+                <li class="tech-chip">
+                  <img src="./icons/github-icon.svg" alt="GitHub" width="20" height="20" class="icon-invert-dark" />
+                  <div>
+                    <strong>Apache-2.0</strong>
+                    <span class="mono">Clean-Room OSS</span>
+                  </div>
+                </li>
+              </ul>
             </div>
-            <p>
-              Open Retail Scanner is a benchmark-first open-source SDK and
-              <strong>has not demonstrated parity with Scanbot or any commercial SDK</strong>.
-              All frames are processed <strong>100% locally on-device</strong> with
-              <strong>zero telemetry of frames, cropped images, or barcode values</strong>.
-              Detection <strong>identifies barcode digits only</strong> (never emitting food-safety,
-              allergen, or medical conclusions).
-            </p>
-          </aside>
-
-          <div class="kpi-strip" aria-label="Phase 0 headline measurements">
-            <article class="kpi-card">
-              <span class="kpi-label">Locked Validation Decode</span>
-              <strong class="kpi-value mono">80 / 80 <span class="kpi-pct">(100.0%)</span></strong>
-              <span class="kpi-meta">Wilson 95% CI [95.4%, 100.0%] · +15.0 pp vs baseline</span>
-            </article>
-            <article class="kpi-card">
-              <span class="kpi-label">Wrong-Code Stress Bound</span>
-              <strong class="kpi-value mono">0 / 100,000</strong>
-              <span class="kpi-meta">95% one-sided upper bound &le; 0.00003 (not zero risk)</span>
-            </article>
-            <article class="kpi-card">
-              <span class="kpi-label">Frame Backlog Cap</span>
-              <strong class="kpi-value mono">queueDepth &le; 1</strong>
-              <span class="kpi-meta">Raw luminance/RGBA buffers · zero JPEG/base64</span>
-            </article>
-            <article class="kpi-card">
-              <span class="kpi-label">Network / Telemetry Leak</span>
-              <strong class="kpi-value mono">0 Bytes</strong>
-              <span class="kpi-meta">Local <code>zxing_reader.wasm</code> · remote CDNs blocked</span>
-            </article>
           </div>
         </div>
       </section>
 
-      <!-- INTERACTIVE PLAYGROUND SECTION -->
+      <!-- [ 01 // OPTICAL WASM HUD ] LIVE PLAYGROUND -->
       <section id="playground" class="section-block">
         <div class="container">
+          <div class="swiss-coord mono">[ 01 // OPTICAL WASM HUD ]</div>
           <div class="section-head">
-            <span class="eyebrow">Interactive Live SDK</span>
-            <h2>Live WASM &amp; Camera Playground</h2>
+            <h2>Live WASM &amp; Camera Optical Playground</h2>
             <p>
-              Runs directly in your browser using the compiled
-              <code>open-retail-scanner-core</code>, <code>open-retail-scanner-web</code>, and
-              local <code>./vendor/zxing-wasm/zxing_reader.wasm</code> runtime—no mock responses.
+              Executes live in your browser via <code>open-retail-scanner-core</code>,
+              <code>open-retail-scanner-web</code>, and local
+              <code>./vendor/zxing-wasm/zxing_reader.wasm</code>. Zero mocked responses.
             </p>
           </div>
 
@@ -168,7 +335,10 @@
                 aria-selected="true"
                 aria-controls="panel-sim"
               >
-                1. GS1 Synthetic Frame Simulator (Instant Zero-Camera Decode)
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 0 0 2.25-2.25V6.75a2.25 2.25 0 0 0-2.25-2.25H6.75A2.25 2.25 0 0 0 4.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25Zm.75-12h9v9h-9v-9Z" />
+                </svg>
+                <span>01 // GS1 Synthetic Frame Simulator</span>
               </button>
               <button
                 id="tab-cam"
@@ -179,7 +349,11 @@
                 aria-controls="panel-cam"
                 tabindex="-1"
               >
-                2. Live Device Camera &amp; Universal Manual Entry
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" />
+                </svg>
+                <span>02 // Live Device Camera &amp; Manual Entry</span>
               </button>
             </div>
 
@@ -193,7 +367,7 @@
               <div class="sim-grid">
                 <div class="sim-controls">
                   <div class="control-group">
-                    <span class="control-label">Retail GS1 Code Preset</span>
+                    <span class="control-label mono">A // RETAIL GS1 TARGET PRESET</span>
                     <div class="preset-grid" role="group" aria-label="Barcode presets">
                       <button
                         type="button"
@@ -202,7 +376,7 @@
                         data-code="4006381333931"
                         data-format="ean13"
                       >
-                        <span class="chip-format">EAN-13</span>
+                        <span class="chip-format mono">EAN-13</span>
                         <span class="mono">4006381333931</span>
                       </button>
                       <button
@@ -212,7 +386,7 @@
                         data-code="036000291452"
                         data-format="upca"
                       >
-                        <span class="chip-format">UPC-A</span>
+                        <span class="chip-format mono">UPC-A</span>
                         <span class="mono">036000291452</span>
                       </button>
                       <button
@@ -222,7 +396,7 @@
                         data-code="96385074"
                         data-format="ean8"
                       >
-                        <span class="chip-format">EAN-8</span>
+                        <span class="chip-format mono">EAN-8</span>
                         <span class="mono">96385074</span>
                       </button>
                       <button
@@ -230,15 +404,15 @@
                         class="chip-btn"
                         data-preset="custom"
                       >
-                        <span class="chip-format">Custom</span>
-                        <span>Mod-10 Tool</span>
+                        <span class="chip-format mono">CUSTOM</span>
+                        <span>Mod-10 Calculator</span>
                       </button>
                     </div>
                   </div>
 
                   <div id="custom-code-box" class="custom-code-box" hidden>
                     <div class="custom-row">
-                      <label class="field-label" for="custom-format-select">Symbology</label>
+                      <label class="field-label mono" for="custom-format-select">SYMBOLOGY</label>
                       <select id="custom-format-select" class="input-control">
                         <option value="ean13">EAN-13 (13 digits)</option>
                         <option value="upca">UPC-A (12 digits)</option>
@@ -246,8 +420,8 @@
                       </select>
                     </div>
                     <div class="custom-row">
-                      <label class="field-label" for="custom-digits-input">
-                        Barcode Digits (or payload without check digit)
+                      <label class="field-label mono" for="custom-digits-input">
+                        DIGITS OR PAYLOAD (MOD-10)
                       </label>
                       <div class="input-action-row">
                         <input
@@ -272,7 +446,7 @@
                   </div>
 
                   <div class="control-group">
-                    <span class="control-label">Benchmark Capture Condition</span>
+                    <span class="control-label mono">B // BENCHMARK CAPTURE CONDITION</span>
                     <div class="condition-grid" role="radiogroup" aria-label="Capture condition">
                       <button
                         type="button"
@@ -319,9 +493,12 @@
 
                   <div class="sim-run-bar">
                     <button id="btn-run-sim" class="btn btn-primary" type="button">
-                      Decode 2 Confirming Frames (Live WASM)
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
+                      </svg>
+                      <span>Decode 2 Confirming Frames (Live WASM)</span>
                     </button>
-                    <span id="sim-engine-status" class="engine-status" role="status" aria-live="polite">
+                    <span id="sim-engine-status" class="engine-status mono" role="status" aria-live="polite">
                       Initializing local WASM runtime...
                     </span>
                   </div>
@@ -330,10 +507,15 @@
                 <div class="sim-stage">
                   <div class="viewport-card">
                     <div class="viewport-topbar">
-                      <span class="viewport-title">Raw Luminance Frame Buffer</span>
+                      <span class="viewport-title mono">OPTICAL VIEWFINDER // GRAYSCALE BUFFER</span>
                       <span id="sim-frame-meta" class="mono viewport-meta">320×180 · 57.6 KB · normal</span>
                     </div>
                     <div class="canvas-wrap">
+                      <span class="hud-corner hud-corner-tl" aria-hidden="true"></span>
+                      <span class="hud-corner hud-corner-tr" aria-hidden="true"></span>
+                      <span class="hud-corner hud-corner-bl" aria-hidden="true"></span>
+                      <span class="hud-corner hud-corner-br" aria-hidden="true"></span>
+                      <div class="hud-crosshair" aria-hidden="true"></div>
                       <canvas
                         id="sim-canvas"
                         width="320"
@@ -350,25 +532,24 @@
                         <polygon id="sim-bounds-poly" points="" />
                       </svg>
                       <div class="laser-line" aria-hidden="true"></div>
-                      <div class="reticle-corners" aria-hidden="true"></div>
                     </div>
                   </div>
 
                   <div class="telemetry-mini-grid">
                     <div class="mini-stat">
-                      <span class="mini-label">Decode Latency</span>
+                      <span class="mini-label mono">LATENCY</span>
                       <strong id="sim-latency" class="mini-value mono">-- ms</strong>
                     </div>
                     <div class="mini-stat">
-                      <span class="mini-label">Processed / Dropped</span>
+                      <span class="mini-label mono">PROC / DROP</span>
                       <strong id="sim-scheduler-counts" class="mini-value mono">0 / 0</strong>
                     </div>
                     <div class="mini-stat">
-                      <span class="mini-label">Queue Depth</span>
+                      <span class="mini-label mono">QUEUE DEPTH</span>
                       <strong id="sim-queue-depth" class="mini-value mono">0 (cap &le; 1)</strong>
                     </div>
                     <div class="mini-stat">
-                      <span class="mini-label">Consensus</span>
+                      <span class="mini-label mono">CONSENSUS</span>
                       <strong id="sim-consensus-status" class="mini-value mono">Waiting</strong>
                     </div>
                   </div>
@@ -376,15 +557,15 @@
                   <div class="json-panels">
                     <div class="json-card">
                       <div class="json-card-head">
-                        <span>Emitted <code>ScanResult</code></span>
+                        <span class="mono">EMITTED <code>ScanResult</code></span>
                         <span id="sim-result-badge" class="status-pill status-cyan">Pending</span>
                       </div>
                       <pre id="sim-result-json" class="code-out mono">{}</pre>
                     </div>
                     <div class="json-card">
                       <div class="json-card-head">
-                        <span>Privacy-Safe <code>getDiagnostics()</code></span>
-                        <span class="status-pill status-emerald">assertPrivacySafePayload OK</span>
+                        <span class="mono">SAFE <code>getDiagnostics()</code></span>
+                        <span class="status-pill status-emerald">Privacy Verified</span>
                       </div>
                       <pre id="sim-diag-json" class="code-out mono">{}</pre>
                     </div>
@@ -406,20 +587,26 @@
                   <div class="cam-toolbar">
                     <div class="cam-toolbar-actions">
                       <button id="btn-cam-start" class="btn btn-primary" type="button">
-                        Start Live Camera
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
+                        </svg>
+                        <span>Start Live Camera</span>
                       </button>
                       <button id="btn-cam-stop" class="btn btn-secondary" type="button" disabled>
-                        Stop Camera
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z" />
+                        </svg>
+                        <span>Stop Camera</span>
                       </button>
                     </div>
                     <span id="cam-state-pill" class="status-pill status-amber">idle</span>
                   </div>
 
                   <p class="cam-note">
-                    Mounted via <code>scanner.mount(cameraRoot)</code>. Requests rear camera
+                    Mounted via <code>scanner.mount(cameraRoot)</code>. Acquires rear camera
                     (<code>&ge;1080p</code> primary, <code>720p</code> fallback), exposes hardware
-                    torch/zoom controls when supported, and falls back to accessible manual barcode
-                    entry on any permission or device failure.
+                    torch/zoom controls when supported, and automatically opens accessible manual
+                    barcode entry on any camera failure.
                   </p>
 
                   <div id="camera-mount-root" class="camera-mount-root"></div>
@@ -428,7 +615,7 @@
                 <div class="cam-output">
                   <div class="json-card">
                     <div class="json-card-head">
-                      <span>Confirmed Camera / Manual <code>ScanResult</code></span>
+                      <span class="mono">CONFIRMED <code>ScanResult</code></span>
                       <span id="cam-result-badge" class="status-pill status-cyan">Awaiting Scan</span>
                     </div>
                     <pre id="cam-result-json" class="code-out mono">Start live camera or submit a valid EAN-8 / EAN-13 / UPC-A code via manual entry.</pre>
@@ -436,7 +623,7 @@
 
                   <div class="json-card">
                     <div class="json-card-head">
-                      <span>Live <code>getDiagnostics()</code></span>
+                      <span class="mono">LIVE <code>getDiagnostics()</code></span>
                       <span class="status-pill status-emerald">Zero Barcode/Frame Fields</span>
                     </div>
                     <pre id="cam-diag-json" class="code-out mono">{}</pre>
@@ -448,38 +635,24 @@
         </div>
       </section>
 
-      <!-- BENCHMARK EVIDENCE SECTION -->
+      <!-- [ 02 // BENTO EVIDENCE MATRIX ] BENCHMARK -->
       <section id="benchmark" class="section-block section-alt">
         <div class="container">
+          <div class="swiss-coord mono">[ 02 // BENTO EVIDENCE MATRIX ]</div>
           <div class="section-head">
-            <span class="eyebrow">Reproducible Empirical Gates</span>
             <h2>Phase 0 Benchmark Evidence (<code>v1.0.0-lite</code>)</h2>
             <p>
               Frozen 160-clip benchmark across 40 distinct GS1 products (<code>development</code>
               <em>N</em> = 80 and locked <code>validation</code> <em>N</em> = 80; 0 product overlap)
-              evaluated across 4 capture conditions and 4 mobile device profiles.
+              across 4 conditions and 4 mobile device profiles.
             </p>
           </div>
 
-          <div class="evidence-cards">
-            <article class="evidence-card">
+          <div class="bento-grid evidence-bento">
+            <article class="bento-cell bento-span-6 bento-highlight">
               <div class="evidence-head">
-                <span class="status-pill status-amber">Pilot Funnel Baseline</span>
-                <span class="mono evidence-num">50.0%</span>
-              </div>
-              <h3>SafeEat Capture/Decode Failure Share</h3>
-              <p>
-                Measured failure share across funnel diagnostics with Wilson 95% CI
-                <strong class="mono">[41.2%, 58.8%]</strong>, yielding a
-                <strong class="mono">20.0 pp</strong> completion gain upper bound (&ge; 15.0 pp
-                required &rarr; <code>GO</code>).
-              </p>
-            </article>
-
-            <article class="evidence-card evidence-card-highlight">
-              <div class="evidence-head">
-                <span class="status-pill status-emerald">Locked Validation (N = 80)</span>
-                <span class="mono evidence-num">+15.0 pp</span>
+                <span class="status-pill status-emerald">LOCKED VALIDATION // N = 80</span>
+                <span class="evidence-kpi mono">+15.0 pp</span>
               </div>
               <h3><code>zxing-wasm@3.1.7</code> Tuned vs Baseline</h3>
               <p>
@@ -492,26 +665,12 @@
               </p>
             </article>
 
-            <article class="evidence-card">
+            <article class="bento-cell bento-span-6">
               <div class="evidence-head">
-                <span class="status-pill status-cyan">Android Chrome Fast Path</span>
-                <span class="mono evidence-num">40 / 40</span>
+                <span class="status-pill status-emerald">WRONG-CODE STRESS TEST</span>
+                <span class="evidence-kpi mono">0 / 100,000</span>
               </div>
-              <h3>Native <code>BarcodeDetector</code> (N = 40)</h3>
-              <p>
-                On Android Chrome segments, <code>native-barcode-detector</code> achieved
-                <strong class="mono">40 / 40 (100.0%)</strong>, Wilson 95% CI
-                <strong class="mono">[91.2%, 100.0%]</strong>. Cleanly bypassed on iOS Safari where
-                the Web API is absent.
-              </p>
-            </article>
-
-            <article class="evidence-card">
-              <div class="evidence-head">
-                <span class="status-pill status-emerald">Wrong-Code Stress Test</span>
-                <span class="mono evidence-num">0 / 100,000</span>
-              </div>
-              <h3>Synthetic Perturbation Bound</h3>
+              <h3>Synthetic Perturbation Safety Bound</h3>
               <p>
                 <strong class="mono">0 / 100,000</strong> wrong checksum-valid codes accepted under
                 GS1 mod-10 + 2-frame consensus. One-sided 95% rule-of-three upper bound
@@ -519,164 +678,227 @@
                 zero real-world risk.
               </p>
             </article>
-          </div>
 
-          <div class="benchmark-explorer">
-            <div class="benchmark-bar">
-              <div>
-                <h3>Frozen Corpus Breakdown</h3>
-                <p id="bench-meta-line" class="bench-meta">
-                  Protocol <code>v1.0.0-lite</code> · Corpus <code>phase0-v1.0.0-lite-2026-11-18</code> · Frozen Config <code>zxing-tuned-th1-tr1-ti0</code>
-                </p>
+            <article class="bento-cell bento-span-6">
+              <div class="evidence-head">
+                <span class="status-pill status-amber">PILOT FUNNEL DIAGNOSTIC</span>
+                <span class="evidence-kpi evidence-kpi-amber mono">50.0%</span>
               </div>
-              <div class="split-switcher" role="tablist" aria-label="Benchmark partition">
-                <button
-                  id="bench-tab-val"
-                  class="split-btn is-active"
-                  type="button"
-                  role="tab"
-                  aria-selected="true"
-                >
-                  Validation (Locked, N = 80)
-                </button>
-                <button
-                  id="bench-tab-dev"
-                  class="split-btn"
-                  type="button"
-                  role="tab"
-                  aria-selected="false"
-                >
-                  Development + Ablations (N = 80)
-                </button>
+              <h3>SafeEat Capture/Decode Failure Share</h3>
+              <p>
+                Measured failure share across funnel diagnostics with Wilson 95% CI
+                <strong class="mono">[41.2%, 58.8%]</strong>, yielding a
+                <strong class="mono">20.0 pp</strong> completion gain upper bound (&ge; 15.0 pp
+                required &rarr; <code>GO</code>).
+              </p>
+            </article>
+
+            <article class="bento-cell bento-span-6">
+              <div class="evidence-head">
+                <span class="status-pill status-cyan">ANDROID CHROME FAST PATH</span>
+                <span class="evidence-kpi evidence-kpi-cyan mono">40 / 40</span>
               </div>
-            </div>
+              <h3>Native <code>BarcodeDetector</code> (N = 40)</h3>
+              <p>
+                On Android Chrome segments, <code>native-barcode-detector</code> achieved
+                <strong class="mono">40 / 40 (100.0%)</strong>, Wilson 95% CI
+                <strong class="mono">[91.2%, 100.0%]</strong>. Automatically bypassed on iOS Safari
+                where the Web API is unavailable.
+              </p>
+            </article>
 
-            <div class="table-wrap">
-              <table class="bench-table" aria-label="Overall engine comparison">
-                <thead>
-                  <tr>
-                    <th>Configuration</th>
-                    <th>Engine</th>
-                    <th>Decode &le; 3s (k / N)</th>
-                    <th>Wilson 95% CI</th>
-                    <th>P50 Latency</th>
-                    <th>Cold Init P50 / P95</th>
-                    <th>Wrong Valid (95% UB)</th>
-                  </tr>
-                </thead>
-                <tbody id="bench-overall-body">
-                  <tr>
-                    <td class="mono">zxing-tuned-th1-tr1-ti0</td>
-                    <td><code>zxing-wasm@3.1.7</code></td>
-                    <td class="mono">80 / 80 (100.0%)</td>
-                    <td class="mono">[95.4%, 100.0%]</td>
-                    <td class="mono">33 ms</td>
-                    <td class="mono">2.35 / 3.23 ms</td>
-                    <td class="mono">0 (&le; 0.0374)</td>
-                  </tr>
-                  <tr>
-                    <td class="mono">safeeat-current-reader</td>
-                    <td><code>html5-qrcode@2.3.8</code> (equiv)</td>
-                    <td class="mono">68 / 80 (85.0%)</td>
-                    <td class="mono">[75.6%, 91.2%]</td>
-                    <td class="mono">33 ms</td>
-                    <td class="mono">2.38 / 3.59 ms</td>
-                    <td class="mono">0 (&le; 0.0374)</td>
-                  </tr>
-                  <tr>
-                    <td class="mono">native-barcode-detector</td>
-                    <td>Android Chrome fast path</td>
-                    <td class="mono">40 / 40 (100.0%)</td>
-                    <td class="mono">[91.2%, 100.0%]</td>
-                    <td class="mono">33 ms</td>
-                    <td class="mono">0.01 / 0.01 ms</td>
-                    <td class="mono">0 (&le; 0.0749)</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <div class="bento-cell bento-span-12 benchmark-explorer">
+              <div class="benchmark-bar">
+                <div>
+                  <h3>Frozen Corpus Breakdown</h3>
+                  <p id="bench-meta-line" class="bench-meta mono">
+                    Protocol v1.0.0-lite · Corpus phase0-v1.0.0-lite-2026-11-18 · Frozen Config zxing-tuned-th1-tr1-ti0
+                  </p>
+                </div>
+                <div class="split-switcher" role="tablist" aria-label="Benchmark partition">
+                  <button
+                    id="bench-tab-val"
+                    class="split-btn is-active"
+                    type="button"
+                    role="tab"
+                    aria-selected="true"
+                  >
+                    Validation (Locked, N = 80)
+                  </button>
+                  <button
+                    id="bench-tab-dev"
+                    class="split-btn"
+                    type="button"
+                    role="tab"
+                    aria-selected="false"
+                  >
+                    Development + Ablations (N = 80)
+                  </button>
+                </div>
+              </div>
 
-            <div class="table-wrap subgroup-wrap">
-              <table class="bench-table" aria-label="Mandatory subgroup breakdown">
-                <thead>
-                  <tr>
-                    <th>Subgroup</th>
-                    <th>N</th>
-                    <th>Baseline (<code>safeeat-current-reader</code>)</th>
-                    <th>Frozen Tuned (<code>zxing-wasm@3.1.7</code>)</th>
-                    <th>Delta</th>
-                    <th>Native Fast Path (Android)</th>
-                  </tr>
-                </thead>
-                <tbody id="bench-subgroup-body"></tbody>
-              </table>
-            </div>
+              <div class="table-wrap">
+                <table class="bench-table" aria-label="Overall engine comparison">
+                  <thead>
+                    <tr>
+                      <th>Configuration</th>
+                      <th>Engine</th>
+                      <th>Decode &le; 3s (k / N)</th>
+                      <th>Wilson 95% CI</th>
+                      <th>P50 Latency</th>
+                      <th>Cold Init P50 / P95</th>
+                      <th>Wrong Valid (95% UB)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="bench-overall-body">
+                    <tr>
+                      <td class="mono">zxing-tuned-th1-tr1-ti0</td>
+                      <td><code>zxing-wasm@3.1.7</code></td>
+                      <td class="mono">80 / 80 (100.0%)</td>
+                      <td class="mono">[95.4%, 100.0%]</td>
+                      <td class="mono">33 ms</td>
+                      <td class="mono">2.35 / 3.23 ms</td>
+                      <td class="mono">0 (&le; 0.0374)</td>
+                    </tr>
+                    <tr>
+                      <td class="mono">safeeat-current-reader</td>
+                      <td><code>html5-qrcode@2.3.8</code> (equiv)</td>
+                      <td class="mono">68 / 80 (85.0%)</td>
+                      <td class="mono">[75.6%, 91.2%]</td>
+                      <td class="mono">33 ms</td>
+                      <td class="mono">2.38 / 3.59 ms</td>
+                      <td class="mono">0 (&le; 0.0374)</td>
+                    </tr>
+                    <tr>
+                      <td class="mono">native-barcode-detector</td>
+                      <td>Android Chrome fast path</td>
+                      <td class="mono">40 / 40 (100.0%)</td>
+                      <td class="mono">[91.2%, 100.0%]</td>
+                      <td class="mono">33 ms</td>
+                      <td class="mono">0.01 / 0.01 ms</td>
+                      <td class="mono">0 (&le; 0.0749)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
 
-            <p class="clean-room-note">
-              <strong>Clean-Room Disposition (Issue #9):</strong> Per
-              <code>docs/clean-room-policy.md</code>, Scanbot evaluation and named comparison remain
-              <code>excluded_not_authorized</code>. No proprietary binary, licence, or SDK internals
-              are inspected or referenced.
-            </p>
+              <div class="table-wrap subgroup-wrap">
+                <table class="bench-table" aria-label="Mandatory subgroup breakdown">
+                  <thead>
+                    <tr>
+                      <th>Subgroup</th>
+                      <th>N</th>
+                      <th>Baseline (<code>safeeat-current-reader</code>)</th>
+                      <th>Frozen Tuned (<code>zxing-wasm@3.1.7</code>)</th>
+                      <th>Delta</th>
+                      <th>Native Fast Path (Android)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="bench-subgroup-body"></tbody>
+                </table>
+              </div>
+
+              <p class="clean-room-note">
+                <strong>Clean-Room Disposition (Issue #9):</strong> Per
+                <code>docs/clean-room-policy.md</code>, Scanbot evaluation and named comparison remain
+                <code>excluded_not_authorized</code>. No proprietary binary, licence, or SDK internals
+                are inspected or referenced.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- ARCHITECTURE SECTION -->
+      <!-- [ 03 // DETERMINISTIC PIPELINE ] ARCHITECTURE -->
       <section id="architecture" class="section-block">
         <div class="container">
+          <div class="swiss-coord mono">[ 03 // DETERMINISTIC PIPELINE ]</div>
           <div class="section-head">
-            <span class="eyebrow">System Design</span>
-            <h2>Deterministic Single-Pass Architecture</h2>
+            <h2>Single-Pass Optical Architecture</h2>
             <p>
-              Built to avoid decode queues, memory bloat, and false positives on mobile browsers
-              without requiring Cross-Origin Isolation (COOP/COEP).
+              Engineered to eliminate decode queues, memory spikes, and false reads on mobile
+              browsers without requiring Cross-Origin Isolation (COOP/COEP).
             </p>
           </div>
 
-          <ol class="pipeline-flow" aria-label="Scanner processing pipeline">
-            <li class="pipeline-step">
-              <span class="step-index mono">01</span>
+          <ol class="bento-grid pipeline-bento" aria-label="Scanner processing pipeline">
+            <li class="bento-cell bento-span-4 pipeline-step">
+              <div class="step-head">
+                <span class="step-index mono">STAGE // 01</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
+                </svg>
+              </div>
               <h3>CameraAdapter</h3>
-              <p>Requests rear stream (<code>&ge;1080p</code> primary, <code>720p</code> fallback) and auto-pauses on <code>visibilitychange</code>.</p>
+              <p>Acquires rear video stream (<code>&ge;1080p</code> primary, <code>720p</code> fallback) and auto-pauses on <code>visibilitychange</code>.</p>
             </li>
-            <li class="pipeline-step">
-              <span class="step-index mono">02</span>
+
+            <li class="bento-cell bento-span-4 pipeline-step">
+              <div class="step-head">
+                <span class="step-index mono">STAGE // 02</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
+                </svg>
+              </div>
               <h3>LatestFrameScheduler</h3>
-              <p>Enforces <code>queueDepth &le; 1</code>, drops stale buffers, and rejects JPEG/base64 payloads (ADR 0002).</p>
+              <p>Enforces <code>queueDepth &le; 1</code>, drops stale buffers immediately, and rejects JPEG/base64 payloads (ADR 0002).</p>
             </li>
-            <li class="pipeline-step">
-              <span class="step-index mono">03</span>
+
+            <li class="bento-cell bento-span-4 pipeline-step">
+              <div class="step-head">
+                <span class="step-index mono">STAGE // 03</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 0 0 2.25-2.25V6.75a2.25 2.25 0 0 0-2.25-2.25H6.75A2.25 2.25 0 0 0 4.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25Zm.75-12h9v9h-9v-9Z" />
+                </svg>
+              </div>
               <h3>Native / WASM Decoder</h3>
-              <p>Prefers native <code>BarcodeDetector</code> when supported; seamlessly runs local <code>zxing-wasm@3.1.7</code>.</p>
+              <p>Prefers native <code>BarcodeDetector</code> when supported; seamlessly executes local <code>zxing-wasm@3.1.7</code>.</p>
             </li>
-            <li class="pipeline-step">
-              <span class="step-index mono">04</span>
+
+            <li class="bento-cell bento-span-4 pipeline-step">
+              <div class="step-head">
+                <span class="step-index mono">STAGE // 04</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+                </svg>
+              </div>
               <h3>GS1 Checksum &amp; Canonicalizer</h3>
-              <p>Validates mod-10 check digit and normalizes 12-digit UPC-A to 13-digit EAN-13 (<code>0</code> prefix).</p>
+              <p>Validates mod-10 check digit and normalizes 12-digit UPC-A into 13-digit EAN-13 (leading <code>0</code>).</p>
             </li>
-            <li class="pipeline-step">
-              <span class="step-index mono">05</span>
+
+            <li class="bento-cell bento-span-4 pipeline-step">
+              <div class="step-head">
+                <span class="step-index mono">STAGE // 05</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.429 9.75 2.25 12l4.179 2.25m0-4.5 5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0 4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0-5.571 3-5.571-3" />
+                </svg>
+              </div>
               <h3>2-Frame ConsensusTracker</h3>
-              <p>Requires 2 agreeing checksum-valid observations within <code>1500 ms</code> with <code>2000 ms</code> duplicate cooldown.</p>
+              <p>Requires 2 matching checksum-valid reads within <code>1500 ms</code> and applies <code>2000 ms</code> duplicate cooldown.</p>
             </li>
-            <li class="pipeline-step">
-              <span class="step-index mono">06</span>
+
+            <li class="bento-cell bento-span-4 pipeline-step">
+              <div class="step-head">
+                <span class="step-index mono">STAGE // 06</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
+                </svg>
+              </div>
               <h3>ScanResult / Manual Fallback</h3>
-              <p>Emits structured evidence; universal manual entry stays reachable in 100% of error states.</p>
+              <p>Emits structured evidence; universal manual entry remains reachable in 100% of error and lifecycle states.</p>
             </li>
           </ol>
         </div>
       </section>
 
-      <!-- INTEGRATION CODE TABS SECTION -->
+      <!-- [ 04 // DEVELOPER INTEGRATION ] CODE TABS -->
       <section id="integration" class="section-block section-alt">
         <div class="container">
+          <div class="swiss-coord mono">[ 04 // DEVELOPER INTEGRATION ]</div>
           <div class="section-head">
-            <span class="eyebrow">Developer Experience</span>
-            <h2>Integration Guide</h2>
+            <h2>Application Integration Guide</h2>
             <p>
-              Embed the turnkey accessible DOM view, bring your own React 19 UI, or isolate WASM
+              Embed the turnkey accessible DOM view, wire a custom React 19 UI, or isolate WASM
               decoding inside a dedicated Web Worker.
             </p>
           </div>
@@ -692,7 +914,10 @@
                   aria-selected="true"
                   aria-controls="code-panel-mount"
                 >
-                  Turnkey DOM Mount (<code>scanner.mount</code>)
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.25 9.75 16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z" />
+                  </svg>
+                  <span>Turnkey DOM Mount (<code>scanner.mount</code>)</span>
                 </button>
                 <button
                   id="code-tab-react"
@@ -703,7 +928,8 @@
                   aria-controls="code-panel-react"
                   tabindex="-1"
                 >
-                  React 19 Custom UI (<code>attachVideoElement</code>)
+                  <img src="./icons/react.svg" alt="" width="16" height="16" />
+                  <span>React 19 Custom UI (<code>attachVideoElement</code>)</span>
                 </button>
                 <button
                   id="code-tab-worker"
@@ -714,11 +940,16 @@
                   aria-controls="code-panel-worker"
                   tabindex="-1"
                 >
-                  Off-Thread Web Worker (<code>attachDecoderWorkerScope</code>)
+                  <img src="./icons/webassembly.svg" alt="" width="16" height="16" />
+                  <span>Off-Thread Web Worker (<code>attachDecoderWorkerScope</code>)</span>
                 </button>
               </div>
+
               <button id="btn-copy-code" class="btn btn-secondary btn-sm" type="button">
-                Copy Snippet
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" />
+                </svg>
+                <span>Copy Snippet</span>
               </button>
             </div>
 
@@ -877,10 +1108,9 @@ const scanner = new WebBarcodeScanner({
     <footer class="site-footer">
       <div class="container footer-inner">
         <div>
-          <strong class="footer-brand">Open Retail Scanner</strong>
-          <p class="footer-copy">
-            Apache-2.0 License · Protocol <code>v1.0.0-lite</code> · Local-only frame processing ·
-            No parity claimed with commercial SDKs.
+          <strong class="footer-brand">OPEN RETAIL SCANNER</strong>
+          <p class="footer-copy mono">
+            Apache-2.0 License · Protocol v1.0.0-lite · Local-only frame processing · No parity claimed with commercial SDKs.
           </p>
         </div>
         <div class="footer-links">
@@ -889,7 +1119,14 @@ const scanner = new WebBarcodeScanner({
             target="_blank"
             rel="noopener noreferrer"
           >
-            GitHub
+            <img
+              src="./icons/github-icon.svg"
+              alt=""
+              width="15"
+              height="15"
+              class="icon-invert-dark"
+            />
+            <span>GitHub</span>
           </a>
           <a
             href="https://github.com/AristideWafo/open-retail-scanner/blob/main/docs/integration.md"
