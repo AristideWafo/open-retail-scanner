@@ -12,7 +12,8 @@
   ],
   "scripts": {
     "check": "node scripts/check-repository.mjs && npm run typecheck --workspaces && npm test",
-    "test": "node --test \"packages/*/src/**/*.test.ts\""
+    "test": "node --test \"packages/*/src/**/*.test.ts\"",
+    "build:pages": "node scripts/build-pages.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.18.0",
