@@ -1,9 +1,17 @@
 Open Retail Scanner
 Copyright 2026 Open Retail Scanner contributors
 
-This product is intended to incorporate third-party software whose copyright and
-licence notices must be added here before distribution. In particular, audit and
-record the exact ZXing-C++ and WebAssembly wrapper versions selected by Phase 1.
+This product incorporates the following third-party software:
+
+1. zxing-wasm@3.1.7
+   Website: https://github.com/Sec-ant/zxing-wasm
+   License: MIT License
+   Copyright (c) 2023-present Sec-ant (Ze-Zheng Wu)
+
+2. ZXing-C++ (compiled to WebAssembly in zxing-wasm@3.1.7, commit f19f7c6e0509fe0eeb822bf35c41b0f637dec290)
+   Website: https://github.com/zxing-cpp/zxing-cpp
+   License: Apache License, Version 2.0
+   Copyright (c) ZXing-C++ contributors
 
 The names and marks of third-party products, including Scanbot, belong to their
 respective owners. Their mention in benchmark planning does not imply endorsement.

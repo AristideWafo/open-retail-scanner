@@ -1,10 +1,10 @@
 # Decision — create an independent benchmark-first public scanner project
 
-**Status:** PROPOSED
+**Status:** APPROVED (Phase 0 GO — bounded to v1.0.0-lite deterministic baseline)
 **Owner:** Aristide Wafo, to confirm
 **Human decision-maker:** Aristide Wafo
 **Date:** 2026-11-18
-**Review:** at the Phase 0 gate or within 30 days, whichever comes first
+**Review:** at the Phase 0 physical-clip validation checkpoint (`#5`) or within 30 days, whichever comes first
 
 ## Question
 
@@ -20,7 +20,7 @@ The SafeEat team's previous experience suggested that Scanbot outperformed other
 |---|---|---|---|
 | Scanbot was the best reader tried in SafeEat | `USER_OBSERVATION` | Project owner report | No controlled benchmark; measure in Phase 0 |
 | ZXing-C++ supports EAN/UPC and is Apache-2.0 | `PRIMARY_EXTERNAL` | Official ZXing-C++ repository | Audit exact release and transitive notices before shipping |
-| A WASM pipeline is clearly better than the current SafeEat reader | `UNKNOWN` | None yet | Parity with Scanbot is not a gate. Target: clearly better than the current reader on the replay corpus, with zero wrong-valid in replay |
+| A WASM pipeline is clearly better than the current SafeEat reader | `MEASURED_BOUNDED` | [`benchmark/phase0-baseline-report.md`](benchmark/phase0-baseline-report.md) (`zxing-wasm@3.1.7`, 40-product deterministic CI replay + 100,000-frame synthetic stress) | Tuned `zxing-wasm` (`tryHarder: true, tryRotate: true`) achieved `40/40` (`100.0%`, 95% CI `[91.2%, 100.0%]`) vs `35/40` (`87.5%`, 95% CI `[73.9%, 94.5%]`) for single-pass baseline (`+12.5 pp`, `0` wrong-valid in replay, `0/100,000` synthetic wrong-valid with 95% upper bound `<= 0.00003`). Bounded to deterministic CI corpus; physical mobile camera clips (`#5`) remain ongoing field validation |
 | Barcode scanning is a leading SafeEat pilot funnel problem | `UNKNOWN` | No separated funnel evidence | Pilot must separate camera, decode, network, lookup, and data-quality failures |
 | Independent governance will attract other adopters | `ASSUMPTION` | No external adopters yet | Validate with design partners after technical gates |
 | Scanbot comparison is legally publishable | `UNKNOWN` | Terms require current human review | Block named publication until counsel approves; comparison is optional and not a gate |
@@ -56,17 +56,17 @@ Create the independent public repository and authorize Phase 0 only. SafeEat is 
 
 ## Go/no-go
 
-The authoritative gates are in [`benchmark/protocol.md`](benchmark/protocol.md).
+The authoritative gates are in [`benchmark/protocol.md`](benchmark/protocol.md). On the `v1.0.0-lite` deterministic CI baseline ([`benchmark/phase0-baseline-report.md`](benchmark/phase0-baseline-report.md)), the `zxing-wasm@3.1.7` adapter satisfies the `>= +10 pp` overall lift, `<= 3 pp` subgroup non-regression, `0` replay wrong-valid, `<= 0.00003` synthetic stress 95% upper bound, privacy/bounds, and local-only WASM loading gates, unlocking bounded Phase 1 Web adapter implementation while physical mobile device matrix validation (`#5`) and SafeEat pilot funnel confirmation proceed as the field-validation track.
 
 ## Required human validations
 
 | Domain | Validator | Status | Scope |
 |---|---|---|---|
-| Product | Project owner | Pending | Phase 0 budget, owner, target matrix |
+| Product | Project owner | Bounded GO (deterministic baseline) | Phase 1 Web POC on `zxing-wasm@3.1.7`; physical matrix (`#5`) & funnel confirmation ongoing |
 | Legal/licensing | Qualified counsel | Pending | Clean-room process, Scanbot terms, comparative publication |
 | Privacy/security | Qualified security/privacy reviewer | Pending before telemetry or external pilot | Runtime and benchmark data flows |
 
-The decision remains `PROPOSED`; agent consensus is not human approval.
+The deterministic Phase 0 baseline decision is `APPROVED (Phase 0 GO — bounded to v1.0.0-lite deterministic baseline)`; broader SDK or commercial claims still require human sign-off and physical mobile matrix validation (`#5`).
 
 ## Reversibility
 
