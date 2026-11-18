@@ -1,0 +1,40 @@
+name: Bug report
+description: Report a reproducible SDK defect without sensitive data
+title: "[Bug]: "
+labels: ["type:bug", "status:triage"]
+body:
+  - type: markdown
+    attributes:
+      value: "Do not attach frames, crops, barcode values, product identities, personal data, or proprietary SDK material."
+  - type: input
+    id: version
+    attributes:
+      label: SDK version or commit
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Coarse environment
+      description: Device class, OS/browser family and versions; avoid unique identifiers.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction using synthetic or public fixtures
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Failure category
+      options: [camera, permission, decode, wrong-code, performance, lifecycle, accessibility, other]
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true

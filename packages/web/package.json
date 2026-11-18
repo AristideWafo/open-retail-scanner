@@ -1,0 +1,12 @@
+{
+  "name": "@safeeat/scanner-web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Web camera and WASM adapter for the SafeEat Scanner SDK",
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": "./src/index.ts",
+  "dependencies": {
+    "@safeeat/scanner-core": "*"
+  }
+}

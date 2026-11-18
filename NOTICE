@@ -1,0 +1,9 @@
+SafeEat Scanner SDK
+Copyright 2026 SafeEat contributors
+
+This product is intended to incorporate third-party software whose copyright and
+licence notices must be added here before distribution. In particular, audit and
+record the exact ZXing-C++ and WebAssembly wrapper versions selected by Phase 1.
+
+The names and marks of third-party products, including Scanbot, belong to their
+respective owners. Their mention in benchmark planning does not imply endorsement.

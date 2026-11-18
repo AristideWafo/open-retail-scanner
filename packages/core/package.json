@@ -1,0 +1,9 @@
+{
+  "name": "@safeeat/scanner-core",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Engine-independent contracts for the SafeEat Scanner SDK",
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": "./src/index.ts"
+}
