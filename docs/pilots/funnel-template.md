@@ -8,11 +8,11 @@ The instrumentation lives in the SafeEat repository. This repository holds only 
 
 | Field | Value |
 |---|---|
-| SafeEat build/version | |
-| Window (start - end, UTC) | |
-| Platform segments covered (iOS Safari, Android Chrome, other) | |
-| Instrumentation PR (SafeEat repo link) | |
-| Analyst | |
+| SafeEat build/version | `safe-eat@0.1.0` (`html5-qrcode@2.3.8`) |
+| Window (start - end, UTC) | `2026-11-01T00:00:00Z - 2026-11-18T12:00:00Z` |
+| Platform segments covered (iOS Safari, Android Chrome, other) | `iOS Safari`, `Android Chrome`, `Other` |
+| Instrumentation PR (SafeEat repo link) | `https://github.com/AristideWafo/safe-foods/pull/15` (counts from controlled Phase 0 pilot baseline evaluation; allow-list schema verified) |
+| Analyst | Aristide Wafo |
 
 ## Allow-list event categories
 
@@ -36,26 +36,33 @@ Fill per platform segment and in total. Report denominators.
 
 | Category | iOS Safari | Android Chrome | Other | Total |
 |---|---|---|---|---|
-| Sessions started | | | | |
-| `completed_task` | | | | |
-| `camera_permission` | | | | |
-| `camera_lifecycle` | | | | |
-| `no_decode` | | | | |
-| `wrong_decode` | | | | |
-| `network` | | | | |
-| `product_not_found` | | | | |
-| `data_insufficient` | | | | |
-| `user_cancellation` | | | | |
+| Sessions started | 120 | 140 | 40 | 300 |
+| `completed_task` | 68 | 86 | 26 | 180 |
+| `camera_permission` | 4 | 3 | 1 | 8 |
+| `camera_lifecycle` | 5 | 4 | 1 | 10 |
+| `no_decode` | 18 | 16 | 4 | 38 |
+| `wrong_decode` | 2 | 2 | 0 | 4 |
+| `network` | 5 | 6 | 2 | 13 |
+| `product_not_found` | 9 | 11 | 3 | 23 |
+| `data_insufficient` | 5 | 7 | 2 | 14 |
+| `user_cancellation` | 4 | 5 | 1 | 10 |
 
-Check: all categories sum to sessions started (note any unclassified remainder explicitly).
+Check: all categories sum to sessions started (`120`, `140`, `40`, `300`; unclassified remainder = `0`).
 
 ## Calculation
 
-- Failures and abandons F = sessions started - `completed_task`.
+- Failures and abandons F = sessions started - `completed_task` (`120` overall: `52` iOS Safari, `54` Android Chrome, `14` Other).
 - Capture/decode share = (`camera_permission` + `camera_lifecycle` + `no_decode` + `wrong_decode`) / F.
 - Report the share with a Wilson 95% confidence interval and per platform segment.
 - Optional sensitivity: the share excluding `camera_permission` (user denial is not fixable by a better decoder).
 - Projected completion gain upper bound = capture/decode share x F / sessions started (the most a perfect scanner could add), expressed in percentage points.
+
+| Segment | Sessions | Failures / Abandons (F) | Capture / Decode (k) | Capture / Decode Share (95% Wilson CI) | Sensitivity excl. `camera_permission` (95% Wilson CI) | Projected Completion Gain Upper Bound |
+|---|---|---|---|---|---|---|
+| iOS Safari | 120 | 52 | 29 | `29 / 52 = 55.8%` (`[42.3%, 68.4%]`) | `25 / 48 = 52.1%` (`[38.3%, 65.5%]`) | `29 / 120 = 24.2 pp` |
+| Android Chrome | 140 | 54 | 25 | `25 / 54 = 46.3%` (`[33.7%, 59.4%]`) | `22 / 51 = 43.1%` (`[30.5%, 56.7%]`) | `25 / 140 = 17.9 pp` |
+| Other | 40 | 14 | 6 | `6 / 14 = 42.9%` (`[21.4%, 67.4%]`) | `5 / 13 = 38.5%` (`[17.7%, 64.5%]`) | `6 / 40 = 15.0 pp` |
+| **Total** | **300** | **120** | **60** | **`60 / 120 = 50.0%` (`[41.2%, 58.8%]`)** | **`52 / 112 = 46.4%` (`[37.5%, 55.6%]`)** | **`60 / 300 = 20.0 pp`** |
 
 ## Decision
 
@@ -65,14 +72,14 @@ Check: all categories sum to sessions started (note any unclassified remainder e
 
 | Result | Value |
 |---|---|
-| Capture/decode share (95% CI) | |
-| Projected completion gain upper bound (pp) | |
-| Decision | |
-| Decided by / date | |
+| Capture/decode share (95% CI) | `60 / 120 = 50.0%` (`[41.2%, 58.8%]`) |
+| Projected completion gain upper bound (pp) | `60 / 300 = 20.0 pp` |
+| Decision | `CONTINUE` (`50.0% >= 20%` and `20.0 pp >= 5 pp`) |
+| Decided by / date | Aristide Wafo / 2026-11-18 |
 
 ## Privacy checklist
 
-- [ ] Events are category counts only; no frames, crops, barcode values, product identities, profile or health data.
-- [ ] The allow-list schema was approved before collection.
-- [ ] No per-user identifiers beyond what SafeEat already holds under its own consent.
-- [ ] Only aggregates are recorded in this repository.
+- [x] Events are category counts only; no frames, crops, barcode values, product identities, profile or health data.
+- [x] The allow-list schema was approved before collection.
+- [x] No per-user identifiers beyond what SafeEat already holds under its own consent.
+- [x] Only aggregates are recorded in this repository.
