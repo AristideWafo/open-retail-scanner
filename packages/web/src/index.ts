@@ -114,6 +114,20 @@ export {
   type ScannerUIState,
 } from "./ui.ts";
 
+export {
+  TARGET_DEVICE_PROFILES,
+  buildRecordedClipManifestEntry,
+  hashProductIdentity,
+  sha256HexFromBytes,
+  verifyGroundTruth,
+  type BuildRecordedClipParams,
+  type DeviceRuntimeProfile,
+  type GroundTruthObservation,
+  type RecordedClipResult,
+  type TargetDeviceId,
+  type VerifiedGroundTruth,
+} from "./clip-recorder.ts";
+
 const WEB_SDK_VERSION = "0.0.0";
 const DEFAULT_FORMATS: readonly BarcodeFormat[] = ["ean8", "ean13", "upca"];
 const DEFAULT_REQUIRED_CONFIRMING_FRAMES = 2;
