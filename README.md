@@ -6,7 +6,7 @@ An open-source, local-first barcode scanning SDK focused on retail food packagin
 
 ## Mission
 
-Build a small, auditable scanner for EAN-8, EAN-13, and UPC-A that can be embedded in web applications and remain reliable on the explicitly supported device matrix.
+Build a small, auditable scanner for EAN-8, EAN-13, and UPC-A that can be embedded in web applications and remain reliable on the explicitly supported device matrix. The goal is a scanner measurably better than the current reader, and compared with commercial SDKs only when legally cleared.
 
 The project is independent from any consuming application. **SafeEat is the first pilot integration**, providing a real packaged-food use case and end-to-end validation feedback. SafeEat-specific health logic, user profiles, product lookup, and safety-related wording remain outside this repository.
 
@@ -16,8 +16,8 @@ The SDK identifies a barcode value. It does **not** verify a product, determine 
 
 - Benchmark before optimizing or making comparative claims.
 - Process frames on-device; never upload or log images or barcode values.
-- Use ZXing-C++ as the initial decoding core instead of rewriting a decoder.
-- Own the capture, quality, scheduling, preprocessing, and temporal-consensus pipeline.
+- Use the `zxing-wasm` package (ZXing-C++) as the decoding core instead of rewriting a decoder.
+- Own the capture, scheduling, and temporal-consensus pipeline; add quality and preprocessing steps only when measured.
 - Preserve raw value, canonical value, observed format, engine version, and evidence.
 - Always provide an accessible manual-entry fallback.
 - Drop stale frames; never build a processing backlog.
@@ -26,13 +26,13 @@ The SDK identifies a barcode value. It does **not** verify a product, determine 
 ## Proposed pipeline
 
 ```text
-camera → frame quality → ROI/localization → preprocessing → ZXing-C++/WASM
-       → checksum → temporal consensus → result or user guidance
+camera → latest frame → zxing-wasm (or native BarcodeDetector)
+       → checksum → temporal consensus → result or manual fallback
 ```
 
 ## Current phase
 
-Phase 0 produces a reproducible comparison of Scanbot, ZXing-C++/WASM, Quagga2, and the native `BarcodeDetector` when available. Development of a supported SDK is conditional on the gates in [the benchmark protocol](docs/benchmark/protocol.md). SafeEat validates the first integration through the separate [pilot charter](docs/pilots/safeeat.md).
+Phase 0 (evidence-lite) measures the SafeEat funnel, then replays recorded clips through the current SafeEat reader, `zxing-wasm`, native `BarcodeDetector` where available, and optionally Quagga2. Scanbot is an optional, legally gated comparison. Development of a supported SDK is conditional on the gates in [the benchmark protocol](docs/benchmark/protocol.md). SafeEat validates the first integration through the separate [pilot charter](docs/pilots/safeeat.md).
 
 ## Repository map
 

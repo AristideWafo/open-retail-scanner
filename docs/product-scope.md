@@ -29,4 +29,4 @@ The project is application-independent. SafeEat is the first pilot integrator an
 
 ## Success definition
 
-Success means non-inferiority to the selected commercial baseline on the locked Open Retail Scanner EAN/UPC benchmark. The first integration must also improve end-to-end task completion in the SafeEat pilot. It does not mean parity on untested formats, devices, applications, or conditions.
+Success means clearly better than the current pilot reader on the locked replay corpus with no wrong-valid codes; commercial comparison is optional. The first integration must also improve end-to-end task completion in the SafeEat pilot. It does not mean parity on untested formats, devices, applications, or conditions.

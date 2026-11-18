@@ -20,22 +20,22 @@ The SafeEat team's previous experience suggested that Scanbot outperformed other
 |---|---|---|---|
 | Scanbot was the best reader tried in SafeEat | `USER_OBSERVATION` | Project owner report | No controlled benchmark; measure in Phase 0 |
 | ZXing-C++ supports EAN/UPC and is Apache-2.0 | `PRIMARY_EXTERNAL` | Official ZXing-C++ repository | Audit exact release and transitive notices before shipping |
-| A WASM pipeline can match Scanbot on the target matrix | `UNKNOWN` | None yet | Critical unknown converted to locked benchmark |
+| A WASM pipeline is clearly better than the current SafeEat reader | `UNKNOWN` | None yet | Parity with Scanbot is not a gate. Target: clearly better than the current reader on the replay corpus, with zero wrong-valid in replay |
 | Barcode scanning is a leading SafeEat pilot funnel problem | `UNKNOWN` | No separated funnel evidence | Pilot must separate camera, decode, network, lookup, and data-quality failures |
 | Independent governance will attract other adopters | `ASSUMPTION` | No external adopters yet | Validate with design partners after technical gates |
-| Scanbot comparison is legally publishable | `UNKNOWN` | Terms require current human review | Block named publication until counsel approves |
+| Scanbot comparison is legally publishable | `UNKNOWN` | Terms require current human review | Block named publication until counsel approves; comparison is optional and not a gate |
 
 ## Options
 
 1. **Status quo:** keep current open-source reader and do not invest.
-2. **Selected experiment:** independent public benchmark-first repository using ZXing-C++/WASM, with SafeEat as first pilot.
+2. **Selected experiment:** independent public benchmark-first repository using `zxing-wasm`, with SafeEat as first pilot.
 3. Buy Scanbot for SafeEat and defer the independent open-source project.
 4. Write a new decoder from scratch.
 5. Immediately build a general multi-platform, multi-format SDK business.
 
 ## Independent advice
 
-- Computer vision architecture: feasible for the bounded EAN/UPC matrix; use ZXing-C++ and differentiate in capture/localization/preprocessing/consensus.
+- Computer vision architecture: feasible for the bounded EAN/UPC matrix; use ZXing-C++ via `zxing-wasm` and differentiate in capture constraints, frame selection, and consensus.
 - Open-source and business: Apache-2.0 and a narrow internal-first SDK; public support becomes a separate business and requires demand.
 - Red Team: do not authorize a full SDK before a reproducible benchmark; scanner performance may not be SafeEat's dominant risk.
 
@@ -43,7 +43,7 @@ The SafeEat team's previous experience suggested that Scanbot outperformed other
 
 - **Unfalsifiable parity claim:** preregistered metrics, locked set, device matrix, subgroup reporting.
 - **Product distraction:** strict formats/platform scope and Phase 0 kill criteria.
-- **Wrong code:** checksum, temporal consistency, at least 10,000 independent trials, manual fallback.
+- **Wrong code:** checksum, temporal consistency, full-clip replay plus a synthetic stress set with published bounds, manual fallback.
 - **Privacy leakage:** local-only processing and allow-listed diagnostics with no values or images.
 - **Reverse engineering:** clean-room policy and legal gate.
 - **Maintenance burden:** no supported public SDK until an owner, budget, and external demand exist.

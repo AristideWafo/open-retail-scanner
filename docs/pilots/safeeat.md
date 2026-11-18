@@ -53,9 +53,9 @@ SafeEat defines its target devices and browsers before collection. The pilot ini
 
 ## Gates
 
-- `GO`: the core benchmark gates pass and SafeEat completed-task rate improves by at least 5 percentage points over its current reader.
+- `GO`: the core benchmark gates pass (correct within 3 s at least 10 points above the current reader overall is the core metric) and, in the end-to-end pilot, SafeEat completed-task rate improves by at least 5 percentage points over its current reader.
 - `ITERATE`: no wrong-code, privacy, or comprehension gate fails and remaining performance gaps fit the approved spike budget.
-- `NO-GO`: barcode causes fewer than 20% of SafeEat failures/abandons, projected completion gain is below 5 points, or any unresolved wrong-code/privacy/clean-room incident exists.
+- `NO-GO`: barcode causes fewer than 20% of SafeEat failures/abandons, projected completion gain is below 5 points, no GO or ITERATE path exists within 3 calendar weeks of spike work, or any unresolved wrong-code/privacy/clean-room incident exists.
 
 These are preregistered working thresholds, not a claim of universal performance or health safety.
 

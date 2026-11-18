@@ -12,27 +12,24 @@
 
 ## First assignment
 
-Deliver the benchmark harness and a baseline report. Do not implement a polished scanner UI or publish performance claims in the first assignment.
+Deliver, in order, without a polished scanner UI or any published performance claim:
 
-Expected first PR:
+1. a funnel measurement note: share of SafeEat failures/abandons from camera/decode versus network, lookup, and data;
+2. clip recording and a replay harness (lite): raw clips from 4–6 devices, about 40 products, 4 conditions, replayed identically through each engine;
+3. a baseline report with denominators and Wilson confidence intervals.
 
-- schema for test cases, runs, devices, engines, conditions, and aggregate results;
-- fixture validation and corpus manifest tooling;
-- recorded-input adapter that invokes open-source engines deterministically;
-- aggregate metrics and confidence intervals;
-- CI tests proving values/crops cannot enter diagnostics;
-- documentation for adding a device run without changing the locked validation set.
+Include CI tests proving values and frames cannot enter diagnostics.
 
 ## Decisions already made
 
 - initial formats: EAN-8, EAN-13, UPC-A;
 - first platform: Web/PWA;
-- initial decoder candidate: ZXing-C++/WASM;
+- initial decoder: `zxing-wasm` package, with native `BarcodeDetector` as an optional fast path;
 - local-only processing;
 - Apache-2.0 project licence;
 - independent project governance; SafeEat is the first pilot, not the SDK owner;
 - no proprietary reverse engineering;
-- no public parity claim before passing the locked benchmark and legal review.
+- no public parity claim before measurement and legal review; parity with Scanbot is not a gate.
 
 ## Decisions still open
 
@@ -46,9 +43,11 @@ Expected first PR:
 
 ## Definition of ready for Phase 1
 
-- protocol preregistered and reviewed;
-- corpus development split and locked validation split created legally;
-- device matrix named;
-- Scanbot black-box testing permission reviewed by counsel;
+- protocol reviewed and gates fixed before results are opened;
+- funnel measurement note shows at least 20% of failures/abandons are camera/decode;
+- clips recorded, development split and locked split created legally;
+- device matrix named, including iOS Safari and Android Chrome;
 - baseline report produced;
 - Phase 0 decision issue closed with `GO`.
+
+Scanbot legal review is not required for Phase 1; it blocks only a named commercial comparison.

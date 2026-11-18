@@ -2,16 +2,17 @@
 
 ## Decision
 
-Begin with ZXing-C++ compiled to WebAssembly as the portable decoder. Build an engine-independent TypeScript contract and own the Web capture and orchestration pipeline.
+Use the `zxing-wasm` package (ZXing-C++, single-thread WASM, reader build, pinned) as the portable decoder, with native `BarcodeDetector` as an optional fast path. Build an engine-independent TypeScript contract and own the Web capture and orchestration pipeline.
 
 ## Components
 
 ```text
 MediaDevices / camera controls
   └─ latest-frame scheduler
-      └─ quality estimator
-          └─ ROI/localizer and preprocessing variants
-              └─ decoder adapter (ZXing-C++ WASM)
+      └─ [Phase 2] quality estimator
+          └─ decoder adapter
+              ├─ zxing-wasm (universal)
+              └─ native BarcodeDetector (optional, feature-detected)
                   └─ checksum and normalization
                       └─ temporal consensus
                           ├─ result
@@ -32,18 +33,19 @@ MediaDevices / camera controls
 - Prefer luminance buffers, `VideoFrame`, or `ImageBitmap`; avoid JPEG/base64 conversion.
 - Enforce CPU, memory, and time budgets.
 
-### Image pipeline
+### Image handling
 
-- Start with a central landscape ROI and configurable fallback search.
-- Measure blur, brightness, glare, and motion before expensive decoding.
-- Benchmark preprocessing variants; do not apply unmeasured filters permanently.
+- Full frame first, decoded at native camera resolution rather than a downscaled video frame.
+- Optional centre ROI crop at native resolution, kept only if measured to help.
+- Preprocessing only if measured; do not apply unmeasured filters permanently.
+- Quality estimator (blur, brightness, glare, motion) is Phase 2.
 - Keep transformation metadata for reproducibility without retaining the image.
 
 ### Decoder
 
-- ZXing-C++ is the initial baseline, not an irreversible dependency.
-- Restrict builds and hints to EAN-8/EAN-13/UPC-A.
-- Scalar/single-thread WASM is mandatory. SIMD may be progressive enhancement.
+- Decoder: pinned `zxing-wasm` reader build behind the adapter, with EAN-8/EAN-13/UPC-A hints. `tryHarder`, `tryRotate`, and `tryInvert` are measured, not assumed.
+- Native `BarcodeDetector` is used only when feature-detected and `getSupportedFormats()` includes the three formats (see ADR 0003). It uses the same `ScanResult` contract.
+- Single-thread WASM is mandatory. SIMD may be progressive enhancement.
 - WASM threads are out of scope for Phase 1 because of cross-origin-isolation and dual-build costs.
 
 ### Validation and consensus
@@ -53,6 +55,16 @@ MediaDevices / camera controls
 - Define UPC-A/EAN-13-leading-zero canonicalization explicitly.
 - Require consistent observations across frames according to a benchmark-calibrated policy.
 - Do not expose an uncalibrated percentage confidence.
+
+## Where the real gains are
+
+Expected gains come from the pipeline around the decoder, not a decoder rewrite:
+
+- camera constraints: resolution, focus, zoom, torch;
+- decoding at native resolution, not downscaled video;
+- frame selection;
+- multi-frame consensus;
+- an adaptive time budget.
 
 ## Public API qualities
 
