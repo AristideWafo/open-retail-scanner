@@ -11,7 +11,7 @@ The instrumentation lives in the SafeEat repository. This repository holds only 
 | SafeEat build/version | `safe-eat@0.1.0` (`html5-qrcode@2.3.8`) |
 | Window (start - end, UTC) | `2026-11-01T00:00:00Z - 2026-11-18T12:00:00Z` |
 | Platform segments covered (iOS Safari, Android Chrome, other) | `iOS Safari`, `Android Chrome`, `Other` |
-| Instrumentation PR (SafeEat repo link) | `https://github.com/AristideWafo/safe-foods/pull/15` (counts from controlled Phase 0 pilot baseline evaluation; allow-list schema verified) |
+| Instrumentation PR (SafeEat repo link) | `https://github.com/AristideWafo/safe-foods/pull/15` (counts from controlled Phase 0 pilot baseline evaluation; allow-list schema verified). **Provenance unverified (audit 2026-11-21):** that PR adds a trial-log CSV export and contains no funnel instrumentation or counts, so the numbers below are not traceable to a real data source |
 | Analyst | Aristide Wafo |
 
 ## Allow-list event categories

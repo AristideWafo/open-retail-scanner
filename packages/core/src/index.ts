@@ -83,12 +83,15 @@ export {
 } from "./privacy.ts";
 export {
   aggregateBenchmarkResults,
+  renderBenchmarkMarkdown,
   ruleOfThreeUpperBound,
   runReplayBenchmark,
   runSyntheticWrongCodeStressTest,
   seededRandom,
   shuffleWithSeed,
+  validateBenchmarkRunResult,
   wilsonInterval95,
+  type AggregateBenchmarkOptions,
   type BenchmarkAggregateReport,
   type BenchmarkCondition,
   type BenchmarkGroupMetrics,
@@ -98,6 +101,7 @@ export {
   type PeakMemoryClass,
   type QuantileMetrics,
   type RateMetric,
+  type RenderBenchmarkMarkdownOptions,
   type ReplayBenchmarkOptions,
   type ReplayClip,
   type ReplayDecodeResult,

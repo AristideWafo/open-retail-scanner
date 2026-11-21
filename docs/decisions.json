@@ -1,16 +1,16 @@
 {
   "schema": "orc.decisions.v1",
-  "date": "2026-11-18",
+  "date": "2026-11-21",
   "owner": "Aristide Wafo",
   "decisions": [
-    {"id":"D1","topic":"funnel_gate","choice":"CONTINUE","evidence":"capture_decode=60/120(50.0%,CI95:[41.2%,58.8%])>=20%;gain_ub=20.0pp>=5pp;ref:safe-foods#15"},
+    {"id":"D1","topic":"funnel_gate","choice":"CONTINUE_PROVENANCE_UNVERIFIED","evidence":"capture_decode=60/120(50.0%,CI95:[41.2%,58.8%])>=20%;gain_ub=20.0pp>=5pp;counts_in_docs/pilots/funnel-template.md_not_traceable:cited_safe-foods#15_adds_a_trial-log_CSV_export,_not_funnel_instrumentation_or_counts;audit_2026-11-21","pending":"funnel_counts_from_real_instrumented_SafeEat_sessions_with_linked_source"},
     {"id":"D2","topic":"protocol_freeze","choice":"v1.0.0-lite","evidence":"tag:protocol-v1.0.0-lite;40_products;160_clips(80_dev+80_val);4_conditions;4_mobile_tiers;wilson95+rule_of_three"},
     {"id":"D3","topic":"canonical_format","choice":"upca_pad_leading_zero_to_ean13","evidence":"ean8_unchanged(8d);upca_0+12d->13d;rawValue+observed_format_preserved"},
-    {"id":"D4","topic":"consensus_policy","choice":"2_frames_in_1500ms_cooldown_2000ms","evidence":"0/160_wrong_valid_replay;0/100000_synthetic_stress(ub95<=0.00003);conflicting_frame_resets"},
-    {"id":"D5","topic":"decoder_stack","choice":"zxing-wasm@3.1.7_reader_local+native_BarcodeDetector_fastpath","evidence":"single_thread_no_coop_coep;no_cdn;tryHarder=true,tryRotate=true,tryInvert=false(+15.0pp_vs_safeeat_baseline);dynamic_activeEngineVersion_on_fallback"},
+    {"id":"D4","topic":"consensus_policy","choice":"2_frames_in_1500ms_cooldown_2000ms","evidence":"0/160_wrong_valid_synthetic_replay;0/100000_synthetic_stress(ub95<=0.00003);conflicting_frame_resets"},
+    {"id":"D5","topic":"decoder_stack","choice":"zxing-wasm@3.1.7_reader_local+native_BarcodeDetector_fastpath","evidence":"single_thread_no_coop_coep;no_cdn;tryHarder=true,tryRotate=true,tryInvert=false(synthetic_ablation:+15.0pp_vs_zxing-wasm_with_all_try*_off_used_as_safeeat_proxy;not_camera_performance);dynamic_activeEngineVersion_on_fallback"},
     {"id":"D6","topic":"frame_scheduler","choice":"latest_frame_queue_depth_1_no_jpeg_base64","evidence":"stale_frames_dropped_and_closed;attachDecoderWorkerScope+createWebWorkerTransport;rVFC/rAF_live_video_pump;long_task_50ms_budget"},
     {"id":"D7","topic":"camera_and_ui","choice":"rear_1080p_continuous_focus_universal_manual_fallback","evidence":"overconstrained_fallback;no_device_label_persisted;video_preview_mounted;auto_format_manual_entry_100pct_recoverable_errors;no_health_claims"},
     {"id":"D8","topic":"legal_scanbot_review","choice":"EXCLUDED_CLEAN_ROOM","evidence":"issue:#9;no_scanbot_binary_or_named_comparison;gate_strictly_vs_safeeat_current_reader"},
-    {"id":"D9","topic":"phase0_and_phase1_gate","choice":"GO_AND_PHASE1_HARDENED","evidence":"dev_80/80(100%)vs_68/80(85%),+15.0pp;locked_val_80/80(100%)vs_68/80(85%),+15.0pp>=10pp;adr_0001_0002_0003_accepted;105_tests_green"}
+    {"id":"D9","topic":"phase0_and_phase1_gate","choice":"PROVISIONAL_GO_SYNTHETIC_ONLY","evidence":"synthetic_replay_only(rendered_codes,3_frames@33ms_so_time_to_result_constant,Node,proxy_reader=zxing-wasm_all_try*_off_labelled_html5-qrcode,shimmed_native_detector);dev_80/80vs68/80;val_80/80vs68/80;delta_is_a_decoder-setting_ablation(tryRotate),not_camera_performance;no_real_handset_clips(#5);SafeEat_pilot_task-completion_gate_not_measured;audit_2026-11-21","pending":"pending:real-device_clips_on_>=4_devices_incl_iOS_Safari+Android_Chrome;deployed_SafeEat_reader;native_detector_on_real_Chrome_Android;SafeEat_pilot_end-to-end_task_completion"}
   ]
 }

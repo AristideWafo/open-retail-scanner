@@ -190,13 +190,13 @@
             <!-- 4 KPI Bento Cells -->
             <article class="bento-cell bento-span-3 kpi-card">
               <div class="kpi-head">
-                <span class="kpi-label">LOCKED VALIDATION</span>
+                <span class="kpi-label">SYNTHETIC REPLAY (VAL)</span>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
               </div>
               <strong class="kpi-value">80 / 80 <span class="kpi-accent">(100%)</span></strong>
-              <span class="kpi-meta mono">CI [95.4%, 100.0%] · +15.0 pp lift</span>
+              <span class="kpi-meta mono">CI [95.4%, 100.0%] · rendered codes, not camera performance</span>
             </article>
 
             <article class="bento-cell bento-span-3 kpi-card">
@@ -640,28 +640,32 @@
         <div class="container">
           <div class="swiss-coord mono">02 // EVIDENCE</div>
           <div class="section-head">
-            <h2>Phase 0 Benchmark Evidence (<code>v1.0.0-lite</code>)</h2>
+            <h2>Phase 0 Synthetic Replay (<code>v1.0.0-lite</code>)</h2>
             <p>
-              Frozen 160-clip benchmark across 40 distinct GS1 products (<code>development</code>
-              <em>N</em> = 80 and locked <code>validation</code> <em>N</em> = 80; 0 product overlap)
-              across 4 conditions and 4 mobile device profiles.
+              Every number below is a <strong>synthetic replay (rendered codes, Node, proxy reader, shimmed native detector)</strong>: 160 programmatically rendered
+              sequences across 40 GS1 codes (<code>development</code> <em>N</em> = 80 and
+              <code>validation</code> <em>N</em> = 80) and 4 simulated device profiles. No real
+              handset has been tested, so there is no Phase 0 <code>GO</code> verdict yet
+              (status: provisional, synthetic only).
             </p>
           </div>
 
           <div class="bento-grid evidence-bento">
             <article class="bento-cell bento-span-6 bento-highlight">
               <div class="evidence-head">
-                <span class="status-pill status-emerald">LOCKED VALIDATION // N = 80</span>
-                <span class="evidence-kpi mono">+15.0 pp</span>
+                <span class="status-pill status-amber">SYNTHETIC REPLAY // N = 80</span>
+                <span class="evidence-kpi mono">ablation</span>
               </div>
-              <h3><code>zxing-wasm@3.1.7</code> Tuned vs Baseline</h3>
+              <h3>Synthetic ablation: effect of decoder settings, not camera performance</h3>
               <p>
                 <code>zxing-tuned-th1-tr1-ti0</code> (<code>tryHarder: true, tryRotate: true,
                 tryInvert: false</code>): <strong class="mono">80 / 80 (100.0%)</strong>, Wilson
                 95% CI <strong class="mono">[95.4%, 100.0%]</strong> vs
-                <code>safeeat-current-reader</code> <strong class="mono">68 / 80 (85.0%)</strong>,
-                Wilson 95% CI <strong class="mono">[75.6%, 91.2%]</strong>.
-                <strong>0 subgroup regressions</strong> (min delta 0.0 pp).
+                the <code>safeeat-current-reader</code> proxy (<code>zxing-wasm</code> with every
+                <code>try*</code> option off, not the deployed SafeEat reader)
+                <strong class="mono">68 / 80 (85.0%)</strong>, Wilson 95% CI
+                <strong class="mono">[75.6%, 91.2%]</strong>. The difference comes from
+                <code>tryRotate</code> on rendered codes.
               </p>
             </article>
 
@@ -688,8 +692,9 @@
               <p>
                 Measured failure share across funnel diagnostics with Wilson 95% CI
                 <strong class="mono">[41.2%, 58.8%]</strong>, yielding a
-                <strong class="mono">20.0 pp</strong> completion gain upper bound (&ge; 15.0 pp
-                required &rarr; <code>GO</code>).
+                <strong class="mono">20.0 pp</strong> completion gain upper bound (&ge; 5 pp &rarr;
+                <code>CONTINUE</code>). Provenance unverified: the cited SafeEat source does not
+                contain these counts.
               </p>
             </article>
 
@@ -698,9 +703,10 @@
                 <span class="status-pill status-cyan">ANDROID CHROME FAST PATH</span>
                 <span class="evidence-kpi evidence-kpi-cyan mono">40 / 40</span>
               </div>
-              <h3>Native <code>BarcodeDetector</code> (N = 40)</h3>
+              <h3>Shimmed native <code>BarcodeDetector</code> (N = 40, synthetic)</h3>
               <p>
-                On Android Chrome segments, <code>native-barcode-detector</code> achieved
+                On simulated Android Chrome segments, measured through a <code>BarcodeDetector</code>
+                shim in Node (not a real device), <code>native-barcode-detector</code> achieved
                 <strong class="mono">40 / 40 (100.0%)</strong>, Wilson 95% CI
                 <strong class="mono">[91.2%, 100.0%]</strong>. Automatically bypassed on iOS Safari
                 where the Web API is unavailable.
@@ -712,7 +718,7 @@
                 <div>
                   <h3>Frozen Corpus Breakdown</h3>
                   <p id="bench-meta-line" class="bench-meta mono">
-                    Protocol v1.0.0-lite · Corpus phase0-v1.0.0-lite-2026-11-18 · Frozen Config zxing-tuned-th1-tr1-ti0
+                    Synthetic replay (rendered codes, Node, proxy reader, shimmed native detector) · Protocol v1.0.0-lite · Corpus phase0-v1.0.0-lite-2026-11-18 · Frozen Config zxing-tuned-th1-tr1-ti0
                   </p>
                 </div>
                 <div class="split-switcher" role="tablist" aria-label="Benchmark partition">
@@ -762,7 +768,7 @@
                     </tr>
                     <tr>
                       <td class="mono">safeeat-current-reader</td>
-                      <td><code>html5-qrcode@2.3.8</code> (equiv)</td>
+                      <td>proxy: <code>zxing-wasm</code>, all <code>try*</code> off</td>
                       <td class="mono">68 / 80 (85.0%)</td>
                       <td class="mono">[75.6%, 91.2%]</td>
                       <td class="mono">33 ms</td>

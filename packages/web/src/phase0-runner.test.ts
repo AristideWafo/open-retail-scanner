@@ -99,7 +99,7 @@ test("docs/benchmark/manifest.json passes validateCorpusManifest, checkCorpusQuo
   ]);
 });
 
-test("docs/benchmark/phase0-results.json passes assertPrivacySafePayload and all Phase 0 GO gates", async () => {
+test("docs/benchmark/phase0-results.json passes assertPrivacySafePayload and all synthetic-replay Phase 0 gates", async () => {
   const resultsPath = path.join(
     REPO_ROOT,
     "docs/benchmark/phase0-results.json",
@@ -110,7 +110,7 @@ test("docs/benchmark/phase0-results.json passes assertPrivacySafePayload and all
   assertPrivacySafePayload(results);
 
   assert.equal(results.schema, "orc.phase0-results.v1");
-  assert.equal(results.phase0Decision, "GO");
+  assert.equal(results.phase0Decision, "PROVISIONAL_GO_SYNTHETIC_ONLY");
   assert.equal(results.frozenConfigurationId, "zxing-tuned-th1-tr1-ti0");
   assert.equal(results.validation.analysisFrozen, true);
   assert.equal(results.corpusSummary.totalSequences, 160);

@@ -1,4 +1,7 @@
-# Phase 0 baseline report (160-clip development + locked validation & wrong-code stress)
+# Phase 0 baseline report — synthetic replay (rendered codes, Node, proxy reader, shimmed native detector)
+
+> **Evidence status (audit 2026-11-21): `PROVISIONAL_GO_SYNTHETIC_ONLY`.** Every number in this report is a **synthetic replay (rendered codes, Node, proxy reader, shimmed native detector)**. The 160 "clips" are programmatically rendered barcode sequences of 3 frames at 33 ms, so `timeToFirstCorrectMs` is a constant 33 ms by construction. `safeeat-current-reader` is a proxy (`zxing-wasm` with every `try*` option off, labelled `html5-qrcode@2.3.8 (single-pass-equiv)`), not the deployed SafeEat reader. `native-barcode-detector` runs through a CI shim, not Chrome on Android. Nothing ran on a real handset. The 85% vs 100% difference is a **synthetic ablation: effect of decoder settings, not camera performance**; the ablation rows show it comes from `tryRotate`. No `GO` verdict follows from this report. Pending: real-device clips on >= 4 devices including iOS Safari and Android Chrome, the deployed SafeEat reader, native detector on real Chrome Android, and the SafeEat pilot task-completion gate (see `#5`, `#8`, `#10`).
+
 
 **Protocol version:** `v1.0.0-lite` (`orc-protocol-v1.0.0-lite-20261118`, SHA-256 `19cdc9fc49d6df36c76e02d3cb436104d031d30a6b5b76bc66b792b33c4c77c6`)  
 **Corpus version:** `phase0-v1.0.0-lite-2026-11-18` (40 distinct GS1 products × 4 conditions = 160 sequences: `80` `development` + `80` locked `validation`, `0` product overlap)  
@@ -30,7 +33,7 @@ The 40 distinct owned-product GS1 barcodes are partitioned strictly by physical 
 
 ---
 
-## 2. Development split results (`N_seq = 80` universal; `N_seq = 40` Android Chrome)
+## 2. Development split results — synthetic replay (`N_seq = 80` universal; `N_seq = 40` Android Chrome)
 
 ### Overall by configuration
 
@@ -43,8 +46,8 @@ The 40 distinct owned-product GS1 barcodes are partitioned strictly by physical 
 | `zxing-tuned-th1-tr1-ti0` | `80` | `80 / 80` (`100.0%`) | `[95.4%, 100.0%]` | `33 / 33 / 33 ms` | `0.0%` (`0 / 80`) | `0 / 80` (`<= 0.0374`) | `0.0%` (`0 / 80`) | `2.00 / 3.22 ms` |
 | `native-barcode-detector` (Android Chrome only) | `40` | `40 / 40` (`100.0%`) | `[91.2%, 100.0%]` | `33 / 33 / 33 ms` | `0.0%` (`0 / 40`) | `0 / 40` (`<= 0.0749`) | `0.0%` (`0 / 40`) | `0.01 / 0.01 ms` |
 
-- **Development overall delta (`zxing-tuned-th1-tr1-ti0` vs `safeeat-current-reader`):** `+15.0` percentage points (`>= +10` pp required).
-- **Ablation conclusion:** `tryRotate: true` drives the `+15.0 pp` gain (`12 / 12` rotated `small_damaged` sequences recovered); `tryInvert: false` matches `tryInvert: true` on dark-on-light retail labels; `tryHarder: true` is retained in the frozen candidate `zxing-tuned-th1-tr1-ti0` with P95 cold init `3.22 ms`.
+- **Synthetic ablation delta (`zxing-tuned-th1-tr1-ti0` vs the `safeeat-current-reader` proxy):** `+15.0` percentage points on rendered codes. This is the effect of decoder settings, not camera performance, and does not satisfy the protocol's `GO` lift criterion, which requires real-device clips and the deployed reader.
+- **Ablation conclusion (synthetic):** `tryRotate: true` drives the `+15.0 pp` difference (`12 / 12` rotated `small_damaged` sequences recovered); `tryInvert: false` matches `tryInvert: true` on dark-on-light retail labels; `tryHarder: true` is retained in the frozen candidate `zxing-tuned-th1-tr1-ti0` with P95 cold init `3.22 ms`.
 
 ### Development mandatory subgroups (`safeeat-current-reader` vs `zxing-tuned-th1-tr1-ti0` vs Android Chrome `native-barcode-detector`)
 
@@ -64,7 +67,7 @@ The 40 distinct owned-product GS1 barcodes are partitioned strictly by physical 
 
 ---
 
-## 3. Locked validation split results (`analysisFrozen: true`, `N_seq = 80` universal; `N_seq = 40` Android Chrome)
+## 3. Locked validation split results — synthetic replay (`analysisFrozen: true`, `N_seq = 80` universal; `N_seq = 40` Android Chrome)
 
 The analysis configuration (`zxing-tuned-th1-tr1-ti0`, `protocolFreezeHash: "orc-protocol-v1.0.0-lite-20261118"`) was frozen prior to unlocking the `validation` partition.
 
@@ -96,7 +99,7 @@ No mandatory subgroup in `development` (`N = 80`) or `validation` (`N = 80`) reg
 
 ---
 
-## 4. Synthetic wrong-code stress test
+## 4. Synthetic wrong-code stress test (synthetic perturbations of known codes, Node)
 
 Executed via `runSyntheticWrongCodeStressTest({ frameCount: 100_000 })` applying GS1 mod-10 checksum validation + 2-frame `ConsensusTracker`:
 
@@ -113,11 +116,13 @@ Per [`docs/clean-room-policy.md`](../clean-room-policy.md) (`2026-11-18`, Aristi
 
 ---
 
-## 6. Gate summary
+## 6. Gate summary — no `GO` verdict
 
-- **Phase 0 `GO` gates (both `development` `N = 80` and `validation` `N = 80`):**
-  - `correctWithin3s` overall lift: `+15.0 pp` (`development`) and `+15.0 pp` (`validation`), both `>= +10.0 pp`
-  - Subgroup non-regression: minimum delta `0.0 pp` (`>= -3.0 pp`) across all 4 conditions, 3 symbologies, and 4 mobile device profiles
-  - P95 `timeToFirstCorrectMs`: `33 ms` vs `33 ms` (not worse than baseline)
-  - Wrong checksum-valid accepted: `0 / 80` in development replay, `0 / 80` in validation replay, `0 / 100,000` in synthetic stress (`95%` upper bound `0.00002996 <= 0.00003`)
-  - Privacy & clean-room: `assertPrivacySafePayload` passes on [`phase0-results.json`](phase0-results.json), `validateCorpusManifest` + `checkCorpusQuotas` (`meetsQuotas: true`) pass on [`manifest.json`](manifest.json), local-only WASM loading enforced, and Scanbot excluded (`#9`).
+All rows below are **synthetic replay (rendered codes, Node, proxy reader, shimmed native detector)** results. They check that the harness and gate code run end to end; they are not evidence of camera performance and do not support a `GO` decision.
+
+- `correctWithin3s` difference: `+15.0 pp` in both synthetic splits (synthetic ablation: effect of decoder settings, not camera performance)
+- Subgroup non-regression on synthetic replay: minimum delta `0.0 pp` across 4 conditions, 3 symbologies, and 4 simulated device profiles
+- P95 `timeToFirstCorrectMs`: `33 ms` vs `33 ms`, a constant fixed by the 33 ms frame cadence of rendered clips, so this criterion is not informative
+- Wrong checksum-valid accepted: `0 / 80` per synthetic replay split, `0 / 100,000` in synthetic stress (`95%` upper bound `0.00002996 <= 0.00003`; never a claim of zero real-world risk)
+- Privacy & clean-room: `assertPrivacySafePayload` passes on [`phase0-results.json`](phase0-results.json), `validateCorpusManifest` + `checkCorpusQuotas` pass on [`manifest.json`](manifest.json), local-only WASM loading enforced, and Scanbot excluded (`#9`)
+- **Not measured:** real-device clips on >= 4 devices (iOS Safari + Android Chrome), the deployed SafeEat reader, native `BarcodeDetector` on real Chrome Android, camera failure rate per platform, SafeEat pilot end-to-end task completion
