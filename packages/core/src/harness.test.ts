@@ -2,11 +2,13 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   aggregateBenchmarkResults,
+  renderBenchmarkMarkdown,
   ruleOfThreeUpperBound,
   runReplayBenchmark,
   runSyntheticWrongCodeStressTest,
   seededRandom,
   shuffleWithSeed,
+  validateBenchmarkRunResult,
   type BenchmarkRunResult,
   type ReplayClip,
   type ReplayEngineAdapter,
@@ -389,4 +391,175 @@ test("runSyntheticWrongCodeStressTest processes 100,000 perturbed frames fast wi
     elapsedMs < 1500,
     `Expected 100k stress test under 1500ms, took ${elapsedMs.toFixed(1)}ms`,
   );
+});
+
+function makeRun(overrides: Partial<BenchmarkRunResult> = {}): BenchmarkRunResult {
+  return {
+    protocolVersion: "1.0.0",
+    corpusVersion: "corpus-v1",
+    partition: "development",
+    engineName: "zxing-wasm",
+    engineVersion: "2.0.0",
+    buildId: "b1",
+    configurationId: "cfg-1",
+    deviceClass: "iphone-13",
+    osFamily: "iOS",
+    osVersion: "17.5",
+    browserFamily: "Safari",
+    browserVersion: "17",
+    symbology: "ean13",
+    condition: "normal",
+    sequenceId: "s1",
+    startedAtMonotonicMs: 1000,
+    outcome: "correct",
+    timeToResultMs: 400,
+    initializationMs: 50,
+    longTaskCount: 0,
+    peakMemoryClass: "low",
+    ...overrides,
+  };
+}
+
+test("aggregateBenchmarkResults breaks down by osFamily and browserFamily", () => {
+  const runs: readonly BenchmarkRunResult[] = [
+    makeRun({ sequenceId: "s1", osFamily: "iOS", browserFamily: "Safari" }),
+    makeRun({ sequenceId: "s2", osFamily: "iOS", browserFamily: "Safari", outcome: "no_result" }),
+    makeRun({ sequenceId: "s3", osFamily: "Android", browserFamily: "Chrome" }),
+    makeRun({ sequenceId: "s4", osFamily: "Android", browserFamily: "Firefox" }),
+  ];
+
+  const report = aggregateBenchmarkResults(runs);
+  assert.equal(report.byOsFamily["iOS"]?.totalTrials, 2);
+  assert.equal(report.byOsFamily["iOS"]?.correctWithin3s.count, 1);
+  assert.equal(report.byOsFamily["Android"]?.totalTrials, 2);
+  assert.equal(report.byBrowserFamily["Safari"]?.totalTrials, 2);
+  assert.equal(report.byBrowserFamily["Chrome"]?.totalTrials, 1);
+  assert.equal(report.byBrowserFamily["Firefox"]?.totalTrials, 1);
+  assert.deepEqual(report.partitions, ["development"]);
+});
+
+test("aggregateBenchmarkResults refuses mixed development and validation partitions unless allowed", () => {
+  const runs: readonly BenchmarkRunResult[] = [
+    makeRun({ sequenceId: "s1", partition: "development" }),
+    makeRun({ sequenceId: "s2", partition: "validation" }),
+  ];
+
+  assert.throws(() => aggregateBenchmarkResults(runs), /mixed development and validation/);
+  assert.throws(
+    () => aggregateBenchmarkResults(runs, { allowMixedPartitions: false }),
+    /mixed development and validation/,
+  );
+
+  const pooled = aggregateBenchmarkResults(runs, { allowMixedPartitions: true });
+  assert.equal(pooled.totalTrials, 2);
+  assert.deepEqual(pooled.partitions, ["development", "validation"]);
+
+  const validationOnly = aggregateBenchmarkResults([
+    makeRun({ sequenceId: "s3", partition: "validation" }),
+  ]);
+  assert.deepEqual(validationOnly.partitions, ["validation"]);
+});
+
+test("renderBenchmarkMarkdown prints denominators, Wilson CIs, censoring counts, and every breakdown", () => {
+  const runs: readonly BenchmarkRunResult[] = [
+    makeRun({ sequenceId: "s1", timeToResultMs: 400 }),
+    makeRun({ sequenceId: "s2", timeToResultMs: 1500, osFamily: "Android", browserFamily: "Chrome", deviceClass: "pixel-7" }),
+    (() => {
+      const { timeToResultMs: _omit, ...rest } = makeRun({ sequenceId: "s3", outcome: "no_result", condition: "low_light" });
+      return rest;
+    })(),
+    (() => {
+      const { timeToResultMs: _omit, ...rest } = makeRun({ sequenceId: "s4", outcome: "camera_error", symbology: "upca" });
+      return rest;
+    })(),
+  ];
+  const report = aggregateBenchmarkResults(runs);
+  const md = renderBenchmarkMarkdown(report, {
+    title: "Synthetic replay",
+    evidenceLabel: "synthetic replay (rendered codes, Node, proxy reader)",
+  });
+
+  assert.match(md, /^## Synthetic replay\n/);
+  assert.match(md, /\*\*Evidence:\*\* synthetic replay \(rendered codes, Node, proxy reader\)/);
+  assert.match(md, /\*\*Partitions:\*\* development · \*\*Trials:\*\* 4/);
+
+  const ci = report.correctWithin3s.ci95;
+  const ciText = `[${(ci.lower * 100).toFixed(1)}%, ${(ci.upper * 100).toFixed(1)}%]`;
+  assert.ok(
+    md.includes(`| Overall | 4 | 2 / 4 (50.0%) | ${ciText} | 950 / 1390 / 1445 ms | 1 / 4 | 0 / 4 (<= 0.7489) | 1 / 4 |`),
+    md,
+  );
+  for (const heading of [
+    "### By configuration",
+    "### By engine",
+    "### By condition",
+    "### By symbology",
+    "### By device class",
+    "### By OS family",
+    "### By browser family",
+  ]) {
+    assert.ok(md.includes(heading), `missing ${heading}`);
+  }
+  assert.match(md, /\| Android \| 1 \| 1 \/ 1 \(100\.0%\)/);
+  assert.match(md, /\| Chrome \| 1 \| 1 \/ 1 \(100\.0%\)/);
+  assert.match(md, /never a claim of zero real-world risk/);
+  // Zero-event bound is a probability: clamp at 1 for tiny denominators.
+  assert.equal(ruleOfThreeUpperBound(0, 1), 1);
+  assert.match(md, /\| Android \| 1 \|.*0 \/ 1 \(<= 1\.0000\)/);
+  assert.doesNotMatch(md, /4006381333931/);
+
+  const empty = renderBenchmarkMarkdown(aggregateBenchmarkResults([]));
+  assert.match(empty, /\| Overall \| 0 \| 0 \/ 0 \(0\.0%\)/);
+  assert.match(empty, /n\/a \/ n\/a \/ n\/a ms/);
+});
+
+test("record validator rejects forged records with unknown fields or barcode-like digit strings", () => {
+  const valid = makeRun();
+  assert.deepEqual(validateBenchmarkRunResult(valid), valid);
+
+  const forgedUnknownField = { ...makeRun(), notes: "looked fine on my phone" };
+  assert.throws(
+    () => validateBenchmarkRunResult(forgedUnknownField),
+    /unexpected field "notes"/,
+  );
+  assert.throws(
+    () => aggregateBenchmarkResults([forgedUnknownField as BenchmarkRunResult]),
+    /unexpected field "notes"/,
+  );
+
+  for (const digits of ["96385074", "036000291452", "4006381333931"]) {
+    const forgedDigits = makeRun({ sequenceId: `seq-${digits}` });
+    assert.throws(
+      () => validateBenchmarkRunResult(forgedDigits),
+      /Privacy violation: barcode digit run/,
+      `expected ${digits.length}-digit run to be rejected`,
+    );
+    assert.throws(
+      () => aggregateBenchmarkResults([forgedDigits]),
+      /Privacy violation/,
+    );
+    assert.throws(
+      () => validateBenchmarkRunResult(makeRun({ buildId: digits })),
+      /Privacy violation/,
+    );
+  }
+
+  assert.throws(
+    () => validateBenchmarkRunResult({ ...makeRun(), outcome: "maybe" }),
+    /invalid "outcome"/,
+  );
+  assert.throws(
+    () => validateBenchmarkRunResult({ ...makeRun(), partition: "train" }),
+    /invalid "partition"/,
+  );
+  const { engineVersion: _drop, ...missing } = makeRun();
+  assert.throws(
+    () => validateBenchmarkRunResult(missing),
+    /requires string field "engineVersion"/,
+  );
+  assert.throws(
+    () => validateBenchmarkRunResult(makeRun({ timeToResultMs: -1 })),
+    /invalid "timeToResultMs"/,
+  );
+  assert.throws(() => validateBenchmarkRunResult(null), /plain object/);
 });

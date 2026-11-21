@@ -138,6 +138,18 @@ export interface BenchmarkAggregateReport extends BenchmarkGroupMetrics {
   readonly bySymbology: Readonly<Record<string, BenchmarkGroupMetrics>>;
   readonly byCondition: Readonly<Record<string, BenchmarkGroupMetrics>>;
   readonly byDeviceClass: Readonly<Record<string, BenchmarkGroupMetrics>>;
+  readonly byOsFamily: Readonly<Record<string, BenchmarkGroupMetrics>>;
+  readonly byBrowserFamily: Readonly<Record<string, BenchmarkGroupMetrics>>;
+  /** Distinct partitions present in the aggregated records, sorted. */
+  readonly partitions: readonly BenchmarkPartition[];
+}
+
+export interface AggregateBenchmarkOptions {
+  /**
+   * Pooling `development` and locked `validation` records hides tuning
+   * leakage, so it is rejected unless explicitly allowed.
+   */
+  readonly allowMixedPartitions?: boolean;
 }
 
 export interface SyntheticStressTestOptions {
@@ -210,7 +222,7 @@ export function ruleOfThreeUpperBound(events: number, trials: number): number {
     return 1;
   }
   if (events <= 0) {
-    return NEG_LN_0_05 / trials;
+    return Math.min(1, NEG_LN_0_05 / trials);
   }
   const p = events / trials;
   const z2 = Z_95_ONE_SIDED * Z_95_ONE_SIDED;
@@ -503,15 +515,129 @@ function groupAndAggregate(
   return output;
 }
 
+const BENCHMARK_RUN_RESULT_REQUIRED_STRING_KEYS = [
+  "protocolVersion",
+  "corpusVersion",
+  "engineName",
+  "engineVersion",
+  "buildId",
+  "configurationId",
+  "deviceClass",
+  "osFamily",
+  "osVersion",
+  "browserFamily",
+  "browserVersion",
+  "sequenceId",
+] as const;
+
+const BENCHMARK_RUN_RESULT_REQUIRED_NUMBER_KEYS = [
+  "startedAtMonotonicMs",
+  "initializationMs",
+  "longTaskCount",
+] as const;
+
+const BENCHMARK_RUN_RESULT_ALLOWED_KEYS = new Set<string>([
+  ...BENCHMARK_RUN_RESULT_REQUIRED_STRING_KEYS,
+  ...BENCHMARK_RUN_RESULT_REQUIRED_NUMBER_KEYS,
+  "partition",
+  "symbology",
+  "condition",
+  "outcome",
+  "timeToResultMs",
+  "peakMemoryClass",
+]);
+
+const PARTITIONS = new Set<string>(["development", "validation"]);
+const SYMBOLOGIES = new Set<string>(["ean8", "ean13", "upca"]);
+const CONDITIONS = new Set<string>([
+  "normal",
+  "low_light",
+  "glare_curved",
+  "small_damaged",
+]);
+const OUTCOMES = new Set<string>([
+  "correct",
+  "wrong_valid",
+  "no_result",
+  "camera_error",
+  "engine_error",
+]);
+const MEMORY_CLASSES = new Set<string>(["low", "medium", "high"]);
+
+/**
+ * Validates one benchmark record against the strict BenchmarkRunResult
+ * allow-list: unknown fields, wrong types, out-of-vocabulary enums, and
+ * privacy violations (barcode-like digit runs, frames, data URLs) all throw.
+ */
+export function validateBenchmarkRunResult(input: unknown): BenchmarkRunResult {
+  if (input === null || typeof input !== "object" || Array.isArray(input)) {
+    throw new Error("Benchmark record must be a plain object");
+  }
+  assertPrivacySafePayload(input);
+
+  const record = input as Record<string, unknown>;
+  for (const key of Object.keys(record)) {
+    if (!BENCHMARK_RUN_RESULT_ALLOWED_KEYS.has(key)) {
+      throw new Error(`Benchmark record has unexpected field "${key}"`);
+    }
+  }
+  for (const key of BENCHMARK_RUN_RESULT_REQUIRED_STRING_KEYS) {
+    if (typeof record[key] !== "string") {
+      throw new Error(`Benchmark record requires string field "${key}"`);
+    }
+  }
+  for (const key of BENCHMARK_RUN_RESULT_REQUIRED_NUMBER_KEYS) {
+    const value = record[key];
+    if (typeof value !== "number" || !Number.isFinite(value)) {
+      throw new Error(`Benchmark record requires finite number "${key}"`);
+    }
+  }
+  const enumChecks: ReadonlyArray<readonly [string, ReadonlySet<string>]> = [
+    ["partition", PARTITIONS],
+    ["symbology", SYMBOLOGIES],
+    ["condition", CONDITIONS],
+    ["outcome", OUTCOMES],
+    ["peakMemoryClass", MEMORY_CLASSES],
+  ];
+  for (const [key, allowed] of enumChecks) {
+    const value = record[key];
+    if (typeof value !== "string" || !allowed.has(value)) {
+      throw new Error(`Benchmark record has invalid "${key}"`);
+    }
+  }
+  const timeToResultMs = record["timeToResultMs"];
+  if (
+    timeToResultMs !== undefined &&
+    (typeof timeToResultMs !== "number" ||
+      !Number.isFinite(timeToResultMs) ||
+      timeToResultMs < 0)
+  ) {
+    throw new Error('Benchmark record has invalid "timeToResultMs"');
+  }
+  return record as unknown as BenchmarkRunResult;
+}
+
 /**
  * Aggregates BenchmarkRunResult records into overall protocol metrics and
- * subgroup breakdowns after asserting every record is privacy-safe.
+ * subgroup breakdowns after asserting every record matches the strict,
+ * privacy-safe record schema.
+ *
+ * Throws when records from both `development` and `validation` partitions are
+ * mixed, unless `options.allowMixedPartitions === true`.
  */
 export function aggregateBenchmarkResults(
   results: readonly BenchmarkRunResult[],
+  options: AggregateBenchmarkOptions = {},
 ): BenchmarkAggregateReport {
+  const partitionSet = new Set<BenchmarkPartition>();
   for (const result of results) {
-    assertPrivacySafePayload(result);
+    validateBenchmarkRunResult(result);
+    partitionSet.add(result.partition);
+  }
+  if (partitionSet.size > 1 && options.allowMixedPartitions !== true) {
+    throw new Error(
+      "Refusing to aggregate mixed development and validation partitions; pass { allowMixedPartitions: true } to override",
+    );
   }
 
   const overall = computeGroupMetrics(results);
@@ -525,7 +651,121 @@ export function aggregateBenchmarkResults(
     bySymbology: groupAndAggregate(results, (r) => r.symbology),
     byCondition: groupAndAggregate(results, (r) => r.condition),
     byDeviceClass: groupAndAggregate(results, (r) => r.deviceClass),
+    byOsFamily: groupAndAggregate(results, (r) => r.osFamily),
+    byBrowserFamily: groupAndAggregate(results, (r) => r.browserFamily),
+    partitions: [...partitionSet].sort(),
   };
+}
+
+export interface RenderBenchmarkMarkdownOptions {
+  readonly title?: string;
+  /**
+   * Evidence provenance shown under the title, e.g.
+   * "synthetic replay (rendered codes, Node, proxy reader)".
+   */
+  readonly evidenceLabel?: string;
+}
+
+function formatPct(rate: number): string {
+  return `${(rate * 100).toFixed(1)}%`;
+}
+
+function formatRate(metric: RateMetric, total: number): string {
+  return `${metric.count} / ${total} (${formatPct(metric.rate)})`;
+}
+
+function formatCi(ci: WilsonInterval): string {
+  return `[${formatPct(ci.lower)}, ${formatPct(ci.upper)}]`;
+}
+
+function formatMs(value: number | null): string {
+  return value === null ? "n/a" : `${Math.round(value * 100) / 100}`;
+}
+
+function escapeCell(value: string): string {
+  return value.replace(/\|/g, "\\|").replace(/[\r\n]+/g, " ");
+}
+
+const GROUP_HEADER =
+  "| Group | N | correctWithin3s (k / N) | Wilson 95% CI | timeToFirstCorrectMs P50 / P90 / P95 | no_result (k / N) | wrong_valid (95% upper bound) | recoverable failures (k / N) |";
+const GROUP_SEPARATOR = "|---|---|---|---|---|---|---|---|";
+
+function renderGroupRow(label: string, m: BenchmarkGroupMetrics): string {
+  const n = m.totalTrials;
+  const noResult = Math.round(m.noResultRate * n);
+  const recoverable = Math.round(m.recoverableFailureRate * n);
+  const t = m.timeToFirstCorrectMs;
+  return [
+    "",
+    ` ${escapeCell(label)} `,
+    ` ${n} `,
+    ` ${formatRate(m.correctWithin3s, n)} `,
+    ` ${formatCi(m.correctWithin3s.ci95)} `,
+    ` ${formatMs(t.p50)} / ${formatMs(t.p90)} / ${formatMs(t.p95)} ms `,
+    ` ${noResult} / ${n} `,
+    ` ${m.wrongValidCount} / ${n} (<= ${m.wrongValidRuleOfThree95UpperBound.toFixed(4)}) `,
+    ` ${recoverable} / ${n} `,
+    "",
+  ].join("|");
+}
+
+/**
+ * Renders a BenchmarkAggregateReport as Markdown tables with explicit
+ * denominators, Wilson 95% confidence intervals, censoring counts, and every
+ * subgroup breakdown (never an average alone).
+ */
+export function renderBenchmarkMarkdown(
+  aggregate: BenchmarkAggregateReport,
+  options: RenderBenchmarkMarkdownOptions = {},
+): string {
+  const lines: string[] = [];
+  lines.push(`## ${options.title ?? "Benchmark aggregate"}`);
+  lines.push("");
+  if (options.evidenceLabel !== undefined) {
+    lines.push(`**Evidence:** ${options.evidenceLabel}`);
+    lines.push("");
+  }
+  const partitions = aggregate.partitions ?? [];
+  lines.push(
+    `**Partitions:** ${partitions.length > 0 ? partitions.join(", ") : "none"} · **Trials:** ${aggregate.totalTrials}`,
+  );
+  lines.push("");
+  lines.push(GROUP_HEADER);
+  lines.push(GROUP_SEPARATOR);
+  lines.push(renderGroupRow("Overall", aggregate));
+  lines.push("");
+
+  const sections: ReadonlyArray<
+    readonly [string, Readonly<Record<string, BenchmarkGroupMetrics>> | undefined]
+  > = [
+    ["By configuration", aggregate.byConfiguration],
+    ["By engine", aggregate.byEngine],
+    ["By condition", aggregate.byCondition],
+    ["By symbology", aggregate.bySymbology],
+    ["By device class", aggregate.byDeviceClass],
+    ["By OS family", aggregate.byOsFamily],
+    ["By browser family", aggregate.byBrowserFamily],
+  ];
+  for (const [heading, groups] of sections) {
+    if (groups === undefined) continue;
+    const keys = Object.keys(groups).sort();
+    if (keys.length === 0) continue;
+    lines.push(`### ${heading}`);
+    lines.push("");
+    lines.push(GROUP_HEADER);
+    lines.push(GROUP_SEPARATOR);
+    for (const key of keys) {
+      const metrics = groups[key];
+      if (metrics !== undefined) {
+        lines.push(renderGroupRow(key, metrics));
+      }
+    }
+    lines.push("");
+  }
+  lines.push(
+    "_Wilson 95% score intervals on sequence-level denominators; wrong_valid upper bound is one-sided 95% and never a claim of zero real-world risk. Latency quantiles cover correct sequences only; read them with the no_result count._",
+  );
+  return `${lines.join("\n")}\n`;
 }
 
 interface GroundTruthSeed {
