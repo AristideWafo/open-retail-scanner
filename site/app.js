@@ -615,7 +615,7 @@ async function loadBenchmarkResults() {
     if (!response.ok) return;
     benchmarkData = await response.json();
     benchMetaLine.textContent =
-      `Protocol ${benchmarkData.protocolVersion} · Corpus ${benchmarkData.corpusVersion} · Frozen Config ${benchmarkData.frozenConfigurationId}`;
+      `Synthetic replay (rendered codes, Node, proxy reader, shimmed native detector) · Protocol ${benchmarkData.protocolVersion} · Corpus ${benchmarkData.corpusVersion} · Frozen Config ${benchmarkData.frozenConfigurationId}`;
     renderBenchmarkTables();
   } catch {
     // Fallback static rows remain visible if fetch is unavailable.
