@@ -657,7 +657,7 @@ export interface Phase0BenchmarkSummary {
     readonly reviewer: string;
     readonly scanbotComparisonStatus: "excluded_not_authorized";
   };
-  readonly phase0Decision: "GO";
+  readonly phase0Decision: "PROVISIONAL_GO_SYNTHETIC_ONLY";
 }
 
 function buildConfigReport(
@@ -1051,7 +1051,7 @@ export async function runFullPhase0Benchmark(): Promise<Phase0BenchmarkSummary> 
       reviewer: "Aristide Wafo",
       scanbotComparisonStatus: "excluded_not_authorized",
     },
-    phase0Decision: "GO",
+    phase0Decision: "PROVISIONAL_GO_SYNTHETIC_ONLY",
   };
 
   assertPrivacySafePayload(summary);
